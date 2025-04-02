@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Home Page</title>
+  </head>
+  <body>
+    <h1>Welcome, {{ request.user.username }}!</h1>
+
+    <!-- Logout Button -->
+    <form action="{% url 'logout' %}" method="post">
+      {% csrf_token %}
+      <button type="submit">Logout</button>
+    </form>
+
+    <!-- Button to redirect to /auth/meta/ -->
+    <button onclick="window.location.href='/auth/meta/'">
+      Go to Auth/Meta
+    </button>
+
+    <!-- Blank Button -->
+    <button disabled>Blank Button</button>
+  </body>
+</html>
