@@ -1,0 +1,133 @@
+/* --- Form Container Styling --- */
+.form-container {
+  max-width: 500px; /* Or adjust width as needed */
+  margin: 3rem auto; /* Center the form vertically and horizontally */
+  padding: 2rem 2.5rem; /* Generous padding inside the container */
+  background-color: #ffffff; /* White background */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Softer shadow */
+  border: 1px solid #e9ecef; /* Subtle border */
+}
+
+/* --- Form Title --- */
+.form-title {
+  text-align: center;
+  color: #343a40; /* Dark heading color */
+  margin-bottom: 1.8rem;
+  font-size: 1.8rem;
+  font-weight: 500; /* Slightly bolder than regular text */
+}
+
+/* --- General Form Styling --- */
+.styled-form {
+  width: 100%;
+}
+
+/* --- Styling fields rendered by form.as_p --- */
+.styled-form p {
+  margin-bottom: 1.2rem; /* Space between form fields */
+  /* Reset default paragraph margin if needed */
+  /* margin-top: 0; */
+}
+
+.styled-form label {
+  display: block; /* Ensure label is on its own line */
+  margin-bottom: 0.5rem; /* Space between label and input */
+  font-weight: 600; /* Make labels slightly bold */
+  color: #495057; /* Slightly muted label color */
+  font-size: 0.95rem;
+}
+
+/* --- Input Field Styling --- */
+.styled-form input[type="text"],
+.styled-form input[type="email"],
+.styled-form input[type="password"],
+.styled-form input[type="url"],
+.styled-form input[type="number"],
+.styled-form select,
+.styled-form textarea {
+  display: block; /* Ensure input takes full width */
+  width: 100%;
+  padding: 0.75rem 1rem; /* Comfortable padding */
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057; /* Input text color */
+  background-color: #fff; /* Input background */
+  background-clip: padding-box;
+  border: 1px solid #ced4da; /* Standard border */
+  border-radius: 0.25rem; /* Slight rounding */
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+/* Focus state for inputs */
+.styled-form input[type="text"]:focus,
+.styled-form input[type="email"]:focus,
+.styled-form input[type="password"]:focus,
+.styled-form input[type="url"]:focus,
+.styled-form input[type="number"]:focus,
+.styled-form select:focus,
+.styled-form textarea:focus {
+  border-color: #80bdff; /* Highlight color on focus */
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Focus glow */
+}
+
+/* --- Help Text Styling (if Django adds it within <p>) --- */
+.styled-form .helptext {
+  font-size: 0.85em;
+  color: #6c757d; /* Muted color for help text */
+  margin-top: 0.25rem;
+  display: block; /* Ensure it appears below the input */
+}
+
+/* --- Error List Styling (Django's default) --- */
+.styled-form .errorlist {
+  list-style: none; /* Remove bullet points */
+  padding: 0;
+  margin: 0.5rem 0 0 0; /* Space above the error list */
+  color: #dc3545; /* Danger color for errors */
+  font-size: 0.9em;
+}
+
+.styled-form .errorlist li {
+  margin-bottom: 0.25rem;
+}
+
+/* --- Input Field with Error --- */
+/* Django might add an 'error' class to the <input> or wrap it */
+.styled-form input.error, /* Check if Django adds this class */
+  .styled-form select.error,
+  .styled-form textarea.error {
+  border-color: #dc3545 !important; /* Force red border for errors */
+}
+.styled-form input.error:focus,
+.styled-form select.error:focus,
+.styled-form textarea.error:focus {
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important; /* Red glow */
+}
+
+/* --- Submit Button Styling --- */
+.form-container .btn-submit {
+  width: 100%; /* Make button full width of container */
+  padding: 0.8rem 1rem; /* Larger padding for primary action */
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 1rem; /* Space above the button */
+  /* It should inherit .btn and .btn-primary styles if linked correctly */
+}
+
+/* --- Adjustments for Checkboxes/Radios (if form.as_p renders them differently) --- */
+/* This is a guess - inspect element if checkboxes look wrong */
+.styled-form p input[type="checkbox"],
+.styled-form p input[type="radio"] {
+  width: auto; /* Don't make checkbox full-width */
+  display: inline-block;
+  margin-right: 0.5rem;
+  vertical-align: middle; /* Align with label */
+}
+.styled-form p label[for*="id_checkbox"], /* More specific selector if needed */
+  .styled-form p label[for*="id_radio"] {
+  display: inline-block; /* Allow label beside checkbox */
+  font-weight: normal; /* Normal weight for checkbox labels */
+  margin-bottom: 0;
+}

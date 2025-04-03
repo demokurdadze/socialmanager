@@ -1,24 +1,51 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <title>Home Page</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Link to the CSS file using Django's static tag -->
+    <link rel="stylesheet" href="{% static 'styles/HomeStyles.css' %}" />
+    <title>Home - Social Manager</title>
   </head>
   <body>
-    <h1>Welcome, {{ request.user.username }}!</h1>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+      <div class="navbar-container">
+        <a href="#" class="navbar-brand">Social Manager</a>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a
+              onclick="window.location.href='/auth/meta/'"
+              class="nav-link btn btn-secondary"
+              >Auth/Meta</a
+            >
+          </li>
+          <li class="nav-item">
+            <!-- Logout Form integrated into navbar -->
+            <form action="{% url 'logout' %}" method="post" class="logout-form">
+              {% csrf_token %}
+              <button type="submit" class="nav-link btn btn-danger">
+                Logout
+              </button>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </nav>
 
-    <!-- Logout Button -->
-    <form action="{% url 'logout' %}" method="post">
-      {% csrf_token %}
-      <button type="submit">Logout</button>
-    </form>
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <h1 class="welcome-heading">Welcome, {{ request.user.username }}!</h1>
 
-    <!-- Button to redirect to /auth/meta/ -->
-    <button onclick="window.location.href='/auth/meta/'">
-      Go to Auth/Meta
-    </button>
+      <p class="info-text">This is your main dashboard area.</p>
 
-    <!-- Blank Button -->
-    <button disabled>Blank Button</button>
+      <!-- Blank Button (Example) -->
+      <button class="btn btn-disabled" disabled>Blank Button</button>
+    </main>
+
+    <footer class="footer">
+      <p>© {% now "Y" %} Social Manager. All rights reserved.</p>
+    </footer>
   </body>
 </html>
