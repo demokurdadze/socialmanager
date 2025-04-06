@@ -17,10 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from socialapp import views
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth import views as auth_views
 
+
 urlpatterns = [
+    path('', views.landing_page, name='landing_page'),
     path('admin/', admin.site.urls),
     path('register/', views.register, name='register'),
     path('home/', views.home, name='home'),
@@ -30,4 +32,5 @@ urlpatterns = [
     path('auth/meta/callback/', views.meta_callback, name='meta_callback'),
     path("webhook/", views.messenger_webhook, name='webhook'),
     path('grok-chat/', views.grok_chat, name='grok_chat'),
+    path('accounts/', include('allauth.urls'))
 ]

@@ -152,3 +152,13 @@ LOGOUT_REDIRECT_URL = '/'  # Where users go after logout
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'  # Or 'username' if preferred
+
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'APP': {
+            'client_id': '1152489759401130',
+            'secret': '6637d283f19db96a3b243134fa70249c',
+            'key': ''
+        }
+    }
+}

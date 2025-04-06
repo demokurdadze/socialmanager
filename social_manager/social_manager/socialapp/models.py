@@ -16,7 +16,8 @@ class CustomUser(AbstractUser):
     is_paid = models.BooleanField(default=False)
     meta_access_token = models.CharField(max_length=255, blank=True, null=True)
     page_id = models.CharField(max_length=255, blank=True, null=True)  # Add this
-    page_access_token = models.CharField(max_length=255, blank=True, null=True)  # Add this
+    page_access_token = models.CharField(max_length=255, blank=True, null=True)
+    email = models.EmailField(unique=True)
     
     
 class MessengerUser(models.Model):

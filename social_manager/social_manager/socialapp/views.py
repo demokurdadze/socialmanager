@@ -27,6 +27,9 @@ def register(request):
         form = UserCreationForm()
     return render(request, 'registration/register.html', {'form': form})
 
+def landing_page(request):
+    return render(request,'landing_page.html')
+
 @login_required
 def home(request):
     return render(request, 'home.html')
