@@ -146,7 +146,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-LOGIN_REDIRECT_URL = '/'  # Where users go after login
+ # Where users go after login
 LOGOUT_REDIRECT_URL = '/'  # Where users go after logout
 
 # Optional: Disable email verification if you only want Facebook login
