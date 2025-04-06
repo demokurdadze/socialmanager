@@ -20,7 +20,7 @@ META_APP_SECRET = '6637d283f19db96a3b243134fa70249c'
 #META_REDIRECT_URI = 'http://localhost:8000/auth/meta/callback/'
 META_REDIRECT_URI = 'https://socialmanager.ge/auth/meta/callback/'
 
-LOGIN_REDIRECT_URL = '/home/'
+LOGIN_REDIRECT_URL = 'https://socialmanager.ge/home/'
 AUTH_USER_MODEL = 'socialapp.CustomUser'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
