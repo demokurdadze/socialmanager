@@ -28,5 +28,6 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('auth/meta/', views.meta_auth, name='meta_auth'),
     path('auth/meta/callback/', views.meta_callback, name='meta_callback'),
-    path("webhook/", views.messenger_webhook, name='webhook')
+    path("webhook/", views.messenger_webhook, name='webhook'),
+    path('grok-chat/', views.grok_chat, name='grok_chat'),
 ]

@@ -8,12 +8,14 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from . import views
-
+from openai import OpenAI
 import json
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
 from .models import MessengerUser
+from django.http import JsonResponse
+import os
 
 def register(request):
     if request.method == 'POST':
@@ -208,3 +210,105 @@ def messenger_webhook(request):
                     print(message_text)
                     print('---------------------------------')
         return HttpResponse('OK')
+
+
+#------------------------------------------------------------------------------------------------------------------------------  
+def send_message_to_grok(message: str) -> str:
+    """
+    Send a message to Grok API and return the response.
+    
+    Args:
+        message (str): The message to send to Grok
+        
+    Returns:
+        str: Response from Grok API or error message
+        
+    Raises:
+        requests.RequestException: If the API call fails
+    """
+    # API endpoint - replace with actual endpoint from your API documentation
+    API_ENDPOINT = "https://api.xai.com/grok/v1/chat"  # This is hypothetical, use your actual endpoint
+    
+    # API key - store this in your settings.py or environment variables
+    try:
+        API_KEY = settings.GROK_API_KEY
+    except AttributeError:
+        return "Error: GROK_API_KEY not configured in settings.py"
+
+    # Headers for the API request
+    headers = {
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json",
+    }
+
+    # Payload for the API request
+    payload = {
+        "message": message,
+        "model": "grok",  # Adjust based on your API documentation
+        "max_tokens": 500,  # Adjust as needed
+    }
+
+    try:
+        # Make the API request
+        response = requests.post(
+            API_ENDPOINT,
+            headers=headers,
+            json=payload,
+            timeout=10  # Add timeout to prevent hanging
+        )
+        
+        # Check if request was successful
+        response.raise_for_status()
+        
+        # Parse the JSON response
+        data = response.json()
+        
+        # Adjust this based on actual API response structure
+        return data.get("response", "No response received")
+        
+    except requests.Timeout:
+        return "Error: Request to Grok API timed out"
+    except requests.RequestException as e:
+        return f"Error: Failed to connect to Grok API - {str(e)}"
+    except json.JSONDecodeError:
+        return "Error: Invalid response format from Grok API"
+
+
+def grok_chat(request):
+    if request.method == "POST":
+        message = request.POST.get("message", "")
+        if not message:
+            return JsonResponse({"error": "No message provided"}, status=400)
+            
+        response = send_message_to_grok(message)
+        return JsonResponse({"response": response})
+    
+    return JsonResponse({"error": "Method not allowed"}, status=405)
+#------------------------------------------------------------------------------------------------------------------------------
+
+def send_message_to_AI(message):
+    XAI_API_KEY = os.getenv("XAI_API_KEY")
+    client = OpenAI(
+        api_key='xai-P2NKQUwEzPnmIg9FZCxkCHtX8rgwEmcRWAkjEcfHid64zYsmXPyFCzFoaxpNoN9fWmHo862RZZ3yBPOB',
+        base_url="https://api.x.ai/v1",
+    )
+    messages = [
+        {
+            'role':'system',
+        #----------this is a placeholder content it should be gotten from the database.
+            'content': 'you are a sales person'},
+
+    ]
+    messages.append({'role':'user','content':message})
+
+    completion = client.chat.completions.create(
+        model="grok-2-latest",
+        messages=messages,
+
+    )
+    
+    messages.append({'role':'assistant','content':completion.choices[0].message.content})
+
+    #MessengerUser.objects.get_or_create(sender_id=sender_id)
+    #conversation.objects.get_or_create(sender_id)
+    return completion.choices[0].message.content
