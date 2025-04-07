@@ -1,0 +1,33 @@
+{% extends "base_generic.html" %} {% load static %} {% block content %}
+<div class="main-content error-page">
+  <h1 class="welcome-heading error-title">An Error Occurred</h1>
+  <div class="alert alert-danger" role="alert">
+    <p>Sorry, something went wrong:</p>
+    <p>
+      <strong
+        >{{ error|escape|default:"An unspecified error occurred." }}</strong
+      >
+    </p>
+  </div>
+  <p><a href="{% url 'home' %}" class="btn btn-secondary">Return to Home</a></p>
+</div>
+{% endblock %} {% block extra_css %}
+<style>
+  .error-page {
+    text-align: center;
+  }
+  .error-title {
+    color: #dc3545;
+  } /* Use danger color */
+  .alert-danger {
+    /* Basic Bootstrap-like alert styling */
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+  }
+</style>
+{% endblock %}

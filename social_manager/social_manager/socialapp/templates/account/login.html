@@ -1,0 +1,72 @@
+{% extends "base_generic.html" %}
+<!-- Line 1 -->
+{% load static i18n socialaccount %}
+<!-- Line 2 -->
+<!-- Line 3 MUST BE EMPTY or start a comment/HTML -->
+{% block title %}
+<!-- Line 4 (or later, but NOT line 3) -->
+{% trans "Sign In" %}
+<!-- Line 5 -->
+{% endblock title %}
+<!-- Line 6 -->
+
+{% block content %}
+<div class="form-card">
+  <h2 class="form-title">{% trans "Sign In" %}</h2>
+
+  <form
+    method="post"
+    action="{% url 'account_login' %}"
+    class="styled-form login"
+  >
+    {% csrf_token %} {{ form.as_p }} {% if redirect_field_value %}
+    <input
+      type="hidden"
+      name="{{ redirect_field_name }}"
+      value="{{ redirect_field_value }}"
+    />
+    {% endif %}
+    <button type="submit" class="btn-submit">{% trans "Sign In" %}</button>
+
+    <div class="form-links">
+      <p>
+        <a href="{% url 'account_reset_password' %}"
+          >{% trans "Forgot Password?" %}</a
+        >
+      </p>
+      <p>
+        {% trans "Don't have an account?" %}
+        <a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
+      </p>
+    </div>
+  </form>
+
+  {% if socialaccount.providers %}
+  <div class="socialaccount_ballot">
+    <h3 class="socialaccount-title">{% trans "Or Sign In With" %}</h3>
+
+    <div class="socialaccount_providers">
+      <a
+        title="Facebook"
+        class="socialaccount_provider facebook btn-submit"
+        {#
+        Use
+        existing
+        CSS
+        classes
+        #}
+        href="{% provider_login_url 'facebook' process='login' method='oauth2' %}"
+      >
+        <i class="fab fa-facebook-f"></i> Sign In with Facebook
+      </a>
+
+      <ul class="socialaccount_providers">
+        <!-- {% include "socialaccount/snippets/provider_list.html" with
+        process="login" %} -->
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock content %} {# <-- Make sure this matches the opening 'content' block
+#}

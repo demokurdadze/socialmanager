@@ -21,10 +21,16 @@
               >Auth/Meta</a
             >
           </li>
+          <!-- templates/home.html -->
+
           <li class="nav-item">
             <!-- Logout Form integrated into navbar -->
-            <form action="{% url 'logout' %}" method="post" class="logout-form">
-              {% csrf_token %}
+            <form
+              action="{% url 'account_logout' %}"
+              method="post"
+              class="logout-form"
+            >
+              {# <-- CORRECT allauth URL NAME #} {% csrf_token %}
               <button type="submit" class="nav-link btn btn-danger">
                 Logout
               </button>
