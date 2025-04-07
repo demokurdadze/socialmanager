@@ -2,71 +2,81 @@
 {% load static i18n %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> {# Responsive design #}
-    <title>{% block title %}Social Manager{% endblock %}</title>
-
-    {# Google Fonts (Example: Inter) - Add to <head> #}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     {# Link your CSS files #}
-    <link rel="stylesheet" href="{% static 'styles/base.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/form.css' %}"> 
+    <link rel="stylesheet" href="{% static 'styles/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'styles/form.css' %}" />
 
     {% block head_extra %}{% endblock %} {# For page-specific head elements #}
-</head>
-<body>
+  </head>
+  <body>
     <nav class="main-nav">
-        <div class="container nav-container">
-            <a href="{% url 'root_redirect' %}" class="nav-brand">MyApp</a> {# Or your actual root/home #}
-            <ul class="nav-links">
-                {% if user.is_authenticated %}
-                    <li><a href="{% url 'home' %}">Dashboard</a></li>
-                    <li><span>Hi, {{ user.username|default:'User' }}!</span></li>
-                    <li>
-                        <form id="logout-form" method="post" action="{% url 'account_logout' %}" style="display: inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="nav-button-link">{% trans "Sign Out" %}</button>
-                        </form>
-                    </li>
-                {% else %}
-                    <li><a href="{% url 'account_login' %}">{% trans "Sign In" %}</a></li>
-                    <li><a href="{% url 'account_signup' %}" class="nav-button">{% trans "Sign Up" %}</a></li>
-                {% endif %}
-            </ul>
-        </div>
+      <div class="container nav-container">
+        <a href="{% url 'root_redirect' %}" class="nav-brand">Social Manager</a>
+        {# Or your actual root/home #}
+        <ul class="nav-links">
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'home' %}">Dashboard</a></li>
+          <li><span>Hi, {{ user.username|default:'User' }}!</span></li>
+          <li>
+            <form
+              id="logout-form"
+              method="post"
+              action="{% url 'account_logout' %}"
+              style="display: inline"
+            >
+              {% csrf_token %}
+              <button type="submit" class="nav-button-link">
+                {% trans "Sign Out" %}
+              </button>
+            </form>
+          </li>
+          {% else %}
+          <li><a href="{% url 'account_login' %}">{% trans "Sign In" %}</a></li>
+          <li>
+            <a href="{% url 'account_signup' %}" class="nav-button"
+              >{% trans "Sign Up" %}</a
+            >
+          </li>
+          {% endif %}
+        </ul>
+      </div>
     </nav>
 
     <main class="main-content">
-        <div class="container content-container">
-             {% if messages %}
-                <div class="messages">
-                    {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }}" role="alert">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-
-            {% block content %}
-            <!-- Page-specific content goes here -->
-            {% endblock %}
+      <div class="container content-container">
+        {% if messages %}
+        <div class="messages">
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}" role="alert">
+            {{ message }}
+          </div>
+          {% endfor %}
         </div>
+        {% endif %} {% block content %}
+        <!-- Page-specific content goes here -->
+        {% endblock %}
+      </div>
     </main>
 
     <footer class="main-footer">
-        <div class="container">
-            <p>© {% now "Y" %} Social Manger. All rights reserved.</p>
-            {# Add other footer links if needed #}
-        </div>
+      <div class="container">
+        <p>© {% now "Y" %} Social Manger. All rights reserved.</p>
+        {# Add other footer links if needed #}
+      </div>
     </footer>
 
     {% block scripts_extra %}
     <!-- Page-specific scripts go here -->
     {% endblock %}
-</body>
+  </body>
 </html>
