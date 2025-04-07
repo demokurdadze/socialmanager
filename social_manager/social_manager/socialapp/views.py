@@ -16,16 +16,27 @@ from django.core.cache import cache
 from .models import MessengerUser
 from django.http import JsonResponse
 import os
+from .forms import CustomUserCreationForm
+
+# def register(request):
+#     if request.method == 'POST':
+#         form = UserCreationForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('login')  # Redirect to the login page after successful registration
+#     else:
+#         form = UserCreationForm()
+#     return render(request, 'registration/register.html', {'form': form})
 
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')  # Redirect to the login page after successful registration
+            return redirect('login')
     else:
-        form = UserCreationForm()
-    return render(request, 'registration/register.html', {'form': form})
+        form = CustomUserCreationForm()
+    return render(request, 'register.html', {'form': form})
 
 def landing_page(request):
     return render(request,'landing_page.html')
