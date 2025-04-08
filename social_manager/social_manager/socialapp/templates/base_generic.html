@@ -15,6 +15,7 @@
     {# Link your CSS files #}
     <link rel="stylesheet" href="{% static 'styles/base.css' %}" />
     <link rel="stylesheet" href="{% static 'styles/form.css' %}" />
+    <link rel="stylesheet" href="{% static 'styles/HomeStyles.css' %}" />
 
     {% block head_extra %}{% endblock %} {# For page-specific head elements #}
   </head>
@@ -39,13 +40,6 @@
                 {% trans "Sign Out" %}
               </button>
             </form>
-          </li>
-          {% else %}
-          <li><a href="{% url 'account_login' %}">{% trans "Sign In" %}</a></li>
-          <li>
-            <a href="{% url 'account_signup' %}" class="nav-button"
-              >{% trans "Sign Up" %}</a
-            >
           </li>
           {% endif %}
         </ul>

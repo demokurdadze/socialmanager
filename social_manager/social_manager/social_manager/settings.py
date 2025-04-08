@@ -130,8 +130,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
 STATIC_URL =  'static/'
+
 
 STATIC_ROOT ="/home/socialma/public_html/static/"
 
@@ -154,14 +154,39 @@ LOGOUT_REDIRECT_URL = '/'  # Where users go after logout
 # Optional: Disable email verification if you only want Facebook login
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'email'  # Or 'username' if preferred
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+  # Or 'username' if preferred
+
+SOCIALACCOUNT_LOGIN_ON_GET = True
 
 SOCIALACCOUNT_PROVIDERS = {
     'facebook': {
-        'APP': {
-            'client_id': '1152489759401130',
-            'secret': '6637d283f19db96a3b243134fa70249c',
-            'key': ''
+        # --- Settings for Facebook Login via Allauth ---
+        'METHOD': 'oauth2', # Default, specifies the login method
+        'SCOPE': ['email', 'public_profile'], # Basic permissions needed for login
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'}, # Optional: forces re-auth
+        'INIT_PARAMS': {'cookie': True}, # Optional: FB JavaScript SDK init
+        'FIELDS': [ # Data to fetch from Facebook after login
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',
+            # 'verified', # Needs app review potentially
+            'locale',
+            'timezone',
+            'link',
+            'gender',
+            'updated_time',
+        ],
+        'EXCHANGE_TOKEN': True, # Exchange code for token
+        'LOCALE_FUNC': lambda request: 'en_US', # Or dynamically get locale
+        'VERIFIED_EMAIL': False, # Set to True if you trust FB verified email status
+        'VERSION': 'v19.0', # Use a specific, current API version
+        'APP': { # Your App Credentials for LOGIN
+            'client_id': '1152489759401130', # Should match the FB App
+            'secret': '6637d283f19db96a3b243134fa70249c', # Should match the FB App
+            'key': '' # Usually leave blank
         }
     }
 }
