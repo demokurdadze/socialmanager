@@ -18,6 +18,7 @@ class CustomUser(AbstractUser):
     page_id = models.CharField(max_length=255, blank=True, null=True)  # Add this
     page_access_token = models.CharField(max_length=255, blank=True, null=True)
     email = models.EmailField(unique=True)
+    system_prompt = models.TextField(blank=True, null=True)
     
     
 class MessengerUser(models.Model):

@@ -3,10 +3,7 @@
 import urllib.parse
 import requests
 from social_manager import settings
-# REMOVE: from django.contrib.auth.forms import UserCreationForm # Not needed for register
 from django.shortcuts import render, redirect
-# REMOVE: from django.urls import path # Not needed in views.py
-# REMOVE: from django.contrib.auth import views as auth_views # Not needed if using allauth URLs
 from django.contrib.auth.decorators import login_required
 from . import views # Careful with this import if it's recursive
 from openai import OpenAI
@@ -14,7 +11,7 @@ import json
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core.cache import cache
-from .models import MessengerUser
+from .models import CustomUser,conversation
 from django.http import JsonResponse
 import os
 # REMOVE: from .forms import CustomUserCreationForm # Not needed for register view
@@ -193,45 +190,45 @@ def get_instagram_messages(access_token, page_id):
     response = requests.get(url, params=params).json()
     return response['data']
 
-@csrf_exempt
-def messenger_webhook(request):
-    print(request)
-    if request.method == 'GET':
-        # Verification logic (same as before)
-        verify_token = 'demuraaa'
-        hub_verify_token = request.GET.get('hub.verify_token', '')
-        if hub_verify_token == verify_token:
-            return HttpResponse(request.GET.get('hub.challenge', ''))
-        return HttpResponse('Invalid token', status=403)
+# @csrf_exempt
+# def messenger_webhook(request):
+#     print(request)
+#     if request.method == 'GET':
+#         # Verification logic (same as before)
+#         verify_token = 'demuraaa'
+#         hub_verify_token = request.GET.get('hub.verify_token', '')
+#         if hub_verify_token == verify_token:
+#             return HttpResponse(request.GET.get('hub.challenge', ''))
+#         return HttpResponse('Invalid token', status=403)
 
-    elif request.method == 'POST':
-        data = json.loads(request.body)
-        for entry in data.get('entry', []):
-            for event in entry.get('messaging', []):
-                sender_id = event.get('sender', {}).get('id')
-                if not sender_id:
-                    continue
+#     elif request.method == 'POST':
+#         data = json.loads(request.body)
+#         for entry in data.get('entry', []):
+#             for event in entry.get('messaging', []):
+#                 sender_id = event.get('sender', {}).get('id')
+#                 if not sender_id:
+#                     continue
 
-                # Check if user exists or create a new one
-                user, created = MessengerUser.objects.get_or_create(sender_id=sender_id)
+#                 # Check if user exists or create a new one
+#                 user, created = MessengerUser.objects.get_or_create(sender_id=sender_id)
 
-                # Skip processing if user hasn't paid
-                if not user.is_paid:
-                    return HttpResponse('OK')  # Or send a payment reminder
+#                 # Skip processing if user hasn't paid
+#                 if not user.is_paid:
+#                     return HttpResponse('OK')  # Or send a payment reminder
 
-                # Process message fragments
-                if 'message' in event:
-                    message_text = event['message'].get('text', '')
-                    cache_key = f'msg_{sender_id}'
-                    fragments = cache.get(cache_key, [])
-                    fragments.append(message_text)
-                    cache.set(cache_key, fragments, timeout=5)  # Short timeout
-                    # Schedule combining task
-                    from .tasks import combine_messages
-                    combine_messages.apply_async(args=[sender_id], countdown=2)
-                    print(message_text)
-                    print('---------------------------------')
-        return HttpResponse('OK')
+#                 # Process message fragments
+#                 if 'message' in event:
+#                     message_text = event['message'].get('text', '')
+#                     cache_key = f'msg_{sender_id}'
+#                     fragments = cache.get(cache_key, [])
+#                     fragments.append(message_text)
+#                     cache.set(cache_key, fragments, timeout=5)  # Short timeout
+#                     # Schedule combining task
+#                     from .tasks import combine_messages
+#                     combine_messages.apply_async(args=[sender_id], countdown=2)
+#                     print(message_text)
+#                     print('---------------------------------')
+#         return HttpResponse('OK')
 
 
 #------------------------------------------------------------------------------------------------------------------------------  
@@ -334,3 +331,170 @@ def send_message_to_AI(message):
     #MessengerUser.objects.get_or_create(sender_id=sender_id)
     #conversation.objects.get_or_create(sender_id)
     return completion.choices[0].message.content
+
+
+@csrf_exempt
+def messenger_webhook(request):
+    if request.method == 'GET':
+        verify_token = 'demuraaa'  # Should be stored securely
+        hub_verify_token = request.GET.get('hub.verify_token', '')
+        if hub_verify_token == verify_token:
+            return HttpResponse(request.GET.get('hub.challenge', ''))
+        return HttpResponse('Invalid token', status=403)
+
+    elif request.method == 'POST':
+        data = json.loads(request.body)
+        for entry in data.get('entry', []):
+            for event in entry.get('messaging', []):
+                sender_id = event.get('sender', {}).get('id')
+                recipient_id = event.get('recipient', {}).get('id')
+                if not sender_id or not recipient_id:
+                    continue
+
+                try:
+                    custom_user = CustomUser.objects.get(page_id=recipient_id)
+                except CustomUser.DoesNotExist:
+                    continue  # Or log error
+
+                if not custom_user.is_paid:
+                    continue  # Skip processing if user hasn't paid
+
+                if 'message' in event:
+                    message_text = event['message'].get('text', '')
+                    if message_text:
+                        response = send_message_to_AI(custom_user, sender_id, message_text)
+                        # Send response back via Facebook API
+                        send_facebook_message(custom_user.page_access_token, sender_id, response)
+
+        return HttpResponse('OK')
+
+# Helper function to send messages via Facebook API
+def send_facebook_message(page_access_token, recipient_id, message):
+    url = f'https://graph.facebook.com/v19.0/me/messages?access_token={page_access_token}'
+    payload = {
+        "recipient": {"id": recipient_id},
+        "message": {"text": message}
+    }
+    try:
+        response = requests.post(url, json=payload)
+        if response.status_code != 200:
+            print(f"Error sending message: {response.text}")
+    except Exception as e:
+        print(f"Exception sending message: {str(e)}")
+        
+# def send_message_to_AI(custom_user, sender_id, message):
+#     try:
+#         conversation_obj = conversation.objects.get(user=custom_user, sender_id=sender_id)
+#     except conversation.DoesNotExist:
+#         # Initialize conversation with system prompt from CustomUser or default
+#         if custom_user.system_prompt:
+#             initial_messages = [{'role': 'system', 'content': custom_user.system_prompt}]
+#         else:
+#             initial_messages = [{'role': 'system', 'content': 'you are a sales person'}]
+#         conversation_obj = conversation.objects.create(
+#             user=custom_user,
+#             sender_id=sender_id,
+#             messages=initial_messages
+#         )
+    
+#     current_messages = conversation_obj.messages
+#     current_messages.append({'role': 'user', 'content': message})
+    
+#     XAI_API_KEY = os.getenv("XAI_API_KEY")
+#     client = OpenAI(
+#         #api_key=XAI_API_KEY,
+#         api_key = 'xai-P2NKQUwEzPnmIg9FZCxkCHtX8rgwEmcRWAkjEcfHid64zYsmXPyFCzFoaxpNoN9fWmHo862RZZ3yBPOB',
+#         base_url="https://api.x.ai/v1"
+#     )
+    
+#     completion = client.chat.completions.create(
+#         model="grok-2-latest",
+#         messages=current_messages,
+#     )
+    
+#     assistant_response = completion.choices[0].message.content
+#     current_messages.append({'role': 'assistant', 'content': assistant_response})
+    
+#     conversation_obj.messages = current_messages
+#     conversation_obj.save()
+    
+#     return assistant_response
+
+def send_message_to_AI(custom_user, sender_id, message):
+    try:
+        conversation_obj = conversation.objects.get(user=custom_user, sender_id=sender_id)
+    except conversation.DoesNotExist:
+        # Start with the business’s prompt or default
+        if custom_user.system_prompt:
+            initial_messages = [{'role': 'system', 'content': custom_user.system_prompt}]
+        else:
+            initial_messages = [{'role': 'system', 'content': 'you are a sales person'}]
+        conversation_obj = conversation.objects.create(
+            user=custom_user,
+            sender_id=sender_id,
+            messages=initial_messages
+        )
+    
+    current_messages = conversation_obj.messages
+    current_messages.append({'role': 'user', 'content': message})
+    
+    XAI_API_KEY = os.getenv("XAI_API_KEY")
+    client = OpenAI(
+        api_key='xai-P2NKQUwEzPnmIg9FZCxkCHtX8rgwEmcRWAkjEcfHid64zYsmXPyFCzFoaxpNoN9fWmHo862RZZ3yBPOB',
+        base_url="https://api.x.ai/v1"
+    )
+    
+    completion = client.chat.completions.create(
+        model="grok-2-latest",
+        messages=current_messages,
+    )
+    
+    assistant_response = completion.choices[0].message.content
+    current_messages.append({'role': 'assistant', 'content': assistant_response})
+    
+    conversation_obj.messages = current_messages
+    conversation_obj.save()
+    
+    return assistant_response
+
+#------------------OTARA AMIS QVEVIT 2 FUNQCIA TU GINDA TRAKSHI MOTYANI ZEDEBI AR GAAFUCHO
+@login_required
+def test_ai_conversation(request):
+    """
+    Render a page where users can test their AI with their system_prompt.
+    """
+    if not isinstance(request.user, CustomUser):
+        return render(request, 'error.html', {'error': 'Unauthorized user type'})
+    
+    custom_user = request.user
+    context = {
+        'system_prompt': custom_user.system_prompt or 'you are a sales person',
+    }
+    return render(request, 'test_ai_conversation.html', context)
+
+@login_required
+def send_test_message(request):
+    """
+    Handle POST requests to send a test message to the AI and return the response.
+    """
+    if request.method != "POST":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+    
+    if not isinstance(request.user, CustomUser):
+        return JsonResponse({"error": "Unauthorized user type"}, status=401)
+    
+    custom_user = request.user
+    message = request.POST.get("message", "")
+    conversation_id = request.POST.get("conversation_id", "")  # Get from frontend
+    if not message:
+        return JsonResponse({"error": "No message provided"}, status=400)
+    
+    # If no conversation_id provided, start a new one with a unique sender_id
+    if not conversation_id:
+        conversation_id = f"test_{custom_user.id}_{int(time.time())}"  # Unique per session
+    
+    # Call the existing function to process the message
+    response = send_message_to_AI(custom_user, conversation_id, message)
+    
+    return JsonResponse({"response": response, "conversation_id": conversation_id})
+
