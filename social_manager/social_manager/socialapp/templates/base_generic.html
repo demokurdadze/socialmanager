@@ -28,6 +28,10 @@
           {% if user.is_authenticated %}
           <li><a href="{% url 'home' %}">Dashboard</a></li>
           <li><span>Hi, {{ user.username|default:'User' }}!</span></li>
+
+          <li>
+            <a onclick="window.location.href='/auth/meta/'">Auth/Meta</a>
+          </li>
           <li>
             <form
               id="logout-form"
