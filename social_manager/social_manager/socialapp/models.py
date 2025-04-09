@@ -35,4 +35,5 @@ class conversation(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     messages = models.JSONField()
     sender_id = models.CharField(max_length=20)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
