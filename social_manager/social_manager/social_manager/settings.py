@@ -182,7 +182,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'EXCHANGE_TOKEN': True, # Exchange code for token
         'LOCALE_FUNC': lambda request: 'en_US', # Or dynamically get locale
         'VERIFIED_EMAIL': False, # Set to True if you trust FB verified email status
-        'VERSION': 'v19.0', # Use a specific, current API version
+        'VERSION': 'v22.0', # Use a specific, current API version
         'APP': { # Your App Credentials for LOGIN
             'client_id': '1152489759401130', # Should match the FB App
             'secret': '6637d283f19db96a3b243134fa70249c', # Should match the FB App
