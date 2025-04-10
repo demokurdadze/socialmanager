@@ -2,41 +2,36 @@
 
 from django.contrib import admin
 from django.urls import path, include
-# from django.contrib.auth import views as auth_views # Remove this
-from socialapp import views as socialapp_views # Use an alias to avoid name clashes
+from socialapp import views as socialapp_views
 
 urlpatterns = [
-    # Root URL - Redirects based on auth status
+    # Root URL
     path('', socialapp_views.root_redirect, name='root_redirect'),
 
     path('admin/', admin.site.urls),
 
     # Your App's core views
     path('home/', socialapp_views.home, name='home'),
-    
 
-    # --- REMOVE Custom Auth URLs ---
-    # path('register/', socialapp_views.register, name='register'),
-    # path('login/', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
-    # path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    # Allauth URLs
+    path('accounts/', include('allauth.urls')),
 
-    # --- Allauth URLs ---
-    # Provides /accounts/login/, /accounts/logout/, /accounts/signup/,
-    # /accounts/password/reset/, /accounts/social/login/facebook/, etc.
-    path('accounts/', include('allauth.urls')), # Make sure this line exists
-
-    # --- Meta Page Connection Flow URLs (Keep these) ---
+    # Meta Page Connection Flow URLs
     path('auth/meta/', socialapp_views.meta_auth, name='meta_auth'),
     path('auth/meta/callback/', socialapp_views.meta_callback, name='meta_callback'),
 
-    # --- Webhook and other API endpoints ---
-    path("webhook/", socialapp_views.messenger_webhook, name='webhook'), # Ensure META points here
-    path('grok-chat/', socialapp_views.grok_chat, name='grok_chat'),
+    # --- Webhook ---
+    # Changed name for clarity if you like, ensure Meta Dev Portal points here
+    path('webhook/messenger/', socialapp_views.messenger_webhook, name='messenger_webhook'),
+
+    # --- REMOVE the grok_chat URL pattern ---
+    # path('grok-chat/', socialapp_views.grok_chat, name='grok_chat'), # <<< REMOVE THIS LINE
+
+    # --- AI Configuration and Testing URLs (Keep these) ---
+    path('ai/prompt/', socialapp_views.update_system_prompt, name='update_system_prompt'),
+    path('ai/test/', socialapp_views.test_ai_conversation, name='test_ai_conversation'),
+    # API endpoint for the test chat AJAX calls (ensure path matches template fetch URL)
+    path('ai/api/send_test_message/', socialapp_views.send_test_message, name='send_test_message'),
 
     # Add other app URLs if needed
 ]
-
-# Optional: Configure settings.py for redirects
-# LOGIN_REDIRECT_URL = 'home'
-# LOGOUT_REDIRECT_URL = 'account_login' # Or 'landing_page' or '/'
-# ACCOUNT_LOGOUT_ON_GET = True # Allows logout via GET request for simplicity (less secure)

@@ -1,0 +1,354 @@
+{% extends "base_generic.html" %} {% load static %} {% block head_extra %}
+<title>Test AI Conversation</title>
+<style>
+  .chat-container {
+    max-width: 800px;
+    margin: 20px auto;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden; /* Contain child elements */
+    display: flex;
+    flex-direction: column; /* Stack chatbox and input */
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  .system-prompt-info {
+    background-color: #f1f3f5; /* Light gray */
+    padding: 12px 15px;
+    border-bottom: 1px solid #dee2e6;
+    font-size: 0.9em;
+    color: #495057;
+  }
+  .system-prompt-info strong {
+    font-weight: 600;
+    color: #343a40;
+  }
+  .system-prompt-info pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: 80px;
+    overflow-y: auto;
+    background-color: #e9ecef; /* Slightly darker gray */
+    padding: 8px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    margin-top: 8px;
+    font-family: monospace;
+    font-size: 0.95em;
+  }
+  .system-prompt-info a {
+    font-size: 0.9em;
+    margin-left: 10px;
+    color: #007bff;
+    text-decoration: none;
+  }
+  .system-prompt-info a:hover {
+    text-decoration: underline;
+  }
+
+  #chatbox {
+    height: 450px;
+    overflow-y: auto; /* Enable scrolling */
+    padding: 15px;
+    flex-grow: 1; /* Allow chatbox to take available space */
+    background-color: #ffffff;
+  }
+  .message {
+    margin-bottom: 12px;
+    padding: 10px 15px;
+    border-radius: 18px;
+    max-width: 75%;
+    line-height: 1.4;
+    clear: both;
+    word-wrap: break-word; /* Ensure long words wrap */
+  }
+  .user-message {
+    background-color: #007bff; /* Primary blue */
+    color: white;
+    float: right;
+    margin-left: auto;
+    border-bottom-right-radius: 5px; /* Slight point */
+  }
+  .ai-message {
+    background-color: #e9ecef; /* Light gray background */
+    color: #343a40; /* Dark text */
+    float: left;
+    margin-right: auto;
+    border-bottom-left-radius: 5px;
+  }
+  .system-message {
+    /* For system errors or info */
+    background-color: #fff3cd; /* Light yellow */
+    color: #856404; /* Dark yellow/brown */
+    float: left;
+    margin-right: auto;
+    border: 1px dashed #ffeeba;
+    font-style: italic;
+    font-size: 0.9em;
+    max-width: 90%;
+  }
+  .message strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: inherit; /* Inherit color */
+    opacity: 0.8;
+  }
+  .ai-message strong {
+    color: #495057;
+  }
+  .user-message strong {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  .system-message strong {
+    color: #856404;
+  }
+
+  #input-area {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    background-color: #f8f9fa; /* Light background for input */
+  }
+  #message-input {
+    flex-grow: 1;
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 20px; /* Pill shape */
+    margin-right: 10px;
+    font-size: 1rem;
+    resize: none; /* Prevent manual resize if using textarea */
+    height: 40px; /* Initial height */
+  }
+  #send-button {
+    padding: 0 20px; /* Adjust padding */
+    height: 40px;
+    border-radius: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+  }
+  #send-button:hover {
+    background-color: #0056b3;
+  }
+  #send-button:disabled {
+    background-color: #6c757d; /* Gray when disabled */
+    cursor: not-allowed;
+  }
+  #error-display {
+    color: #dc3545; /* Bootstrap danger color */
+    font-weight: bold;
+    margin-top: 8px;
+    padding: 0 15px; /* Align with chatbox padding */
+    font-size: 0.9em;
+  }
+</style>
+{% endblock %} {% block content %}
+<h2>Test AI Conversation</h2>
+<p>
+  Interact with your AI assistant below using the currently configured system
+  prompt. This simulates how it would respond to messages on your connected
+  page.
+</p>
+
+<div class="chat-container">
+  <div class="system-prompt-info">
+    <strong>Using System Prompt:</strong>
+    <pre>{{ system_prompt }}</pre>
+    <a href="{% url 'update_system_prompt' %}">Change Prompt</a>
+  </div>
+
+  <div id="chatbox">
+    <!-- Initial AI message -->
+    <div class="message ai-message">
+      <strong>AI:</strong> Hello! Type a message below to start testing our
+      conversation based on the current prompt.
+    </div>
+  </div>
+
+  <div id="error-display" style="display: none"></div>
+  {# Error messages will appear here #}
+
+  <div id="input-area">
+    {# Consider using a textarea for multi-line input that grows #}
+    <input
+      type="text"
+      id="message-input"
+      placeholder="Type your message here..."
+      autocomplete="off"
+    />
+    <button id="send-button" title="Send Message">Send</button>
+  </div>
+</div>
+
+{% endblock %} {% block scripts_extra %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const chatbox = document.getElementById("chatbox");
+    const messageInput = document.getElementById("message-input");
+    const sendButton = document.getElementById("send-button");
+    const errorDisplay = document.getElementById("error-display");
+    // Use the correct URL name defined in urls.py
+    const sendUrl = "{% url 'send_test_message' %}"; // Use the named URL
+
+    // Function to add a message to the chatbox
+    function addMessage(sender, text, messageType = "ai") {
+      // messageType: 'ai', 'user', 'system'
+      const messageDiv = document.createElement("div");
+      messageDiv.classList.add("message");
+
+      switch (messageType) {
+        case "user":
+          messageDiv.classList.add("user-message");
+          break;
+        case "system":
+          messageDiv.classList.add("system-message");
+          break;
+        case "ai":
+        default:
+          messageDiv.classList.add("ai-message");
+          break;
+      }
+
+      const senderStrong = document.createElement("strong");
+      senderStrong.textContent = sender + ":";
+      messageDiv.appendChild(senderStrong);
+
+      // Handle potential line breaks in the text
+      const textSpan = document.createElement("span");
+      text.split("\n").forEach((line, index) => {
+        if (index > 0) textSpan.appendChild(document.createElement("br"));
+        textSpan.appendChild(document.createTextNode(line || " ")); // Add space if line is empty to preserve structure
+      });
+      messageDiv.appendChild(textSpan);
+
+      chatbox.appendChild(messageDiv);
+      // Scroll to the bottom smoothly
+      chatbox.scrollTo({ top: chatbox.scrollHeight, behavior: "smooth" });
+    }
+
+    // Function to display errors prominently
+    function showError(message) {
+      errorDisplay.textContent = `Error: ${message}`;
+      errorDisplay.style.display = "block";
+      // Optionally hide after some time
+      // setTimeout(() => { errorDisplay.style.display = 'none'; }, 5000);
+    }
+
+    // Function to handle sending the message via Fetch API
+    async function sendMessage() {
+      const messageText = messageInput.value.trim();
+      if (!messageText) return; // Don't send empty messages
+
+      // Display user message immediately
+      addMessage("You", messageText, "user");
+      const originalInputText = messageText; // Store for potential retry
+      messageInput.value = ""; // Clear input
+      messageInput.disabled = true; // Disable input during processing
+      sendButton.disabled = true; // Disable send button
+      sendButton.textContent = "Sending...";
+      errorDisplay.style.display = "none"; // Hide previous errors
+
+      try {
+        const csrfToken = getCookie("csrftoken");
+        if (!csrfToken) {
+          throw new Error("CSRF token not found. Please refresh the page.");
+        }
+
+        const response = await fetch(sendUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken, // Crucial for Django POST requests
+          },
+          body: JSON.stringify({ message: messageText }), // Send as JSON
+        });
+
+        // Check if the response status indicates an error (like 4xx or 5xx)
+        if (!response.ok) {
+          // Try to parse error message from JSON response, otherwise use status text
+          let errorMsg = `Server Error: ${response.status} ${response.statusText}`;
+          try {
+            const errorData = await response.json();
+            errorMsg = errorData.error || errorMsg; // Use specific error if available
+          } catch (e) {
+            /* Ignore if response wasn't JSON */
+          }
+          throw new Error(errorMsg); // Throw error to be caught below
+        }
+
+        // If response is OK, parse the JSON data
+        const data = await response.json();
+
+        if (data.response) {
+          addMessage("AI", data.response, "ai");
+        } else if (data.error) {
+          // Handle errors specifically returned in the JSON body (e.g., validation)
+          showError(data.error);
+          addMessage(
+            "System",
+            `Error processing message: ${data.error}`,
+            "system"
+          );
+        } else {
+          // Unexpected: response OK but no 'response' or 'error' key
+          throw new Error(
+            "Received an unexpected response format from the server."
+          );
+        }
+      } catch (error) {
+        console.error("Failed to send message:", error);
+        const displayError =
+          error.message || "An unknown network or server error occurred.";
+        showError(displayError);
+        // Optionally add system message to chat
+        addMessage(
+          "System",
+          `Failed to get response: ${displayError}`,
+          "system"
+        );
+        // Optionally restore input content for retry
+        // messageInput.value = originalInputText;
+      } finally {
+        // Re-enable input and button regardless of success or failure
+        messageInput.disabled = false;
+        sendButton.disabled = false;
+        sendButton.textContent = "Send";
+        messageInput.focus(); // Set focus back to input field
+      }
+    }
+
+    // --- Event Listeners ---
+    sendButton.addEventListener("click", sendMessage);
+
+    messageInput.addEventListener("keypress", function (e) {
+      // Send on Enter key press (but not Shift+Enter for multi-line)
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault(); // Prevent default Enter behavior (like adding a newline)
+        sendMessage();
+      }
+    });
+
+    // --- Utility Function to Get CSRF Token ---
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === name + "=") {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+  });
+</script>
+{% endblock %}

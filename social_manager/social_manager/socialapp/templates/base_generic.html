@@ -1,5 +1,5 @@
 <!-- templates/base_generic.html -->
-{% load static i18n %}
+{% load static i18n %} {# Ensure i18n is loaded if using trans tag #}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="{% static 'styles/form.css' %}" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
@@ -14,24 +15,124 @@
 
     {# Link your CSS files #}
     <link rel="stylesheet" href="{% static 'styles/base.css' %}" />
-    <link rel="stylesheet" href="{% static 'styles/form.css' %}" />
-    <link rel="stylesheet" href="{% static 'styles/HomeStyles.css' %}" />
 
-    {% block head_extra %}{% endblock %} {# For page-specific head elements #}
+    <style>
+      /* Add some basic nav link styling here or in base.css */
+      .main-nav .nav-links li a,
+      .main-nav .nav-links li span,
+      .main-nav .nav-links .nav-button-link {
+        /* Adjust color based on your nav background */
+        color: #f8f9fa; /* Example: Light color for dark nav */
+        text-decoration: none;
+        padding: 8px 12px;
+        margin: 0 5px; /* Add some spacing */
+        border-radius: 4px;
+        transition: background-color 0.2s ease;
+        display: inline-block;
+      }
+      .main-nav .nav-links li a:hover,
+      .main-nav .nav-links .nav-button-link:hover {
+        background-color: rgba(255, 255, 255, 0.1); /* Slight hover effect */
+      }
+      .main-nav .nav-links li span {
+        /* Non-clickable items like 'Hi, User!' */
+        color: #adb5bd; /* Slightly muted color */
+      }
+      .nav-button-link {
+        /* Make button look like a link */
+        background: none;
+        border: none;
+        font-family: inherit;
+        font-size: inherit;
+        cursor: pointer;
+        vertical-align: baseline; /* Align with other links */
+      }
+      .nav-status-ok {
+        /* Style for connected status */
+        color: #28a745; /* Green */
+        font-weight: 500;
+        padding: 8px 12px;
+      }
+      .main-nav .nav-links .connect-link {
+        /* Style connect button specifically */
+        /* Example: Make it look like a button */
+        background-color: #007bff;
+        border: 1px solid #007bff;
+        color: white !important; /* Override general link color */
+        padding: 6px 12px;
+      }
+      .main-nav .nav-links .connect-link:hover {
+        background-color: #0056b3;
+        border-color: #0056b3;
+      }
+      /* Basic alert styling (add to base.css or here) */
+      .messages {
+        padding: 0;
+        margin-bottom: 1rem;
+        list-style: none;
+      }
+      .alert {
+        position: relative;
+        padding: 0.75rem 1.25rem;
+        margin-bottom: 1rem;
+        border: 1px solid transparent;
+        border-radius: 0.25rem;
+      }
+      .alert-success {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+      }
+      .alert-info {
+        color: #0c5460;
+        background-color: #d1ecf1;
+        border-color: #bee5eb;
+      }
+      .alert-warning {
+        color: #856404;
+        background-color: #fff3cd;
+        border-color: #ffeeba;
+      }
+      .alert-error,
+      .alert-danger {
+        /* Handle error tag */
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+      }
+    </style>
+
+    {% block head_extra %}{% endblock %}
   </head>
   <body>
     <nav class="main-nav">
       <div class="container nav-container">
         <a href="{% url 'root_redirect' %}" class="nav-brand">Social Manager</a>
-        {# Or your actual root/home #}
         <ul class="nav-links">
           {% if user.is_authenticated %}
           <li><a href="{% url 'home' %}">Dashboard</a></li>
-          <li><span>Hi, {{ user.username|default:'User' }}!</span></li>
+
+          {# --- ADDED AI CONFIG LINKS --- #}
+          <li><a href="{% url 'update_system_prompt' %}">AI Prompt</a></li>
+          <li><a href="{% url 'test_ai_conversation' %}">Test AI</a></li>
 
           <li>
-            <a onclick="window.location.href='/auth/meta/'">Auth/Meta</a>
+            {% if user.page_id and user.page_access_token %} {# Assumes user is
+            a CustomUser instance #}
+            <span
+              class="nav-status-ok"
+              title="Facebook/Instagram Page Connected (ID: {{ user.page_id }})"
+              >Page Connected</span
+            >
+            {% else %}
+            <a href="{% url 'meta_auth' %}" class="nav-button-link connect-link"
+              >Connect Page</a
+            >
+            {% endif %}
           </li>
+          {# --- END IMPROVED LINK --- #}
+
+          <li><span>Hi, {{ user.username|default:'User' }}!</span></li>
           <li>
             <form
               id="logout-form"
@@ -45,6 +146,11 @@
               </button>
             </form>
           </li>
+          {% else %} {# Links for non-authenticated users #}
+          <li><a href="{% url 'account_login' %}">{% trans "Sign In" %}</a></li>
+          <li>
+            <a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
+          </li>
           {% endif %}
         </ul>
       </div>
@@ -52,29 +158,25 @@
 
     <main class="main-content">
       <div class="container content-container">
-        {% if messages %}
-        <div class="messages">
+        {# Display Django messages framework messages #} {% if messages %}
+        <ul class="messages">
           {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}" role="alert">
+          <li class="alert alert-{{ message.tags }}" role="alert">
             {{ message }}
-          </div>
+          </li>
           {% endfor %}
-        </div>
-        {% endif %} {% block content %}
-        <!-- Page-specific content goes here -->
-        {% endblock %}
+        </ul>
+        {% endif %} {% block content %} {% endblock %}
       </div>
     </main>
 
     <footer class="main-footer">
       <div class="container">
-        <p>© {% now "Y" %} Social Manger. All rights reserved.</p>
+        <p>© {% now "Y" %} Social Manager. All rights reserved.</p>
         {# Add other footer links if needed #}
       </div>
     </footer>
 
-    {% block scripts_extra %}
-    <!-- Page-specific scripts go here -->
-    {% endblock %}
+    {# Page-specific scripts go here #} {% block scripts_extra %} {% endblock %}
   </body>
 </html>
