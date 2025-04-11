@@ -17,6 +17,8 @@
   --box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   --box-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --nav-height: 4rem;
+  --transition-speed: 0.3s;
 }
 
 /* --- Reset & Base Styles --- */
@@ -41,6 +43,10 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+body.menu-open {
+  overflow: hidden;
 }
 
 /* --- Layout Container --- */
@@ -103,17 +109,21 @@ a:hover {
 /* --- Navigation --- */
 .main-nav {
   background-color: var(--card-background);
-  padding: 1rem 0;
+  padding: 0;
   box-shadow: var(--box-shadow);
-  position: sticky; /* Optional: makes nav stay on top */
+  position: sticky; /* Makes nav stay on top */
   top: 0;
   z-index: 100;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
 }
 
 .nav-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 100%;
 }
 
 .nav-brand {
@@ -121,10 +131,16 @@ a:hover {
   font-weight: 700;
   color: var(--primary-color);
   text-decoration: none;
+  z-index: 101; /* Ensure brand stays above mobile menu */
 }
 .nav-brand:hover {
   text-decoration: none;
   color: var(--primary-color-dark);
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
 }
 
 .nav-links {
@@ -138,13 +154,32 @@ a:hover {
   font-weight: 500;
   color: var(--text-color-light);
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: all var(--transition-speed) ease;
+  position: relative;
+  padding: 0.5rem 0;
 }
 
 .nav-links a:hover,
 .nav-links a.active {
-  /* Add 'active' class to current page link if possible */
   color: var(--primary-color);
+  text-decoration: none;
+}
+
+/* Modern underline effect */
+.nav-links a:not(.nav-button):not(.nav-button-link)::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--primary-color);
+  transition: width var(--transition-speed) ease;
+}
+
+.nav-links a:not(.nav-button):not(.nav-button-link):hover::after,
+.nav-links a.active:not(.nav-button):not(.nav-button-link)::after {
+  width: 100%;
 }
 
 .nav-links span {
@@ -152,8 +187,23 @@ a:hover {
   font-weight: 500;
 }
 
+.nav-status-ok {
+  display: inline-flex;
+  align-items: center;
+  color: #059669; /* Green */
+  font-weight: 500;
+}
+
+.nav-status-ok::before {
+  content: "•";
+  font-size: 1.5rem;
+  margin-right: 0.25rem;
+  color: #10b981; /* Emerald */
+}
+
 .nav-button,
 .nav-button-link {
+  display: inline-block;
   background: none;
   border: none;
   padding: 0.5rem 1rem;
@@ -162,29 +212,149 @@ a:hover {
   font-weight: 500;
   font-family: var(--font-family-base);
   font-size: 1rem;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: all var(--transition-speed) ease;
 }
 
 .nav-button {
-  /* Styled like a button */
   background-color: var(--primary-color);
   color: white;
   text-decoration: none; /* Ensure no underline for button-like links */
+  box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
 }
 .nav-button:hover {
   background-color: var(--primary-color-dark);
   color: white;
   text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(79, 70, 229, 0.25);
 }
 
 .nav-button-link {
-  /* Styled like a link */
   color: var(--primary-color);
 }
 .nav-button-link:hover {
   background-color: rgba(79, 70, 229, 0.1); /* Light primary background */
   color: var(--primary-color-dark);
   text-decoration: none;
+}
+
+/* Mobile menu toggle button */
+.mobile-menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 24px;
+  height: 18px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 101;
+}
+
+.mobile-menu-toggle .bar {
+  height: 2px;
+  width: 100%;
+  background-color: var(--primary-color);
+  border-radius: 2px;
+  transition: all var(--transition-speed) ease;
+}
+
+/* Mobile menu toggle animation */
+.mobile-menu-toggle.active .bar:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.mobile-menu-toggle.active .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-menu-toggle.active .bar:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Responsive Styles */
+@media (max-width: 900px) {
+  .mobile-menu-toggle {
+    display: flex;
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    max-width: 400px;
+    height: 100vh;
+    background-color: var(--card-background);
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+    transition: right var(--transition-speed) ease;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+  }
+
+  .nav-menu.active {
+    right: 0;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+  }
+
+  .nav-links li {
+    margin: 0.75rem 0;
+    width: 100%;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 0.75rem 0;
+    font-size: 1.1rem;
+  }
+
+  .nav-item-button {
+    margin-top: 0.5rem;
+  }
+
+  /* Reset underline effect for mobile */
+  .nav-links a:not(.nav-button):not(.nav-button-link)::after {
+    display: none;
+  }
+
+  .user-greeting {
+    margin: 1rem 0;
+    padding: 0.5rem 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  /* Make form buttons full width */
+  #logout-form {
+    width: 100%;
+  }
+
+  .nav-button,
+  .nav-button-link {
+    width: 100%;
+    text-align: center;
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* Small mobile styles */
+@media (max-width: 480px) {
+  .nav-brand {
+    font-size: 1.25rem;
+  }
+
+  .nav-menu {
+    width: 100%;
+    max-width: none;
+  }
 }
 
 /* --- Footer --- */
