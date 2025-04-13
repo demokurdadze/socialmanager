@@ -34,6 +34,7 @@ urlpatterns = [
           path('i18n/', include('django.conf.urls.i18n')),
     # API endpoint for the test chat AJAX calls (ensure path matches template fetch URL)
     path('ai/api/send_test_message/', socialapp_views.send_test_message, name='send_test_message'),
+        path('disconnect-page/', socialapp_views.disconnect_facebook, name='disconnect-page'),
 
     # Add other app URLs if needed
 ]

@@ -15,6 +15,7 @@ from django.core.cache import cache # Keep if using fragment caching elsewhere
 from django.contrib import messages
 from django.conf import settings # Use Django settings
 from django.utils import translation
+from django.urls import reverse
 
 
 # Third-party imports
@@ -91,6 +92,38 @@ def set_language(request):
     if lang_code and lang_code in dict(settings.LANGUAGES):
         request.session[translation.LANGUAGE_SESSION_KEY] = lang_code
     return redirect(request.META.get('HTTP_REFERER', '/'))
+
+
+
+
+@login_required
+def delete_conversation_history(request, sender_id):
+    if not isinstance(request.user, CustomUser):
+        messages.error(request, "Invalid user type.")
+        return redirect('home') # Or appropriate error page
+
+    # Find the specific conversation belonging to THIS user and the given sender_id
+    conversation_to_delete = get_object_or_404(
+        conversation,
+        user=request.user,
+        sender_id=sender_id
+    )
+
+    if request.method == 'POST': # Ensure it's a POST request for safety
+        try:
+            conversation_to_delete.delete()
+            messages.success(request, f"Conversation history for sender {sender_id} has been deleted.")
+            # Redirect back to the inbox or dashboard
+            return redirect(reverse('inbox')) # Assuming you have an 'inbox' named URL
+        except Exception as e:
+            messages.error(request, f"Failed to delete conversation history: {e}")
+            # Redirect back to the conversation or inbox
+            return redirect(reverse('inbox')) # Or perhaps the conversation view if it still makes sense
+
+    else:
+        # If accessed via GET, perhaps redirect or show an error
+        messages.warning(request, "Use the delete button to remove conversation history.")
+        return redirect(reverse('inbox')) # Or wherever appropriate
 
 
 @login_required # Ensure callback requires login
@@ -231,6 +264,57 @@ def get_page_access_token(page_id, user_access_token):
         print(f"Error parsing page access token response for {page_id}.")
         return None
 
+
+@login_required
+def disconnect_facebook(request):
+    """Disconnects the user's Facebook Page and unsubscribes from webhooks."""
+    if not isinstance(request.user, CustomUser):
+        messages.error(request, "Invalid user type for this operation.")
+        return redirect('home')
+
+    if not request.user.page_id or not request.user.page_access_token:
+        messages.warning(request, "No Facebook Page connected to disconnect.")
+        return redirect('home')
+
+    # Attempt to unsubscribe from webhooks first
+    page_id = request.user.page_id
+    page_access_token = request.user.page_access_token
+    unsubscribe_success = unsubscribe_page_from_webhook(page_id, page_access_token)
+
+    # Clear the user's Facebook connection data
+    request.user.page_id = None
+    request.user.page_access_token = None
+    request.user.save()
+
+    if unsubscribe_success:
+        messages.success(request, "Successfully disconnected your Facebook Page and unsubscribed from webhooks.")
+    else:
+        messages.warning(request, "Disconnected your Facebook Page, but failed to unsubscribe from webhooks. You may need to manually remove webhook subscriptions in Meta Developer Settings.")
+
+    return redirect('home')
+
+def unsubscribe_page_from_webhook(page_id, page_access_token):
+    """Unsubscribes the page from webhook notifications."""
+    url = f'https://graph.facebook.com/v19.0/{page_id}/subscribed_apps'
+    params = {
+        'access_token': page_access_token
+    }
+    try:
+        print(f"Attempting to unsubscribe Page {page_id} from webhooks")
+        response = requests.delete(url, params=params, timeout=10)
+        response.raise_for_status()
+        result = response.json()
+        print(f"Webhook unsubscription result for {page_id}: {result}")
+        return result.get('success', False)
+    except requests.RequestException as e:
+        error_msg = str(e)
+        if e.response is not None:
+            try:
+                error_msg = e.response.json().get('error', {}).get('message', str(e))
+            except json.JSONDecodeError:
+                error_msg = e.response.text[:200]
+        print(f"Error unsubscribing page {page_id} from webhooks: {error_msg}")
+        return False
 
 def subscribe_page_to_webhook(page_id, page_access_token):
     """ Subscribes the page to webhook fields like 'messages'. """
