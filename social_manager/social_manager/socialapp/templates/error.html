@@ -1,39 +1,31 @@
-{% extends "base_generic.html" %}
-
-<!-- -------------------------- -->
-{% load static %}
-
-<!-- --------------- -->
-{% block content %}
-<div class="main-content error-page">
-  <h1 class="welcome-heading error-title">An Error Occurred</h1>
-  <div class="alert alert-danger" role="alert">
-    <p>Sorry, something went wrong:</p>
-    <p>
-      <strong
-        >{{ error|escape|default:"An unspecified error occurred." }}</strong
-      >
-    </p>
+--- START OF FILE error.html --- {% extends "base_generic.html" %} {% load
+static i18n %} {% block title %}{% trans "Error" %}{% endblock title %} {% block
+header_title %}{% trans "An Error Occurred" %}{% endblock header_title %} {%
+block content %}
+<div class="card">
+  {# Using card layout #}
+  <div class="card-header">
+    <h1 class="card-title" style="color: var(--destructive)">
+      {% trans "An Error Occurred" %}
+    </h1>
   </div>
-  <p><a href="{% url 'home' %}" class="btn btn-secondary">Return to Home</a></p>
+  <div class="card-content">
+    <div class="alert alert-danger" role="alert">
+      <p>{% trans "Sorry, something went wrong:" %}</p>
+      <p>
+        <strong
+          >{{ error|escape|default:_("An unspecified error occurred.")
+          }}</strong
+        >
+      </p>
+    </div>
+    <div class="mt-4 text-center">
+      <a href="{% url 'home' %}" class="button button-secondary"
+        >{% trans "Return to Home" %}</a
+      >
+    </div>
+  </div>
 </div>
-{% endblock %} {% block extra_css %}
-<style>
-  .error-page {
-    text-align: center;
-  }
-  .error-title {
-    color: #dc3545;
-  } /* Use danger color */
-  .alert-danger {
-    /* Basic Bootstrap-like alert styling */
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border: 1px solid transparent;
-    border-radius: 0.25rem;
-  }
-</style>
-{% endblock %}
+{% endblock %} {% block extra_css %} {# Specific styles for error page if
+needed, though base styles cover alert #} {% endblock %} --- END OF FILE
+error.html ---

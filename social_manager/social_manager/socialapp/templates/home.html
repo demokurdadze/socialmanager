@@ -3,21 +3,112 @@
 {% load static i18n socialaccount %}
 <!-- Line 2 -->
 <!-- Line 3 MUST BE EMPTY or start a comment/HTML -->
-{% block title %}
+{% block title %}{% trans "Dashboard" %}{% endblock title %}
 <!-- Line 4 (or later, but NOT line 3) -->
-{% trans "Dashboard" %}
-<!-- Line 5 -->
-{% endblock title %}
-<!-- Line 6 -->
+
+{% block header_title %}{% trans "Dashboard" %}{% endblock header_title %}
+
+<!-- Line 4 (or later, but NOT line 3) -->
 
 {% block content %}
 
-<main class="main-content">
-  <h1 class="welcome-heading">Welcome, {{ request.user.username }}!</h1>
+<h1 class="welcome-heading">
+  {% blocktrans %}Welcome, {{ request.user.username }}!{% endblocktrans %}
+</h1>
+<p class="info-text">
+  {% trans "Here's an overview of your social media activity." %}
+</p>
 
-  <p class="info-text">This is your main dashboard area.</p>
+{# Example Dashboard Cards - Adapt with real data #}
+<div
+  style="
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  "
+>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">{% trans "AI Status" %}</h3>
+      <p class="card-description">
+        {% trans "Current AI assistant configuration." %}
+      </p>
+    </div>
+    <div class="card-content">
+      <p>
+        {% trans "Prompt:" %}
+        <strong class="font-mono text-xs"
+          >{{ system_prompt|default:_("Default")|truncatechars:50 }}</strong
+        >
+      </p>
+      {# Add more status info here #}
+    </div>
+    <div class="card-footer">
+      <a
+        href="{% url 'update_system_prompt' %}"
+        class="button button-secondary button-sm"
+        >{% trans "Configure" %}</a
+      >
+      <a
+        href="{% url 'test_ai_conversation' %}"
+        class="button button-ghost button-sm"
+        >{% trans "Test AI" %}</a
+      >
+    </div>
+  </div>
 
-  <button class="btn btn-disabled" disabled>Blank Button</button>
-</main>
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">{% trans "Page Connection" %}</h3>
+      <p class="card-description">
+        {% trans "Facebook/Instagram Page Status" %}
+      </p>
+    </div>
+    <div class="card-content">
+      {% if user.page_id and user.page_access_token %}
+      <p>
+        <span class="nav-status-indicator nav-status-ok"
+          >{% trans "Connected" %}</span
+        >
+        {% trans "Page ID:" %} {{ user.page_id }}
+      </p>
+      {# Add more connection details if needed #} {% else %}
+      <p>{% trans "Your Facebook/Instagram page is not connected." %}</p>
+      {% endif %}
+    </div>
+    <div class="card-footer">
+      {% if user.page_id and user.page_access_token %}
+      <a href="#" class="button button-secondary button-sm"
+        >{% trans "Manage Connection" %}</a
+      >
+      {# Add disconnect/manage URL #} {% else %}
+      <a href="{% url 'meta_auth' %}" class="button button-primary button-sm"
+        >{% trans "Connect Page" %}</a
+      >
+      {% endif %}
+    </div>
+  </div>
 
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">{% trans "Quick Actions" %}</h3>
+      <p class="card-description">{% trans "Commonly used features." %}</p>
+    </div>
+    <div class="card-content">
+      {# Add links or buttons for frequent actions #}
+      <ul class="list-none p-0 m-0 space-y-2">
+        <li>
+          <a href="#" class="text-primary hover:underline"
+            >{% trans "View Recent Messages" %}</a
+          >
+        </li>
+        <li>
+          <a href="#" class="text-primary hover:underline"
+            >{% trans "Analyze Performance" %}</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
 {% endblock content %}

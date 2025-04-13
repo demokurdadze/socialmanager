@@ -1,129 +1,263 @@
-<!-- templates/base_generic.html -->
-{% load static i18n %}
+
+
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="{% static 'styles/form.css' %}" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="{% static 'styles/base.css' %}" />
+{% load i18n static %} {# Ensure i18n is loaded #}
+<html lang="{{ request.LANGUAGE_CODE|default:"en" }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{% trans "Social Manager" %}{% endblock %}</title>
+  {% load static %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="{% static 'styles/base.css' %}" />
+   
+ 
+</head>
+<body class="{% if request.COOKIES.darkMode == 'true' %}dark{% endif %}">
 
-    {% block head_extra %}{% endblock %}
-  </head>
-  <body>
-    <nav class="main-nav">
-      <div class="container nav-container">
-        <a href="{% url 'root_redirect' %}" class="nav-brand">Social Manager</a>
+  <div class="layout">
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" aria-label="{% trans 'Toggle navigation menu' %}">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+    <div class="overlay"></div>
 
-        <button class="mobile-menu-toggle" aria-label="Toggle navigation menu">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-        </button>
-
-        <div class="nav-menu">
-          <ul class="nav-links">
-            {% if user.is_authenticated %}
-            <li><a href="{% url 'home' %}">Dashboard</a></li>
-            <li><a href="{% url 'update_system_prompt' %}">AI Prompt</a></li>
-            <li><a href="{% url 'test_ai_conversation' %}">Test AI</a></li>
-
-            <li>
-              {% if user.page_id and user.page_access_token %}
-              <span
-                class="nav-status-ok"
-                title="Facebook/Instagram Page Connected (ID: {{ user.page_id }})"
-                >Page Connected</span
-              >
-              {% else %}
-              <a
-                href="{% url 'meta_auth' %}"
-                class="nav-button-link connect-link"
-                >Connect Page</a
-              >
-              {% endif %}
-            </li>
-
-            <li class="user-greeting">
-              <span>Hi, {{ user.username|default:'User' }}!</span>
-            </li>
-            <li class="nav-item-button">
-              <form
-                id="logout-form"
-                method="post"
-                action="{% url 'account_logout' %}"
-              >
-                {% csrf_token %}
-                <button type="submit" class="nav-button-link">
-                  {% trans "Sign Out" %}
-                </button>
-              </form>
-            </li>
-            {% else %}
-            <li class="nav-item-button">
-              <a href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
-            </li>
-            <li class="nav-item-button">
-              <a href="{% url 'account_signup' %}" class="nav-button"
-                >{% trans "Sign Up" %}</a
-              >
-            </li>
-            {% endif %}
-          </ul>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+         <div class="sidebar-header">
+            <a href="{% url 'home' %}" class="logo">
+            <div class="logo-icon">SM</div>
+            <span>{% trans "Social Manager" %}</span>
+            </a>
         </div>
-      </div>
-    </nav>
 
-    <main class="main-content">
-      <div class="container content-container">
+        <nav class="nav-items">
+            {# --- Dashboard Link --- #}
+            <a href="{% url 'home' %}" class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                {% trans "Dashboard" %}
+            </a>
+
+            {# --- AI Prompt Link --- #}
+            <a href="{% url 'update_system_prompt' %}" class="nav-item {% if request.resolver_match.url_name == 'update_system_prompt' %}active{% endif %}">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z"></path><path d="M12 18a1.5 1.5 0 0 0 1.5-1.5v-6A1.5 1.5 0 0 0 12 9z"></path><path d="M12 6h.01"></path></svg>
+                {% trans "AI Prompt" %}
+            </a>
+
+            {# --- Test AI Link --- #}
+            <a href="{% url 'test_ai_conversation' %}" class="nav-item {% if request.resolver_match.url_name == 'test_ai_conversation' or request.resolver_match.url_name == 'send_test_message' %}active{% endif %}">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                {% trans "Test AI" %}
+            </a>
+
+            {# --- Connect Page Link/Status --- #}
+            <div class="nav-item"> {# Use div as it's not just a link #}
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                {% trans "Connect Page" %}
+                {% if user.is_authenticated and user.page_id and user.page_access_token %}
+                    <span class="nav-status-indicator nav-status-ok" title="{% blocktrans with page_id=user.page_id %}Facebook/Instagram Page Connected (ID: {{ page_id }}){% endblocktrans %}">{% trans "Connected" %}</span>
+                {% elif user.is_authenticated %}
+                    <a href="{% url 'meta_auth' %}" class="connect-link">{% trans "Connect" %}</a>
+                {% else %}
+                    <span class="nav-status-indicator" title="{% trans 'Login to connect' %}">{% trans "N/A" %}</span>
+                {% endif %}
+            </div>
+
+            {# --- Settings Link --- #}
+            <a href="#" class="nav-item"> {# Add URL when available #}
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.51a2 2 0 0 1 1-1.72l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                {% trans "Settings" %}
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+             {% if user.is_authenticated %}
+            <div class="user-profile">
+                <div class="avatar">
+                    {{ request.user.username|slice:":2"|upper }}
+                </div>
+                <div class="user-info">
+                    <div class="user-name">{{ request.user.get_full_name|default:request.user.username }}</div>
+                    <div class="user-email">{{ request.user.email|default:"" }}</div>
+                </div>
+                <form method="post" action="{% url 'account_logout' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-button" title="{% trans 'Log out' %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+            {% else %}
+            <div class="text-center">
+                <a href="{% url 'account_login' %}" class="button button-primary w-full">{% trans "Sign In" %}</a>
+            </div>
+            {% endif %}
+        </div>
+    </aside>
+
+    <div class="main-content-wrapper">
+        <header class="main-header">
+            <div class="page-title">{% block header_title %}{% endblock %}</div>
+
+            <div class="header-controls">
+                {% get_available_languages as AVAILABLE_LANGUAGES %}
+                {% if AVAILABLE_LANGUAGES|length > 1 %}
+                <form action="{% url 'set_language' %}" method="post" class="language-switcher">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ request.path }}">
+                    <select name="language" aria-label="{% trans 'Change language' %}" title="{% trans 'Change language' %}" onchange="this.form.submit()">
+                        {% get_current_language as CURRENT_LANGUAGE_CODE %}
+                        {% get_language_info_list for AVAILABLE_LANGUAGES as languages %}
+                        {% for language in languages %}
+                            <option value="{{ language.code }}"{% if language.code == CURRENT_LANGUAGE_CODE %} selected{% endif %}>
+                                {{ language.code|upper }} 
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+                {% endif %}
+
+             
+                <button id="theme-toggle" type="button" class="button button-ghost" title="{% trans 'Toggle theme' %}">
+                    <svg id="theme-toggle-dark-icon" class="hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zm-.707 10.607a1 1 0 011.414 0l.707-.707a1 1 0 111.414 1.414l-.707.707a1 1 0 01-1.414 0zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </header>
+
+     
         {% if messages %}
-        <ul class="messages">
-          {% for message in messages %}
-          <li class="alert alert-{{ message.tags }}" role="alert">
-            {{ message }}
-          </li>
-          {% endfor %}
+        <ul class="django-messages">
+            {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
         </ul>
-        {% endif %} {% block content %} {% endblock %}
-      </div>
-    </main>
+        {% endif %}
 
-    <footer class="main-footer">
-      <div class="container">
-        <p>© {% now "Y" %} Social Manager. All rights reserved.</p>
-      </div>
-    </footer>
+        <main class="main-content">
+          {% block content %}
+          
+            <p>{% trans "Welcome to the application." %}</p>
+          {% endblock %}
+        </main>
+    </div>
+  </div>
 
-    <script>
-      // Mobile menu toggle functionality
-      document.addEventListener("DOMContentLoaded", function () {
-        const menuToggle = document.querySelector(".mobile-menu-toggle");
-        const navMenu = document.querySelector(".nav-menu");
+  <script>
+    // --- Get Cookie Function (needed for theme toggle) ---
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
 
-        menuToggle.addEventListener("click", function () {
-          navMenu.classList.toggle("active");
-          menuToggle.classList.toggle("active");
-          document.body.classList.toggle("menu-open");
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuToggle = document.querySelector('.mobile-menu-toggle');
+      const sidebar = document.querySelector('.sidebar');
+      const overlay = document.querySelector('.overlay');
+      const themeToggleButton = document.getElementById('theme-toggle');
+      const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+      const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+      const body = document.body;
+
+      // --- Mobile Menu Toggle ---
+      function toggleMenu() {
+        sidebar.classList.toggle('active');
+        menuToggle.classList.toggle('active');
+        overlay.classList.toggle('active');
+        // Optional: prevent body scroll when menu is open
+        // body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+      }
+
+      if (menuToggle && sidebar && overlay) {
+        menuToggle.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu); // Close menu when clicking overlay
+      }
+
+      // --- Theme Toggle ---
+      if (themeToggleButton && themeToggleDarkIcon && themeToggleLightIcon) {
+            // Function to set theme based on preference
+            const setTheme = (isDark) => {
+                if (isDark) {
+                    body.classList.add('dark');
+                    themeToggleLightIcon.classList.remove('hidden');
+                    themeToggleDarkIcon.classList.add('hidden');
+                    themeToggleButton.setAttribute('title', '{% trans "Switch to light mode" %}');
+                    // Optional: Update language switcher icon for dark mode if needed dynamically
+                    // const langSelect = document.querySelector('.language-switcher select');
+                    // if (langSelect) { ... update background-image ... }
+                } else {
+                    body.classList.remove('dark');
+                    themeToggleDarkIcon.classList.remove('hidden');
+                    themeToggleLightIcon.classList.add('hidden');
+                    themeToggleButton.setAttribute('title', '{% trans "Switch to dark mode" %}');
+                    // Optional: Update language switcher icon for light mode
+                }
+            };
+
+            // Check initial theme from cookie OR OS preference
+            // Cookie takes precedence
+            let initialIsDark;
+            const darkModeCookie = getCookie('darkMode');
+
+            if (darkModeCookie !== null) {
+                initialIsDark = darkModeCookie === 'true';
+            } else {
+                initialIsDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            }
+
+            setTheme(initialIsDark);
+
+            // Add click listener
+            themeToggleButton.addEventListener('click', () => {
+                const isDarkNow = body.classList.toggle('dark');
+                setTheme(isDarkNow);
+                // Store preference in cookie for 1 year
+                document.cookie = `darkMode=${isDarkNow};path=/;max-age=31536000;SameSite=Lax;Secure`; // Added Secure
+            });
+
+             // Listen for OS theme changes (optional, updates icon if cookie isn't set)
+             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+                 if (getCookie('darkMode') === null) { // Only react if no cookie override
+                    setTheme(event.matches);
+                 }
+            });
+
+      }
+
+     
+        const messages = document.querySelectorAll('.django-messages li');
+        messages.forEach((message, index) => {
+            setTimeout(() => {
+                message.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                message.style.opacity = '0';
+                message.style.transform = 'translateX(30px)'; // Slide further out
+                setTimeout(() => { if (message.parentNode) message.remove(); }, 500); // Remove from DOM after fade out
+            }, 5000 + index * 300); // Start hiding after 5 seconds, slightly faster stagger
         });
 
-        // Close mobile menu when clicking on a link
-        const navLinks = document.querySelectorAll(".nav-links a");
-        navLinks.forEach((link) => {
-          link.addEventListener("click", function () {
-            navMenu.classList.remove("active");
-            menuToggle.classList.remove("active");
-            document.body.classList.remove("menu-open");
-          });
-        });
-      });
-    </script>
+    }); 
+  </script>
+  {% block scripts_extra %}{% endblock %}
 
-    {% block scripts_extra %} {% endblock %}
-  </body>
+</body>
 </html>

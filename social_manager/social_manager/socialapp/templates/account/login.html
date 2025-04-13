@@ -1,67 +1,69 @@
-{% extends "base_generic.html" %}
+{% extends 'base_generic.html' %}
 <!-- Line 1 -->
 {% load static i18n socialaccount %}
 <!-- Line 2 -->
 <!-- Line 3 MUST BE EMPTY or start a comment/HTML -->
 {% block title %}
+  {% trans 'Sign In' %}
+{% endblock %}
 <!-- Line 4 (or later, but NOT line 3) -->
-{% trans "Sign In" %}
-<!-- Line 5 -->
-{% endblock title %}
-<!-- Line 6 -->
+
+{% block header_title %}
+  {% trans 'Sign In' %}
+{% endblock %}
 
 {% block content %}
-<div class="form-card">
-  <h2 class="form-title">{% trans "Sign In" %}</h2>
+  <div class="form-card">
+    <h2 class="form-title">{% trans 'Sign In' %}</h2>
 
-  <form
-    method="post"
-    action="{% url 'account_login' %}"
-    class="styled-form login"
-  >
-    {% csrf_token %} {{ form.as_p }} {% if redirect_field_value %}
-    <input
-      type="hidden"
-      name="{{ redirect_field_name }}"
-      value="{{ redirect_field_value }}"
-    />
+    <form method="post" action="{% url 'account_login' %}" class="styled-form login" novalidate>
+      {% csrf_token %} {{ form.as_p }} {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+      {% endif %}
+
+      <button type="submit" class="button button-primary btn-submit">{% trans 'Sign In' %}</button>
+
+      <div class="form-links">
+        <p>
+          <a href="{% url 'account_reset_password' %}">{% trans 'Forgot Password?' %}</a>
+        </p>
+        <p>
+          {% trans "Don't have an account?" %}
+          <a href="{% url 'account_signup' %}">{% trans 'Sign Up' %}</a>
+        </p>
+      </div>
+    </form>
+
+    {% get_providers as socialaccount_providers %} {% if socialaccount_providers %}
+      <div class="socialaccount_ballot">
+        <h3 class="socialaccount-title">{% trans 'Or Sign In With' %}</h3>
+        <ul class="socialaccount_providers">
+          {% for provider in socialaccount_providers %}
+            {% if provider.id == 'openid' %}
+              {% for brand in provider.get_brands %}
+                <li>
+                  <a title="{{ brand.name }}" class="socialaccount_provider {{ provider.id }} {{ brand.id }}" href="{% provider_login_url provider.id openid=brand.openid_url process=process %}">{{ brand.name }}</a>
+                </li>
+              {% endfor %}
+            {% endif %}
+            <li>
+              <a title="{{ provider.name }}" class="socialaccount_provider {{ provider.id }}" href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+                {% if provider.id == 'facebook' %}
+                  <i class="fab fa-facebook-f"></i>
+                {% elif provider.id == 'google' %}
+                  <i class="fab fa-google"></i>
+                {% elif provider.id == 'github' %}
+                  <i class="fab fa-github"></i>
+                {% else %}
+                  {# Default icon or leave blank #}
+                {% endif %}
+                <span>{{ provider.name }}</span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+        <div class="login-or"></div>
+      </div>
     {% endif %}
-    <button type="submit" class="btn-submit">{% trans "Sign In" %}</button>
-
-    <div class="form-links">
-      <p>
-        <a href="{% url 'account_reset_password' %}"
-          >{% trans "Forgot Password?" %}</a
-        >
-      </p>
-      <p>
-        {% trans "Don't have an account?" %}
-        <a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
-      </p>
-    </div>
-  </form>
-
-  <div class="socialaccount_ballot">
-    <h3 class="socialaccount-title">{% trans "Or Sign In With" %}</h3>
-
-    <div class="socialaccount_providers">
-      <a
-        title="Facebook"
-        class="socialaccount_provider facebook btn-submit"
-        {#
-        Use
-        existing
-        CSS
-        classes
-        #}
-        href="{% provider_login_url 'facebook' process='login' method='oauth2' %}"
-      >
-        <i class="fab fa-facebook-f"></i> Facebook
-      </a>
-
-      <ul class="socialaccount_providers"></ul>
-    </div>
   </div>
-</div>
-{% endblock content %} {# <-- Make sure this matches the opening 'content' block
-#}
+{% endblock %}

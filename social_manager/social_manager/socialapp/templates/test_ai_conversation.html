@@ -1,61 +1,74 @@
-{% extends "base_generic.html" %} {% load static %} {% block head_extra %}
-<title>Test AI Conversation</title>
-<link rel="stylesheet" href="{% static 'styles/testAi.css' %}" />
-
-{% endblock %} {% block content %}
-<h2>Test AI Conversation</h2>
-<p>
-  Interact with your AI assistant below using the currently configured system
-  prompt. This simulates how it would respond to messages on your connected
-  page.
-</p>
-
-<div class="chat-container">
-  <div class="system-prompt-info">
-    <strong>Using System Prompt:</strong>
-    <pre>{{ system_prompt }}</pre>
-    <a href="{% url 'update_system_prompt' %}">Change Prompt</a>
+{% extends "base_generic.html" %} {% load static i18n %} {% block title %} {%trans "Test AI Conversation" %} {% endblock title %} {% block header_title %}
+    {%trans "Test AI Conversation" %} {% endblock header_title %} {% block content %}
+<div class="card">
+  <div class="card-header">
+    <h2 class="card-title">{% trans "Test AI Conversation" %}</h2>
+    <p class="card-description">
+      {% trans "Interact with your AI assistant below using the currently configured system prompt. This simulates how it would respond to message on your connected page." %}
+    </p>
   </div>
 
-  <div id="chatbox">
-    <!-- Initial AI message -->
-    <div class="message ai-message">
-      <strong>AI:</strong> Hello! Type a message below to start testing our
-      conversation based on the current prompt.
+  <div class="card-content">
+    <div class="chat-container">
+      <div class="system-prompt-info">
+        <strong>{% trans "Using System Prompt:" %}</strong>
+        <pre>
+{{ system_prompt|default:_("Default: You are a helpful assistant.") }}</pre
+        >
+        <a href="{% url 'update_system_prompt' %}"
+          >{% trans "Change Prompt" %}</a
+        >
+      </div>
+
+      <div id="chatbox">
+        <!-- Initial AI message -->
+        <div class="message ai-message">
+          <strong>{% trans "AI" %}:</strong>
+          <span
+            >{% trans "Hello! Type a message below to start testing our conversation based on the current prompt." %}</span
+          >
+        </div>
+      </div>
+
+      <div id="error-display" style="display: none"></div>
+      {# Error messages will appear here #}
+
+      <div id="input-area">
+        <input
+          type="text"
+          id="message-input"
+          placeholder="{% trans 'Type your message here...' %}"
+          autocomplete="off"
+        />
+        {# Using the button styles from base_generic #}
+        <button
+          id="send-button"
+          class="button button-primary"
+          title="{% trans 'Send Message' %}"
+        >
+          {% trans "Send" %}
+        </button>
+      </div>
     </div>
-  </div>
-
-  <div id="error-display" style="display: none"></div>
-  {# Error messages will appear here #}
-
-  <div id="input-area">
-    {# Consider using a textarea for multi-line input that grows #}
-    <input
-      type="text"
-      id="message-input"
-      placeholder="Type your message here..."
-      autocomplete="off"
-    />
-    <button id="send-button" title="Send Message">Send</button>
   </div>
 </div>
 
 {% endblock %} {% block scripts_extra %}
 <script>
+  // Javascript from the original file remains the same
+  // It should work correctly with the new HTML structure and CSS classes
   document.addEventListener("DOMContentLoaded", function () {
     const chatbox = document.getElementById("chatbox");
     const messageInput = document.getElementById("message-input");
     const sendButton = document.getElementById("send-button");
     const errorDisplay = document.getElementById("error-display");
-    // Use the correct URL name defined in urls.py
     const sendUrl = "{% url 'send_test_message' %}"; // Use the named URL
 
-    // Function to add a message to the chatbox
     function addMessage(sender, text, messageType = "ai") {
-      // messageType: 'ai', 'user', 'system'
       const messageDiv = document.createElement("div");
       messageDiv.classList.add("message");
 
+      // Apply CSS classes based on type
       switch (messageType) {
         case "user":
           messageDiv.classList.add("user-message");
@@ -69,126 +82,121 @@
           break;
       }
 
+      // Create sender element (strong tag)
       const senderStrong = document.createElement("strong");
-      senderStrong.textContent = sender + ":";
+      senderStrong.textContent = sender + ":"; // e.g., "AI:", "You:", "System:"
       messageDiv.appendChild(senderStrong);
 
-      // Handle potential line breaks in the text
+      // Create text element (span tag to handle line breaks properly)
       const textSpan = document.createElement("span");
       text.split("\n").forEach((line, index) => {
         if (index > 0) textSpan.appendChild(document.createElement("br"));
-        textSpan.appendChild(document.createTextNode(line || " ")); // Add space if line is empty to preserve structure
+        textSpan.appendChild(document.createTextNode(line || "\u00A0")); // Use non-breaking space for empty lines
       });
       messageDiv.appendChild(textSpan);
 
       chatbox.appendChild(messageDiv);
-      // Scroll to the bottom smoothly
       chatbox.scrollTo({ top: chatbox.scrollHeight, behavior: "smooth" });
     }
 
-    // Function to display errors prominently
     function showError(message) {
-      errorDisplay.textContent = `Error: ${message}`;
+      errorDisplay.textContent = `{% trans "Error" %}: ${message}`;
       errorDisplay.style.display = "block";
+      // Scroll chatbox to show error if needed
+      chatbox.scrollTo({ top: chatbox.scrollHeight, behavior: "smooth" });
       // Optionally hide after some time
-      // setTimeout(() => { errorDisplay.style.display = 'none'; }, 5000);
+      // setTimeout(() => { errorDisplay.style.display = 'none'; }, 7000);
     }
 
-    // Function to handle sending the message via Fetch API
+    function hideError() {
+      errorDisplay.style.display = "none";
+      errorDisplay.textContent = "";
+    }
+
     async function sendMessage() {
       const messageText = messageInput.value.trim();
-      if (!messageText) return; // Don't send empty messages
+      if (!messageText) return;
 
-      // Display user message immediately
-      addMessage("You", messageText, "user");
-      const originalInputText = messageText; // Store for potential retry
-      messageInput.value = ""; // Clear input
-      messageInput.disabled = true; // Disable input during processing
-      sendButton.disabled = true; // Disable send button
-      sendButton.textContent = "Sending...";
-      errorDisplay.style.display = "none"; // Hide previous errors
+      addMessage("{% trans 'You' %}", messageText, "user"); // Use translated "You"
+      const originalInputText = messageText;
+      messageInput.value = "";
+      messageInput.disabled = true;
+      sendButton.disabled = true;
+      sendButton.textContent = "{% trans 'Sending...' %}"; // Use translated text
+      hideError(); // Hide previous errors
 
       try {
         const csrfToken = getCookie("csrftoken");
         if (!csrfToken) {
-          throw new Error("CSRF token not found. Please refresh the page.");
+          throw new Error(
+            "{% trans 'CSRF token not found. Please refresh the page.' %}"
+          );
         }
 
         const response = await fetch(sendUrl, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "X-CSRFToken": csrfToken, // Crucial for Django POST requests
+            "X-CSRFToken": csrfToken,
           },
-          body: JSON.stringify({ message: messageText }), // Send as JSON
+          body: JSON.stringify({ message: messageText }),
         });
 
-        // Check if the response status indicates an error (like 4xx or 5xx)
         if (!response.ok) {
-          // Try to parse error message from JSON response, otherwise use status text
-          let errorMsg = `Server Error: ${response.status} ${response.statusText}`;
+          let errorMsg = `{% trans "Server Error" %}: ${response.status} ${response.statusText}`;
           try {
             const errorData = await response.json();
-            errorMsg = errorData.error || errorMsg; // Use specific error if available
+            errorMsg = errorData.error || errorMsg;
           } catch (e) {
             /* Ignore if response wasn't JSON */
           }
-          throw new Error(errorMsg); // Throw error to be caught below
+          throw new Error(errorMsg);
         }
 
-        // If response is OK, parse the JSON data
         const data = await response.json();
 
         if (data.response) {
-          addMessage("AI", data.response, "ai");
+          addMessage("{% trans 'AI' %}", data.response, "ai"); // Use translated "AI"
         } else if (data.error) {
-          // Handle errors specifically returned in the JSON body (e.g., validation)
           showError(data.error);
           addMessage(
-            "System",
-            `Error processing message: ${data.error}`,
+            "{% trans 'System' %}", // Use translated "System"
+            `{% trans "Error processing message" %}: ${data.error}`,
             "system"
           );
         } else {
-          // Unexpected: response OK but no 'response' or 'error' key
           throw new Error(
-            "Received an unexpected response format from the server."
+            "{% trans 'Received an unexpected response format from the server.' %}"
           );
         }
       } catch (error) {
         console.error("Failed to send message:", error);
         const displayError =
-          error.message || "An unknown network or server error occurred.";
+          error.message ||
+          "{% trans 'An unknown network or server error occurred.' %}";
         showError(displayError);
-        // Optionally add system message to chat
         addMessage(
-          "System",
-          `Failed to get response: ${displayError}`,
+          "{% trans 'System' %}", // Use translated "System"
+          `{% trans "Failed to get response" %}: ${displayError}`,
           "system"
         );
-        // Optionally restore input content for retry
-        // messageInput.value = originalInputText;
+        // messageInput.value = originalInputText; // Restore input for retry? Maybe not ideal UX.
       } finally {
-        // Re-enable input and button regardless of success or failure
         messageInput.disabled = false;
         sendButton.disabled = false;
-        sendButton.textContent = "Send";
-        messageInput.focus(); // Set focus back to input field
+        sendButton.textContent = "{% trans 'Send' %}"; // Use translated text
+        messageInput.focus();
       }
     }
 
-    // --- Event Listeners ---
     sendButton.addEventListener("click", sendMessage);
-
     messageInput.addEventListener("keypress", function (e) {
-      // Send on Enter key press (but not Shift+Enter for multi-line)
       if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault(); // Prevent default Enter behavior (like adding a newline)
+        e.preventDefault();
         sendMessage();
       }
     });
 
-    // --- Utility Function to Get CSRF Token ---
     function getCookie(name) {
       let cookieValue = null;
       if (document.cookie && document.cookie !== "") {

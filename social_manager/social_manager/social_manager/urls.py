@@ -30,6 +30,8 @@ urlpatterns = [
     # --- AI Configuration and Testing URLs (Keep these) ---
     path('ai/prompt/', socialapp_views.update_system_prompt, name='update_system_prompt'),
     path('ai/test/', socialapp_views.test_ai_conversation, name='test_ai_conversation'),
+       path('set_language/', socialapp_views.set_language, name='set_language'),
+          path('i18n/', include('django.conf.urls.i18n')),
     # API endpoint for the test chat AJAX calls (ensure path matches template fetch URL)
     path('ai/api/send_test_message/', socialapp_views.send_test_message, name='send_test_message'),
 

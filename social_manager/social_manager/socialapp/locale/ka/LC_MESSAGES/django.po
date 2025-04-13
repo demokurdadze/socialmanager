@@ -1,0 +1,371 @@
+# Georgian translations for Social Manager project.
+# Copyright (C) 2024 Social Manager Team
+# This file is distributed under the same license as the Social Manager package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: SocialManager 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-04-13 11:06+0400\n"
+"PO-Revision-Date: 2024-04-13 12:00+0400\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Georgian <ka@li.org>\n"
+"Language: ka\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\templates\account\login.html:7 .\templates\account\login.html:12
+#: .\templates\account\login.html:17 .\templates\account\login.html:24
+#: .\templates\account\password_reset.html:34
+#: .\templates\account\signup.html:28 .\templates\base_generic.html:101
+msgid "Sign In"
+msgstr "შესვლა"
+
+#: .\templates\account\login.html:28
+msgid "Forgot Password?"
+msgstr "დაგავიწყდათ პაროლი?"
+
+#: .\templates\account\login.html:31
+msgid "Don't have an account?"
+msgstr "არ გაქვთ ანგარიში?"
+
+#: .\templates\account\login.html:32 .\templates\account\signup.html:23
+msgid "Sign Up"
+msgstr "რეგისტრაცია"
+
+#: .\templates\account\login.html:39
+msgid "Or Sign In With"
+msgstr "ან შედით:"
+
+#: .\templates\account\password_reset.html:2
+#: .\templates\account\password_reset.html:4
+#: .\templates\account\password_reset.html:7
+msgid "Set New Password"
+msgstr "ახალი პაროლის დაყენება"
+
+#: .\templates\account\password_reset.html:18
+msgid "Request a new password reset"
+msgstr "პაროლის აღდგენის ახალი მოთხოვნა"
+
+#: .\templates\account\password_reset.html:26
+msgid "Change Password"
+msgstr "პაროლის შეცვლა"
+
+#: .\templates\account\password_reset.html:30
+msgid "Your password is now changed."
+msgstr "თქვენი პაროლი შეიცვალა."
+
+#: .\templates\account\signup.html:7
+msgid "Sign up"
+msgstr "რეგისტრაცია"
+
+#: .\templates\account\signup.html:12 .\templates\account\signup.html:16
+msgid "Create Account"
+msgstr "ანგარიშის შექმნა"
+
+#: .\templates\account\signup.html:27
+msgid "Already have an account?"
+msgstr "უკვე გაქვთ ანგარიში?"
+
+#: .\templates\account\signup.html:35
+msgid "Or Sign Up With"
+msgstr "ან დარეგისტრირდით:"
+
+#: .\templates\base_generic.html:9 .\templates\base_generic.html:35
+msgid "Social Manager"
+msgstr "სოციალური მენეჯერი"
+
+#: .\templates\base_generic.html:23
+msgid "Toggle navigation menu"
+msgstr "ნავიგაციის მენიუს გადართვა"
+
+#: .\templates\base_generic.html:43 .\templates\home.html:6
+#: .\templates\home.html:9
+msgid "Dashboard"
+msgstr "მართვის პანელი"
+
+#: .\templates\base_generic.html:49
+msgid "AI Prompt"
+msgstr "AI მოთხოვნა"
+
+#: .\templates\base_generic.html:55 .\templates\home.html:55
+msgid "Test AI"
+msgstr "AI-ს ტესტირება"
+
+#: .\templates\base_generic.html:61 .\templates\home.html:86
+msgid "Connect Page"
+msgstr "გვერდის დაკავშირება"
+
+#: .\templates\base_generic.html:63
+#, python-format
+msgid "Facebook/Instagram Page Connected (ID: %(page_id)s)"
+msgstr "Facebook/Instagram გვერდი დაკავშირებულია (ID: %(page_id)s)"
+
+#: .\templates\base_generic.html:63 .\templates\home.html:71
+msgid "Connected"
+msgstr "დაკავშირებულია"
+
+#: .\templates\base_generic.html:65
+msgid "Connect"
+msgstr "დაკავშირება"
+
+#: .\templates\base_generic.html:67
+msgid "Login to connect"
+msgstr "შედით დასაკავშირებლად"
+
+#: .\templates\base_generic.html:67
+msgid "N/A"
+msgstr "მიუწვდომელია"
+
+#: .\templates\base_generic.html:74
+msgid "Settings"
+msgstr "პარამეტრები"
+
+#: .\templates\base_generic.html:90
+msgid "Log out"
+msgstr "გასვლა"
+
+#: .\templates\base_generic.html:117
+msgid "Change language"
+msgstr "ენის შეცვლა"
+
+#: .\templates\base_generic.html:130
+msgid "Toggle theme"
+msgstr "თემის გადართვა"
+
+#: .\templates\base_generic.html:149
+msgid "Welcome to the application."
+msgstr "კეთილი იყოს თქვენი მობრძანება აპლიკაციაში."
+
+#: .\templates\base_generic.html:204
+msgid "Switch to light mode"
+msgstr "ნათელ რეჟიმზე გადართვა"
+
+#: .\templates\base_generic.html:212
+msgid "Switch to dark mode"
+msgstr "მუქ რეჟიმზე გადართვა"
+
+#: .\templates\error.html:2 .\templates\test_ai_conversation.html:103
+msgid "Error"
+msgstr "შეცდომა"
+
+#: .\templates\error.html:3 .\templates\error.html:9
+msgid "An Error Occurred"
+msgstr "მოხდა შეცდომა"
+
+#: .\templates\error.html:14
+msgid "Sorry, something went wrong:"
+msgstr "ბოდიში, რაღაც არასწორად მოხდა:"
+
+#: .\templates\error.html:24
+msgid "Return to Home"
+msgstr "მთავარ გვერდზე დაბრუნება"
+
+#: .\templates\home.html:16
+#, python-format
+msgid "Welcome, %(request.user.username)s!"
+msgstr "მოგესალმებით, %(request.user.username)s!"
+
+#: .\templates\home.html:19
+msgid "Here's an overview of your social media activity."
+msgstr "აქ მოცემულია თქვენი სოციალური მედიის აქტივობის მიმოხილვა."
+
+#: .\templates\home.html:32
+msgid "AI Status"
+msgstr "AI სტატუსი"
+
+#: .\templates\home.html:34
+msgid "Current AI assistant configuration."
+msgstr "AI ასისტენტის მიმდინარე კონფიგურაცია."
+
+#: .\templates\home.html:39
+msgid "Prompt:"
+msgstr "მოთხოვნა:"
+
+#: .\templates\home.html:41
+msgid "Default"
+msgstr "ნაგულისხმევი"
+
+#: .\templates\home.html:50
+msgid "Configure"
+msgstr "კონფიგურაცია"
+
+#: .\templates\home.html:62
+msgid "Page Connection"
+msgstr "გვერდის კავშირი"
+
+#: .\templates\home.html:64
+msgid "Facebook/Instagram Page Status"
+msgstr "Facebook/Instagram გვერდის სტატუსი"
+
+#: .\templates\home.html:73
+msgid "Page ID:"
+msgstr "გვერდის ID:"
+
+#: .\templates\home.html:76
+msgid "Your Facebook/Instagram page is not connected."
+msgstr "თქვენი Facebook/Instagram გვერდი არ არის დაკავშირებული."
+
+# The obsolete "Manage Connection" entry has been removed.
+# Add translations for the actual button text if needed:
+# msgid "Disconnect"
+# msgstr "გათიშვა"
+# msgid "Are you sure you want to disconnect this page? AI responses will stop."
+# msgstr "დარწმუნებული ხართ, რომ გსურთ ამ გვერდის გათიშვა? AI პასუხები შეჩერდება."
+
+#: .\templates\home.html:94
+msgid "Quick Actions"
+msgstr "სწრაფი ქმედებები"
+
+#: .\templates\home.html:95
+msgid "Commonly used features."
+msgstr "ხშირად გამოყენებული ფუნქციები."
+
+#: .\templates\home.html:102
+msgid "View Recent Messages"
+msgstr "ბოლო შეტყობინებების ნახვა"
+
+#: .\templates\home.html:107
+msgid "Analyze Performance"
+msgstr "შედეგების ანალიზი"
+
+#: .\templates\test_ai_conversation.html:1
+#: .\templates\test_ai_conversation.html:2
+#: .\templates\test_ai_conversation.html:5
+#: .\templates\update_system_prompt.html:66
+msgid "Test AI Conversation"
+msgstr "AI საუბრის ტესტირება"
+
+#: .\templates\test_ai_conversation.html:7
+msgid ""
+"Interact with your AI assistant below using the currently configured system "
+"prompt. This simulates how it would respond to messages on your connected "
+"page."
+msgstr ""
+"ქვემოთ დაუკავშირდით თქვენს AI ასისტენტს მიმდინარე სისტემური მოთხოვნის "
+"გამოყენებით. ეს ახდენს სიმულაციას, თუ როგორ უპასუხებდა იგი თქვენს "
+"დაკავშირებულ გვერდზე მოსულ შეტყობინებებს."
+
+#: .\templates\test_ai_conversation.html:14
+msgid "Using System Prompt:"
+msgstr "გამოყენებული სისტემური მოთხოვნა:"
+
+#: .\templates\test_ai_conversation.html:16
+msgid "Default: You are a helpful assistant."
+msgstr "ნაგულისხმევი: თქვენ ხართ დამხმარე ასისტენტი."
+
+#: .\templates\test_ai_conversation.html:19
+msgid "Change Prompt"
+msgstr "მოთხოვნის შეცვლა"
+
+#: .\templates\test_ai_conversation.html:26
+#: .\templates\test_ai_conversation.html:159
+msgid "AI"
+msgstr "AI"
+
+#: .\templates\test_ai_conversation.html:28
+msgid ""
+"Hello! Type a message below to start testing our conversation based on the "
+"current prompt."
+msgstr ""
+"გამარჯობა! ჩაწერეთ შეტყობინება ქვემოთ, რათა დავიწყოთ ჩვენი საუბრის "
+"ტესტირება მიმდინარე მოთხოვნის საფუძველზე."
+
+#: .\templates\test_ai_conversation.html:40
+msgid "Type your message here..."
+msgstr "ჩაწერეთ თქვენი შეტყობინება აქ..."
+
+#: .\templates\test_ai_conversation.html:47
+msgid "Send Message"
+msgstr "შეტყობინების გაგზავნა"
+
+#: .\templates\test_ai_conversation.html:49
+#: .\templates\test_ai_conversation.html:187
+msgid "Send"
+msgstr "გაგზავნა"
+
+#: .\templates\test_ai_conversation.html:120
+msgid "You"
+msgstr "თქვენ"
+
+#: .\templates\test_ai_conversation.html:125
+msgid "Sending..."
+msgstr "იგზავნება..."
+
+#: .\templates\test_ai_conversation.html:132
+msgid "CSRF token not found. Please refresh the page."
+msgstr "CSRF ნიშანი ვერ მოიძებნა. გთხოვთ, განაახლოთ გვერდი."
+
+#: .\templates\test_ai_conversation.html:146
+msgid "Server Error"
+msgstr "სერვერის შეცდომა"
+
+#: .\templates\test_ai_conversation.html:163
+#: .\templates\test_ai_conversation.html:179
+msgid "System"
+msgstr "სისტემა"
+
+#: .\templates\test_ai_conversation.html:164
+msgid "Error processing message"
+msgstr "შეტყობინების დამუშავების შეცდომა"
+
+#: .\templates\test_ai_conversation.html:169
+msgid "Received an unexpected response format from the server."
+msgstr "სერვერისგან მიღებულია მოულოდნელი ფორმატის პასუხი."
+
+#: .\templates\test_ai_conversation.html:176
+msgid "An unknown network or server error occurred."
+msgstr "მოხდა უცნობი ქსელური ან სერვერული შეცდომა."
+
+#: .\templates\test_ai_conversation.html:180
+msgid "Failed to get response"
+msgstr "პასუხის მიღება ვერ მოხერხდა"
+
+#: .\templates\update_system_prompt.html:5
+msgid "Update AI System Prompt"
+msgstr "AI სისტემური მოთხოვნის განახლება"
+
+#: .\templates\update_system_prompt.html:9
+msgid "Configure AI Assistant"
+msgstr "AI ასისტენტის კონფიგურაცია"
+
+#: .\templates\update_system_prompt.html:20
+msgid "Configure Your AI Assistant's Behavior"
+msgstr "განსაზღვრეთ თქვენი AI ასისტენტის ქცევა"
+
+#: .\templates\update_system_prompt.html:22
+msgid ""
+"The System Prompt provides instructions, context, and personality to the AI. "
+"It guides how the AI responds to user messages on your connected page."
+msgstr ""
+"სისტემური მოთხოვნა აწვდის ინსტრუქციებს, კონტექსტს და პიროვნულ თვისებებს "
+"AI-ს. ის განსაზღვრავს, თუ როგორ პასუხობს AI მომხმარებლის შეტყობინებებს "
+"თქვენს დაკავშირებულ გვერდზე."
+
+#: .\templates\update_system_prompt.html:27
+msgid "Current System Prompt"
+msgstr "მიმდინარე სისტემური მოთხოვნა"
+
+#: .\templates\update_system_prompt.html:30
+#: .\templates\update_system_prompt.html:35
+msgid "Active Prompt:"
+msgstr "აქტიური მოთხოვნა:"
+
+#: .\templates\update_system_prompt.html:36
+msgid "No custom prompt set. Using default:"
+msgstr "მორგებული მოთხოვნა არ არის დაყენებული. გამოიყენება ნაგულისხმევი:"
+
+#: .\templates\update_system_prompt.html:36
+msgid "You are a helpful assistant."
+msgstr "თქვენ ხართ დამხმარე ასისტენტი."
+
+#: .\templates\update_system_prompt.html:42
+msgid "Update Prompt"
+msgstr "მოთხოვნის განახლება"
+
+#: .\templates\update_system_prompt.html:65
+msgid "Save Prompt"
+msgstr "მოთხოვნის შენახვა"

@@ -14,6 +14,8 @@ from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.core.cache import cache # Keep if using fragment caching elsewhere
 from django.contrib import messages
 from django.conf import settings # Use Django settings
+from django.utils import translation
+
 
 # Third-party imports
 from openai import OpenAI, APIError, RateLimitError, AuthenticationError, APITimeoutError # Import specific OpenAI errors
@@ -73,8 +75,22 @@ def meta_auth(request):
         # Add state parameter for CSRF protection
         # 'state': 'your_random_csrf_string' # Generate and verify this
     }
+
+
+
+
     oauth_url = 'https://www.facebook.com/v19.0/dialog/oauth?' + urllib.parse.urlencode(params)
     return redirect(oauth_url)
+
+
+
+
+
+def set_language(request):
+    lang_code = request.GET.get('lang')
+    if lang_code and lang_code in dict(settings.LANGUAGES):
+        request.session[translation.LANGUAGE_SESSION_KEY] = lang_code
+    return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required # Ensure callback requires login
@@ -426,13 +442,6 @@ def send_message_to_AI(custom_user, sender_id, message):
     # Append the latest user message
     current_messages.append({'role': 'user', 'content': message})
 
-    # --- Pruning (Optional but Recommended) ---
-    # Keep conversation history from getting excessively long (limits token usage & cost)
-    MAX_HISTORY_MESSAGES = 20 # Example: Keep last 10 user/assistant pairs + system prompt
-    if len(current_messages) > MAX_HISTORY_MESSAGES:
-        print(f"Pruning conversation history from {len(current_messages)} to ~{MAX_HISTORY_MESSAGES} messages.")
-        # Keep the system prompt (index 0) and the latest messages
-        current_messages = [current_messages[0]] + current_messages[-(MAX_HISTORY_MESSAGES -1):]
 
     # --- Call Grok/OpenAI API ---
     try:

@@ -1,56 +1,70 @@
-{% extends "base_generic.html" %} {% load static %} {% block head_extra %}
-<title>Update AI System Prompt</title>
-{# Link form.css if it contains relevant styles #}
-<link rel="stylesheet" href="{% static 'styles/form.css' %}" />
-<link rel="stylesheet" href="{% static 'styles/updateAi.css' %}" />
+{% extends 'base_generic.html' %}
+{% load static i18n %}
 
-{% endblock %} {% block content %}
-<div class="form-container">
-  {# Use your main container class #}
-  <h2>Configure Your AI Assistant's Behavior</h2>
-  <p>
-    The System Prompt provides instructions, context, and personality to the
-    AI...
-  </p>
+{% block title %}
+  {% trans 'Update AI System Prompt' %}
+{% endblock %}
 
-  <h3>Current System Prompt</h3>
-  {% if current_prompt %}
-  <div class="current-prompt-display">
-    <strong>Active Prompt:</strong>{{ current_prompt }}
-  </div>
-  {% else %}
-  <div
-    class="current-prompt-display"
-    style="font-style: italic; color: #6c757d"
-  >
-    <strong>Active Prompt:</strong>(No custom prompt set. Using default: "You
-    are a helpful assistant.")
-  </div>
-  {% endif %}
+{% block header_title %}
+  {% trans 'Configure AI Assistant' %}
+{% endblock %}
 
-  <hr />
+{% block head_extra %}
+  {# CSS is now primarily in base_generic.html #}
+{% endblock %}
 
-  <h3>Update Prompt</h3>
-  {# Add the specific form class here #}
-  <form
-    method="post"
-    action="{% url 'update_system_prompt' %}"
-    class="prompt-update-form"
-  >
-    {% csrf_token %} {{ form.as_p }}  
-    {% if form.system_prompt.help_text %}
-      {% comment %} <small class="helptext">{{ form.system_prompt.help_text }}</small> {% endcomment %}
-      {% endif %} {% if form.system_prompt.errors %}
-      <div class="form-errors">{{ form.system_prompt.errors }}</div>
+{% block content %}
+  <div class="card">
+    {# Using card layout #}
+    <div class="card-header">
+      <h2 class="card-title">{% trans "Configure Your AI Assistant's Behavior" %}</h2>
+      <p class="card-description">
+        {% blocktrans %}The System Prompt provides instructions, context, and personality to the AI. It guides how the AI responds to user messages on your connected page.{% endblocktrans %}
+      </p>
+    </div>
+
+    <div class="card-content">
+      <h3>{% trans 'Current System Prompt' %}</h3>
+      {% if current_prompt %}
+        <div class="current-prompt-display">
+          <strong>{% trans 'Active Prompt:' %}</strong>
+          <pre style="white-space: pre-wrap; font-family: inherit;">{{ current_prompt }}</pre> {# Use pre for formatting #}
+        </div>
+      {% else %}
+        <div class="current-prompt-display" style="font-style: italic; color: var(--muted-foreground)">
+          <strong>{% trans 'Active Prompt:' %}</strong>
+          <span>({% trans 'No custom prompt set. Using default:' %} {% trans 'You are a helpful assistant.' %})</span>
+        </div>
       {% endif %}
-    </div>
 
-    <div class="form-actions">
-      <button type="submit" class="button button-primary">Save Prompt</button>
-      <a href="{% url 'test_ai_conversation' %}" class="button button-secondary"
-        >Test AI Conversation</a
-      >
+      <hr />
+
+      <h3>{% trans 'Update Prompt' %}</h3>
+      <form method="post" action="{% url 'update_system_prompt' %}" class="styled-form prompt-update-form" novalidate>
+        {% csrf_token %}
+
+        {# Manual rendering for better control if needed, or use form.as_p #}
+        {% comment %}
+        <div class="form-group">
+          {# Example manual render #}
+          <label for="{{ form.system_prompt.id_for_label }}">{{ form.system_prompt.label }}</label>
+          {{ form.system_prompt }} {# Renders the textarea widget #}
+          {% if form.system_prompt.help_text %}
+            <p class="helptext">{{ form.system_prompt.help_text }}</p>
+          {% endif %}
+          {% if form.system_prompt.errors %}
+            <div class="form-errors">{{ form.system_prompt.errors }}</div>
+          {% endif %}
+        </div>
+        {% endcomment %}
+
+        {{ form.as_p }} {# Using as_p which should now inherit base styles better #}
+
+        <div class="form-actions">
+          <button type="submit" class="button button-primary">{% trans 'Save Prompt' %}</button>
+          <a href="{% url 'test_ai_conversation' %}" class="button button-secondary">{% trans 'Test AI Conversation' %}</a>
+        </div>
+      </form>
     </div>
-  </form>
-</div>
+  </div>
 {% endblock %}

@@ -11,9 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 META_APP_ID = '1152489759401130'
 META_APP_SECRET = '6637d283f19db96a3b243134fa70249c'
@@ -56,6 +58,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -86,6 +89,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'social_manager.wsgi.application'
 
 
+LANGUAGES = [
+    ('en', _('English')),
+    ('ka', _('Georgian')),
+ 
+    # Add more as needed
+]
+LOCALE_PATHS = [
+    Path().joinpath(BASE_DIR) / 'locale',
+]
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -124,6 +136,7 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
+USE_L10N = True 
 
 USE_TZ = True
 
