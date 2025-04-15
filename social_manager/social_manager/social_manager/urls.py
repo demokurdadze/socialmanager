@@ -35,6 +35,18 @@ urlpatterns = [
     # API endpoint for the test chat AJAX calls (ensure path matches template fetch URL)
     path('ai/api/send_test_message/', socialapp_views.send_test_message, name='send_test_message'),
         path('disconnect-page/', socialapp_views.disconnect_facebook, name='disconnect-page'),
+        path('privacy_policy/', socialapp_views.privacy_policy_view, name='privacy_policy'),
+
+
+
+         path('ai/send_test/', socialapp_views.send_test_message, name='send_test_message'),
+
+    # Conversation Management (Updated URLs with platform)
+    path('inbox/', socialapp_views.inbox_view, name='inbox'),
+   path('conversation/<str:sender_id>/', socialapp_views.conversation_detail_view, name='conversation_detail'), # CORRECT PATTERN
+    path('conversation/<str:sender_id>/reply/', socialapp_views.send_manual_reply, name='send_manual_reply'), # CORRECT PATTERN
+    path('conversation/<str:sender_id>/delete/', socialapp_views.delete_conversation_history, name='delete_conversation'), # CORRECT PATTERN
+    # ... other urls ...
 
     # Add other app URLs if needed
 ]

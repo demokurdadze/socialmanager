@@ -5,52 +5,70 @@ import requests
 import json
 import time
 import os
+import logging
+import traceback
 
 # Django imports
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, JsonResponse, HttpResponseForbidden, HttpResponseBadRequest
-from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
-from django.core.cache import cache # Keep if using fragment caching elsewhere
+from django.http import (
+    HttpResponse, JsonResponse, HttpResponseForbidden,
+    HttpResponseBadRequest, Http404, HttpResponseRedirect
+)
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie, csrf_protect
+from django.views.decorators.http import require_POST
 from django.contrib import messages
-from django.conf import settings # Use Django settings
+from django.conf import settings
 from django.utils import translation
 from django.urls import reverse
-
+from django.utils import timezone # Still useful for message timestamps within JSON
+from django.utils.translation import gettext as _
 
 # Third-party imports
-from openai import OpenAI, APIError, RateLimitError, AuthenticationError, APITimeoutError # Import specific OpenAI errors
+from openai import OpenAI, APIError, RateLimitError, AuthenticationError, APITimeoutError
 
 # Local imports
+# Using the models defined in the user-provided models.py
 from .models import CustomUser, conversation
-from .forms import SystemPromptForm
+# Keep forms that are still relevant
+from .forms import SystemPromptForm, ManualReplyForm
 
+logger = logging.getLogger(__name__)
 
-# --- Root Redirect View ---
+# --- Root Redirect & Basic Views ---
 def root_redirect(request):
     """ Redirects users based on authentication status. """
     if request.user.is_authenticated:
         return redirect('home')
     else:
-        # Redirect anonymous users to allauth's login page
-        return redirect('account_login') # Make sure this name matches your allauth urls
-
+        # Redirect anonymous users to allauth's login page (or your login URL name)
+        return redirect('account_login')
 
 @login_required
 def home(request):
     """ Displays the main dashboard/home page for logged-in users. """
-    # Check if the user (assuming CustomUser) has connected their Meta page
     has_meta_creds = False
+    system_prompt_preview = None
     if isinstance(request.user, CustomUser):
          has_meta_creds = bool(request.user.page_id and request.user.page_access_token)
+         # Use the actual prompt, or provide a translatable default string
+         system_prompt_preview = request.user.system_prompt or _("(Default: You are a helpful assistant.)")
+    else:
+        # Handle non-CustomUser (e.g., admin) if necessary, maybe redirect or show limited view
+        logger.warning(f"Non-CustomUser {request.user} accessed home view.")
 
     context = {
         'user': request.user,
-        'has_meta_creds': has_meta_creds
-        }
+        'has_meta_creds': has_meta_creds,
+        'system_prompt': system_prompt_preview,
+    }
     return render(request, 'home.html', context)
 
-# --- Meta Page Connection Views ---
+def privacy_policy_view(request):
+    """ Renders the privacy policy page. """
+    context = { 'company_name': "Social Manager" }
+    # Ensure the template name matches your actual file name
+    return render(request, 'privacy_policy.html', context) # Or 'privacypolicy.html'
 
 @login_required
 def meta_auth(request):
@@ -112,7 +130,7 @@ def delete_conversation_history(request, sender_id):
     if request.method == 'POST': # Ensure it's a POST request for safety
         try:
             conversation_to_delete.delete()
-            messages.success(request, f"Conversation history for sender {sender_id} has been deleted.")
+            messages.success(request, f"conversation history for sender {sender_id} has been deleted.")
             # Redirect back to the inbox or dashboard
             return redirect(reverse('inbox')) # Assuming you have an 'inbox' named URL
         except Exception as e:
@@ -681,3 +699,107 @@ def send_test_message(request):
         import traceback
         traceback.print_exc()
         return JsonResponse({"error": "An unexpected server error occurred while getting the AI response."}, status=500)
+
+
+# --- Conversation Management Views (Adapted for Simple Model) ---
+@login_required
+def inbox_view(request):
+    """ Displays the list of Facebook conversations (ordered by creation time). """
+    if not isinstance(request.user, CustomUser):
+        messages.error(request, _("Inbox requires a business account."))
+        return redirect('home')
+    # Order by creation time descending as no last_updated field exists
+    conversations_qs = conversation.objects.filter(user=request.user).order_by('-timestamp')
+    context = {'conversations': conversations_qs}
+    return render(request, 'inbox.html', context)
+
+@login_required
+def conversation_detail_view(request, sender_id): # No platform parameter
+    """ Displays messages for a specific Facebook conversation. """
+    if not isinstance(request.user, CustomUser):
+        messages.error(request, _("conversation view requires a business account."))
+        return redirect('home')
+    # Lookup by user and sender_id only
+    conversation_obj = get_object_or_404(conversation, user=request.user, sender_id=sender_id)
+    reply_form = ManualReplyForm()
+    context = {'conversation': conversation_obj, 'reply_form': reply_form}
+    return render(request, 'conversation_detail.html', context)
+
+# --- Conversation Action Views (Adapted for Simple Model) ---
+@login_required
+@require_POST
+def send_manual_reply(request, sender_id): # No platform parameter
+    """ Handles POST request to send a manual Facebook reply. """
+    if not isinstance(request.user, CustomUser): return redirect('home')
+    conversation_obj = get_object_or_404(conversation, user=request.user, sender_id=sender_id)
+    if not request.user.page_access_token:
+        messages.error(request, _("Cannot send reply: Page not connected."))
+        return redirect('conversation_detail', sender_id=sender_id)
+
+    form = ManualReplyForm(request.POST)
+    if form.is_valid():
+        message_text = form.cleaned_data['message']
+        api_result = send_facebook_message(request.user.page_access_token, conversation_obj.sender_id, message_text)
+        if api_result:
+            # Add manual message to history
+            manual_msg_obj = {'role': 'assistant', 'content': message_text, 'manual': True, 'timestamp': timezone.now().isoformat()}
+            if not isinstance(conversation_obj.messages, list): conversation_obj.messages = []
+            conversation_obj.messages.append(manual_msg_obj)
+            try:
+                conversation_obj.save(update_fields=['messages']) # Only save messages field
+                messages.success(request, _("Manual reply sent and recorded."))
+            except Exception as e:
+                 logger.error(f"Failed save manual reply {conversation_obj.id}: {e}", exc_info=True)
+                 messages.warning(request, _("Reply sent, but failed to save to local history."))
+        else: messages.error(request, _("Failed to send reply via API."))
+    else: messages.error(request, _("Invalid message content."))
+    # Redirect back to the detail view (URL simplified)
+    return redirect('conversation_detail', sender_id=sender_id)
+
+# --- AI PAUSE VIEW REMOVED ---
+# No toggle_ai_pause view needed as the field doesn't exist on the simple model
+
+@login_required
+@require_POST
+def delete_conversation_history(request, sender_id): # No platform parameter
+    """ Deletes the Facebook conversation history from the database. """
+    if not isinstance(request.user, CustomUser): return redirect('home')
+    conversation_to_delete = get_object_or_404(conversation, user=request.user, sender_id=sender_id)
+    conv_id = conversation_to_delete.id
+    logger.warning(f"User {request.user.email} deleting FB conversation history for sender {sender_id} (Conv ID: {conv_id})")
+    try:
+        conversation_to_delete.delete()
+        # Simplified success message
+        msg = _("conversation history for sender %(sender_id)s has been deleted.") % {'sender_id': sender_id}
+        messages.success(request, msg)
+        logger.info(f"Deleted FB conversation history for Conv ID: {conv_id} by user {request.user.email}")
+    except Exception as e:
+        logger.error(f"Failed deleting conv {conv_id}: {e}", exc_info=True)
+        messages.error(request, _("Failed to delete history."))
+    return redirect(reverse('inbox')) # Redirect to inbox
+
+# --- Language Switcher ---
+@require_POST
+def set_language(request):
+    """ Sets the language preference cookie based on form submission. """
+    lang_code = request.POST.get('language')
+    next_url = request.POST.get('next', request.META.get('HTTP_REFERER', reverse('home')))
+
+    if lang_code and translation.check_for_language(lang_code):
+        response = HttpResponseRedirect(next_url)
+        response.set_cookie(
+            settings.LANGUAGE_COOKIE_NAME, lang_code,
+            max_age=settings.LANGUAGE_COOKIE_AGE,
+            path=settings.LANGUAGE_COOKIE_PATH,
+            domain=settings.LANGUAGE_COOKIE_DOMAIN,
+            secure=settings.LANGUAGE_COOKIE_SECURE,
+            httponly=settings.LANGUAGE_COOKIE_HTTPONLY,
+            samesite=settings.LANGUAGE_COOKIE_SAMESITE
+        )
+        logger.info(f"Set language to '{lang_code}' via cookie.")
+        # messages.success(request, _("Language changed.")) # Feedback can be optional
+        return response
+    else:
+        logger.warning(f"Attempted to set invalid language code: '{lang_code}'")
+        messages.error(request, _("Invalid language selected."))
+        return HttpResponseRedirect(next_url)

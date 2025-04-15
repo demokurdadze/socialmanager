@@ -1,0 +1,77 @@
+{% extends "base_generic.html" %}
+{% load i18n static humanize %}
+
+{% block title %}{% trans "Inbox" %}{% endblock title %}
+{% block header_title %}{% trans "Conversations Inbox" %}{% endblock header_title %}
+
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">{% trans "Your Conversations" %}</h2>
+      <p class="card-description">{% trans "Recent messages from your connected Facebook Page." %}</p> {# Updated description #}
+    </div>
+    <div class="card-content">
+      {% if conversations %}
+        <ul class="conversation-list">
+          {% for convo in conversations %}
+            {# Removed platform icon and ai-paused class (if ai_paused field removed) #}
+            <li class="conversation-item">
+              {# --- Link URL Updated: Removed platform --- #}
+              <a href="{% url 'conversation_detail' sender_id=convo.sender_id %}" class="conversation-link">
+                <div class="conversation-info">
+                  {# Removed platform icon span #}
+                  <div class="sender-details">
+                       <span class="sender-id">
+                          {{ convo.sender_name|default:convo.sender_id }}
+                      </span>
+                      <span class="last-message-preview">
+                          {# You might need to add get_last_message_text back to the simplified model #}
+                          {{ convo.get_last_message_text|default:_("(No text messages yet)") }}
+                      </span>
+                  </div>
+                </div>
+                <div class="conversation-meta">
+                   <span class="last-updated" title="{{ convo.timestamp|date:'Y-m-d H:i:s T' }}"> {# Use timestamp if last_updated removed #}
+                       {{ convo.timestamp|naturaltime }} {# Use timestamp if last_updated removed #}
+                   </span>
+                   {# Removed AI Paused status indicator #}
+                </div>
+              </a>
+               {# --- Delete Form URL Updated: Removed platform --- #}
+                <form method="post" action="{% url 'delete_conversation' sender_id=convo.sender_id %}" class="delete-conversation-form" onsubmit="return confirm('{% trans "Are you sure you want to delete this chat history from the system? This cannot be undone." %}');">
+                    {% csrf_token %}
+                    <button type="submit" class="button button-destructive button-sm button-icon" title="{% trans 'Delete History' %}">
+                         <i class="fas fa-trash-alt"></i>
+                    </button>
+                </form>
+            </li>
+          {% endfor %}
+        </ul>
+        {# (Pagination code) #}
+      {% else %}
+        <p class="text-center muted">{% trans "No conversations found yet. Messages from your connected Facebook page will appear here." %}</p>
+      {% endif %}
+    </div>
+  </div>
+
+  {# (CSS can likely be simplified by removing .platform-icon styles) #}
+  <style>
+    /* Existing styles... adjust as needed after removing platform elements */
+    .conversation-list { list-style: none; padding: 0; margin: 0; }
+    .conversation-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); transition: background-color 0.2s ease; }
+    .conversation-item:last-child { border-bottom: none; }
+    .conversation-item:hover { background-color: var(--secondary-hover); }
+    /* .conversation-item.ai-paused { ... } */ /* Remove if ai_paused removed */
+    .conversation-link { flex-grow: 1; display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: inherit; padding: 1rem 0.8rem; margin-right: 0.5rem;}
+    .conversation-info { display: flex; align-items: center; flex-grow: 1; overflow: hidden; }
+    .sender-details { display: flex; flex-direction: column; overflow: hidden; padding-left: 0.5rem; /* Add padding if icon removed */ }
+    .sender-id { font-weight: 600; margin-bottom: 0.1em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .last-message-preview { font-size: 0.9em; color: var(--muted-foreground); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .conversation-meta { display: flex; flex-direction: column; align-items: flex-end; font-size: 0.8em; color: var(--muted-foreground); white-space: nowrap; flex-shrink: 0; margin-left: 1rem; text-align: right;}
+    .last-updated { margin-bottom: 0.2em; }
+    /* .status-indicator.paused { ... } */ /* Remove if ai_paused removed */
+    .delete-conversation-form { padding-right: 0.8rem; flex-shrink: 0;}
+    .delete-conversation-form button { background: none; border: none; cursor: pointer; padding: 0.3rem 0.5rem; line-height: 1;}
+    .button-icon i { margin: 0; vertical-align: middle;}
+  </style>
+{% endblock content %}

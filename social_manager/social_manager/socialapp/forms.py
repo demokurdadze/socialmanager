@@ -1,5 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import CustomUser
+from django.utils.translation import gettext as _ # For translations in views
+
 from django import forms
 
 
@@ -36,3 +38,17 @@ class SystemPromptForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['system_prompt'] # Only include this field in the form
+
+
+
+class ManualReplyForm(forms.Form):
+    """ Form for sending manual replies within a conversation. """
+    message = forms.CharField(
+        widget=forms.Textarea(attrs={
+            'rows': 3,
+            'placeholder': _('Type your manual reply here...'),
+            'class': 'form-control' # Added class for potential styling
+            }),
+        label=_("Send Manual Reply"),
+        required=True
+    )

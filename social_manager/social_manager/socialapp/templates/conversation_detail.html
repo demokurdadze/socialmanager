@@ -1,0 +1,110 @@
+{% extends "base_generic.html" %}
+{% load i18n static humanize %}
+
+{% block title %}
+    {% blocktrans with sender=conversation.sender_name|default:conversation.sender_id %}
+    Chat: {{ sender }}
+    {% endblocktrans %}
+{% endblock title %}
+
+{% block header_title %}
+    <div class="conversation-header-title">
+         {% blocktrans with sender=conversation.sender_name|default:conversation.sender_id %}
+         Conversation: {{ sender }}
+         {% endblocktrans %}
+         {# Removed platform badge #}
+    </div>
+{% endblock header_title %}
+
+{% block content %}
+<div class="chat-detail-layout">
+    <div class="card chat-window">
+        <div class="card-header chat-header">
+            <h3 class="card-title visually-hidden">{% trans "Messages" %}</h3>
+            <div class="chat-actions">
+                {# --- Removed AI Pause Toggle Form --- #}
+
+                 {# --- Delete Form URL Updated: Removed platform --- #}
+                <form method="post" action="{% url 'delete_conversation' sender_id=conversation.sender_id %}" class="delete-conversation-form" onsubmit="return confirm('{% trans "Are you sure you want to delete this chat history from the system? This cannot be undone." %}');">
+                    {% csrf_token %}
+                    <button type="submit" class="button button-destructive button-sm" title="{% trans 'Delete History' %}">
+                         <i class="fas fa-trash-alt"></i> {% trans "Delete History" %}
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        {# Message Display Area #}
+        <div class="card-content chat-messages" id="chatbox">
+            {% for message in conversation.messages %}
+                {# (Message display logic remains largely the same) #}
+                <div class="message {% if message.role == 'user' %}user-message{% elif message.role == 'assistant' and not message.manual %}ai-message{% elif message.role == 'assistant' and message.manual %}manual-message{% elif message.role == 'system' %}system-message{% endif %}">
+                    <div class="message-content">
+                        <strong class="visually-hidden">...</strong>
+                        <span>{% autoescape off %}{{ message.content|linebreaksbr }}{% endautoescape %}</span>
+                    </div>
+                     {% if message.timestamp %}
+                        <div class="message-timestamp" title="{{ message.timestamp|date:'Y-m-d H:i:s' }}">
+                           {{ message.timestamp|date:"M d, H:i" }} ({{ message.timestamp|naturaltime }})
+                        </div>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <p class="text-center muted">{% trans "No messages in this conversation yet." %}</p>
+            {% endfor %}
+        </div>
+
+         {# Manual Reply Input Area #}
+         <div class="card-footer chat-input-area">
+            {% if request.user.page_access_token %}
+                {# --- Reply Form URL Updated: Removed platform --- #}
+                <form method="post" action="{% url 'send_manual_reply' sender_id=conversation.sender_id %}" class="manual-reply-form">
+                    {% csrf_token %}
+                    {{ reply_form.message }}
+                    <button type="submit" class="button button-primary" title="{% trans 'Send Manual Reply' %}">
+                        <i class="fas fa-paper-plane"></i>
+                        <span class="visually-hidden">{% trans "Send Reply" %}</span>
+                    </button>
+                </form>
+            {% else %}
+                <p class="muted text-center">{% trans "Connect your page to send replies." %}</p>
+            {% endif %}
+         </div>
+    </div>
+</div>
+
+{# (CSS needs adjustments, e.g., remove platform-badge styles) #}
+<style>
+    /* Styles from previous response, remove/adjust platform specific ones */
+    /* ... */
+    .platform-badge { display: none; } /* Hide if CSS isn't removed */
+    /* ... */
+</style>
+
+
+
+{# --- Add JavaScript to scroll chatbox to bottom --- #}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const chatbox = document.getElementById('chatbox');
+    if (chatbox) {
+      chatbox.scrollTop = chatbox.scrollHeight;
+
+      // Optional: Use MutationObserver for dynamic content loading (if implemented later)
+      // const observer = new MutationObserver(() => {
+      //    chatbox.scrollTop = chatbox.scrollHeight;
+      // });
+      // observer.observe(chatbox, { childList: true });
+    }
+
+     // Auto-resize textarea (simple example)
+     const textarea = document.querySelector('.manual-reply-form textarea');
+     if (textarea) {
+         textarea.addEventListener('input', () => {
+             textarea.style.height = 'auto'; // Reset height
+             textarea.style.height = Math.min(textarea.scrollHeight, 100) + 'px'; // Set height up to max
+         });
+     }
+  });
+</script>
+{% endblock content %}
