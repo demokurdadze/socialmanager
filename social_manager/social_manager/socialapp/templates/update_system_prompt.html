@@ -40,7 +40,7 @@
       <hr />
 
       <h3>{% trans 'Update Prompt' %}</h3>
-      <form method="post" action="{% url 'update_system_prompt' %}" class="styled-form prompt-update-form" novalidate>
+      <form method="post" action="{% url 'update_system_prompt' %}" class="styled-form prompt-update-form" style="min-height: 1000px; margin-bottom: 20px;" novalidate>
         {% csrf_token %}
 
         {# Manual rendering for better control if needed, or use form.as_p #}

@@ -1,4 +1,4 @@
---- START OF FILE home.html ---
+
 
 {% extends "base_generic.html" %}
 <!-- Line 1 -->
@@ -12,7 +12,7 @@
 
 {% block content %}
 
-  <h1 class="welcome-heading">{% blocktrans %}Welcome, {{ request.user.username }}!{% endblocktrans %}</h1>
+  <h1 class="welcome-heading">{% blocktrans %} {{ request.user.username }}{% endblocktrans %}</h1>
   <p class="info-text">{% trans "Here's an overview of your social media activity." %}</p>
 
   {# Dashboard Cards Grid #}
@@ -93,4 +93,3 @@
   </div> {# End Grid #}
 
 {% endblock content %}
---- END OF FILE home.html ---
