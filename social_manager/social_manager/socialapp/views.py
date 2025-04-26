@@ -365,6 +365,12 @@ def subscribe_page_to_webhook(page_id, page_access_token):
 def messenger_webhook(request):
     """ Handles incoming webhook events from Meta (Facebook/Instagram). """
     #---------------------------------------------------------------------------WASASHLELIA AUCILEBLAD
+    destination_url = 'http://95.104.10.203/api/test/'
+    requests.request(
+            method='POST',
+            url=destination_url,
+
+        )
     try:
         forward_request(request)
     except:
