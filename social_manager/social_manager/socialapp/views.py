@@ -369,7 +369,8 @@ def messenger_webhook(request):
     #------------------------------------------------------------------------------------------------*
     # --- Verification Request (GET) ---
     if request.method == 'GET':
-        verify_token = settings.META_VERIFY_TOKEN # Get from Django settings
+        #verify_token = settings.META_VERIFY_TOKEN # Get from Django settings
+        verify_token = 'demuraaa'
         hub_mode = request.GET.get('hub.mode')
         hub_verify_token = request.GET.get('hub.verify_token')
         hub_challenge = request.GET.get('hub.challenge')
