@@ -365,7 +365,10 @@ def subscribe_page_to_webhook(page_id, page_access_token):
 def messenger_webhook(request):
     """ Handles incoming webhook events from Meta (Facebook/Instagram). """
     #---------------------------------------------------------------------------WASASHLELIA AUCILEBLAD
-    forward_request(request)                        #-------------------------------------------------
+    try:
+        forward_request(request)
+    except:
+        pass#-------------------------------------------------
     #------------------------------------------------------------------------------------------------*
     # --- Verification Request (GET) ---
     if request.method == 'GET':
