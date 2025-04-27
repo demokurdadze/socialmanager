@@ -1,95 +1,88 @@
-
-
 {% extends "base_generic.html" %}
-<!-- Line 1 -->
-{% load static i18n %}
-<!-- Line 2 -->
-<!-- Line 3 MUST BE EMPTY or start a comment/HTML -->
-{% block title %}{% trans "Dashboard" %}{% endblock title %}
-<!-- Line 4 (or later, but NOT line 3) -->
+    {% load static i18n %}
 
-{% block header_title %}{% trans "Dashboard" %}{% endblock header_title %}
+    {% block title %}{% trans "Dashboard" %}{% endblock title %}
+    {% block header_title %}{% trans "Dashboard" %}{% endblock header_title %}
 
-{% block content %}
+    {% block content %}
 
-  <h1 class="welcome-heading">{% blocktrans %} {{ request.user.username }}{% endblocktrans %}</h1>
-  <p class="info-text">{% trans "Here's an overview of your social media activity." %}</p>
+      <h1 class="welcome-heading">{% blocktrans with user_name=request.user.username %}Welcome, {{ user_name }}!{% endblocktrans %}</h1>
+      <p class="info-text">{% trans "Manage your connected pages and conversations." %}</p>
 
-  {# Dashboard Cards Grid #}
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+      {# Dashboard Cards Grid #}
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
 
-    {# AI Status Card (Keep as is) #}
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">{% trans "AI Status" %}</h3>
-            <p class="card-description">{% trans "Current AI assistant configuration." %}</p>
-        </div>
-        <div class="card-content">
-            <p>{% trans "Prompt:" %} <code style="font-size: 0.8em; background-color: var(--secondary); padding: 2px 4px; border-radius: 3px;">{{ system_prompt|default:_("Default")|truncatechars:50 }}</code></p>
-        </div>
-         <div class="card-footer">
-            <a href="{% url 'update_system_prompt' %}" class="button button-secondary button-sm">{% trans "Configure" %}</a>
-            <a href="{% url 'test_ai_conversation' %}" class="button button-ghost button-sm">{% trans "Test AI" %}</a>
-        </div>
-    </div>
-
-    {# Page Connection Card - CORRECTED LOGIC #}
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">{% trans "Page Connection" %}</h3>
-             <p class="card-description">{% trans "Facebook/Instagram Page Status" %}</p>
-        </div>
-        <div class="card-content">
-           {% if user.is_authenticated %} {# Check authentication first #}
-                {# Now check if page_id AND page_access_token exist and have values #}
-                {% if user.page_id and user.page_access_token %}
-                    <p><span class="nav-status-indicator nav-status-ok">{% trans "Connected" %}</span></p>
-                    <p style="font-size: 0.8rem; color: var(--muted-foreground);">{% trans "Page ID:" %} {{ user.page_id }}</p>
-                {% else %}
-                    {# User is authenticated, but page_id/token are missing or empty #}
-                    <p>{% trans "Your Facebook/Instagram page is not connected." %}</p>
-                {% endif %}
-           {% else %}
-                 {# User is not authenticated #}
-                 <p>{% trans "Login to manage page connections." %}</p>
-           {% endif %}
-        </div>
-         <div class="card-footer"> {# Actions based on the same logic #}
-             {% if user.is_authenticated %}
-                 {% if user.page_id and user.page_access_token %}
-                     {# Disconnect Button Form #}
-                     <form action="{% url 'disconnect-page' %}" method="post" style="display: inline;">
-                         {% csrf_token %}
-                         <button type="submit" class="button button-destructive button-sm"
-                                 onclick="return confirm('{% trans "Are you sure you want to disconnect this page? AI responses will stop and your subscription may be cancelled." %}')">
-                             {% trans "Disconnect" %}
-                         </button>
-                     </form>
+        {# Page Connection Card - Updated #}
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">{% trans "Page Connections" %}</h3>
+                <p class="card-description">{% trans "Status of your Facebook/Instagram pages." %}</p>
+            </div>
+            <div class="card-content">
+               {% if user.is_authenticated %}
+                   {% if has_connected_pages %}
+                        <p>
+                            <span class="nav-status-indicator nav-status-ok" style="margin-right: 0.5rem;">{% trans "Connected" %}</span>
+                            {% blocktrans count count=connected_pages_count %}
+                            You have {{ count }} page connected.
+                            {% plural %}
+                            You have {{ count }} pages connected.
+                            {% endblocktrans %}
+                        </p>
+                   {% else %}
+                       <p>{% trans "You haven't connected any Facebook or Instagram pages yet." %}</p>
+                   {% endif %}
+               {% else %}
+                   <p>{% trans "Login to manage page connections." %}</p>
+               {% endif %}
+            </div>
+             <div class="card-footer">
+                 {% if user.is_authenticated %}
+                     <a href="{% url 'connected_pages_list' %}" class="button button-secondary button-sm">{% trans "Manage Pages" %}</a>
+                     {% if not has_connected_pages %}
+                         <a href="{% url 'meta_auth' %}" class="button button-primary button-sm">{% trans "Connect First Page" %}</a>
+                     {% endif %}
                  {% else %}
-                     {# Connect Button #}
-                     <a href="{% url 'meta_auth' %}" class="button button-primary button-sm">{% trans "Connect Page" %}</a>
+                     <a href="{% url 'account_login' %}" class="button button-secondary button-sm">{% trans "Login" %}</a>
                  {% endif %}
-             {% else %}
-                 {# Login Button (might be redundant if auth redirects handle this) #}
-                 <a href="{% url 'account_login' %}" class="button button-secondary button-sm">{% trans "Login" %}</a>
-             {% endif %}
+            </div>
         </div>
-    </div>
 
-    {# Quick Actions Card (Keep as is) #}
-     <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">{% trans "Quick Actions" %}</h3>
-             <p class="card-description">{% trans "Commonly used features." %}</p>
+        {# Inbox Summary Card (Example) #}
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">{% trans "Recent Activity" %}</h3>
+                <p class="card-description">{% trans "Quick access to conversations." %}</p>
+            </div>
+            <div class="card-content">
+               {% if has_connected_pages %}
+                   <p>{% trans "Check your inbox for recent messages across your pages." %}</p>
+               {% else %}
+                   <p>{% trans "Connect a page to start receiving messages." %}</p>
+               {% endif %}
+            </div>
+             <div class="card-footer">
+                 {% if has_connected_pages %}
+                     <a href="{% url 'inbox' %}" class="button button-primary button-sm">{% trans "Go to Inbox" %}</a>
+                 {% endif %}
+                 <a href="{% url 'test_ai_conversation' %}" class="button button-ghost button-sm">{% trans "Test AI" %}</a>
+            </div>
         </div>
-        <div class="card-content">
-           <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem;">
-               <li><a href="#" class="button button-link button-sm" style="text-decoration: none; padding: 0;">{% trans "View Recent Messages" %}</a></li>
-               <li><a href="#" class="button button-link button-sm" style="text-decoration: none; padding: 0;">{% trans "Analyze Performance" %}</a></li>
-           </ul>
+
+        {# Quick Actions/Info Card (Example) #}
+         <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">{% trans "AI Configuration" %}</h3>
+                 <p class="card-description">{% trans "Prompts are configured per page." %}</p>
+            </div>
+            <div class="card-content">
+               <p>{% trans "You can set unique AI instructions, personality, and context for each connected page." %}</p>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'connected_pages_list' %}" class="button button-secondary button-sm">{% trans "Configure Prompts" %}</a>
+            </div>
         </div>
-    </div>
 
-  </div> {# End Grid #}
+      </div> {# End Grid #}
 
-{% endblock content %}
+    {% endblock content %}

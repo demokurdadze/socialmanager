@@ -1,0 +1,52 @@
+{% extends "base_generic.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Connected Pages" %}{% endblock title %}
+{% block header_title %}{% trans "Your Connected Pages" %}{% endblock header_title %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2 class="card-title">{% trans "Manage Your Pages" %}</h2>
+        <p class="card-description">
+            {% trans "Configure AI prompts and manage connections for your Facebook/Instagram pages." %}
+        </p>
+    </div>
+    <div class="card-content">
+        {% if connected_pages %}
+        <ul class="page-list" style="list-style: none; padding: 0; margin: 0;">
+            {% for page in connected_pages %}
+            <li style="display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 0.5rem; border-bottom: 1px solid var(--border);">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    {# Placeholder icon - could use platform specific later #}
+                    <i class="fab fa-facebook-square" style="font-size: 1.5rem; color: #1877F2;" aria-hidden="true"></i>
+                    <div>
+                        <span style="font-weight: 600;">{{ page.page_name }}</span>
+                        <span style="display: block; font-size: 0.8em; color: var(--muted-foreground);">ID: {{ page.page_id }}</span>
+                        {% if not page.is_active %}<span class="badge badge-warning" style="font-size: 0.7em; margin-left: 5px;">{% trans "Inactive" %}</span>{% endif %}
+                    </div>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <a href="{% url 'configure_page' page.pk %}" class="button button-secondary button-sm">{% trans "Configure AI" %}</a>
+                    {# Disconnect Form #}
+                    <form action="{% url 'disconnect_page' page.pk %}" method="post" onsubmit="return confirm('{% blocktrans %}Are you sure you want to disconnect the page \'{{ page.page_name }}\'? AI interactions for this page will stop.{% endblocktrans %}');" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="button button-destructive button-sm">
+                            {% trans "Disconnect" %}
+                        </button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="text-center muted">{% trans "You haven't connected any pages yet." %}</p>
+        {% endif %}
+    </div>
+    <div class="card-footer" style="justify-content: center;">
+         <a href="{% url 'meta_auth' %}" class="button button-primary">
+            <i class="fab fa-facebook" style="margin-right: 0.5em;"></i> {% trans "Connect a New Page" %}
+         </a>
+    </div>
+</div>
+{% endblock content %}

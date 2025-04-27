@@ -2,51 +2,40 @@
 
 from django.contrib import admin
 from django.urls import path, include
-from socialapp import views as socialapp_views
+from socialapp import views
 
 urlpatterns = [
-    # Root URL
-    path('', socialapp_views.root_redirect, name='root_redirect'),
+    path('', views.root_redirect, name='root_redirect'),
+    path('home/', views.home, name='home'),
+    path('privacy-policy/', views.privacy_policy_view, name='privacy_policy'),
+        path('accounts/', include('allauth.urls')),
 
-    path('admin/', admin.site.urls),
+    # --- Meta/Facebook Authentication ---
+    path('meta-auth/', views.meta_auth, name='meta_auth'),
+    path('meta-callback/', views.meta_callback, name='meta_callback'), # Ensure this matches META_REDIRECT_URI path
 
-    # Your App's core views
-    path('home/', socialapp_views.home, name='home'),
-
-    # Allauth URLs
-    path('accounts/', include('allauth.urls')),
-
-    # Meta Page Connection Flow URLs
-    path('auth/meta/', socialapp_views.meta_auth, name='meta_auth'),
-    path('auth/meta/callback/', socialapp_views.meta_callback, name='meta_callback'),
+    # --- Page Management ---
+    path('pages/', views.connected_pages_list, name='connected_pages_list'),
+    path('pages/<int:connected_page_pk>/configure/', views.configure_page, name='configure_page'),
+    path('pages/<int:connected_page_pk>/disconnect/', views.disconnect_page, name='disconnect_page'), # POST only
 
     # --- Webhook ---
-    # Changed name for clarity if you like, ensure Meta Dev Portal points here
-    path('webhook/messenger/', socialapp_views.messenger_webhook, name='messenger_webhook'),
+    path('webhook/', views.messenger_webhook, name='messenger_webhook'), # Ensure this matches webhook URL in Meta App settings
 
-    # --- REMOVE the grok_chat URL pattern ---
-    # path('grok-chat/', socialapp_views.grok_chat, name='grok_chat'), # <<< REMOVE THIS LINE
+    # --- AI Testing ---
+    path('test-ai/', views.test_ai_conversation, name='test_ai_conversation'),
+    path('test-ai/send/', views.send_test_message, name='send_test_message'), # POST only AJAX
 
-    # --- AI Configuration and Testing URLs (Keep these) ---
-    path('ai/prompt/', socialapp_views.update_system_prompt, name='update_system_prompt'),
-    path('ai/test/', socialapp_views.test_ai_conversation, name='test_ai_conversation'),
-       path('set_language/', socialapp_views.set_language, name='set_language'),
-          path('i18n/', include('django.conf.urls.i18n')),
-    # API endpoint for the test chat AJAX calls (ensure path matches template fetch URL)
-    path('ai/api/send_test_message/', socialapp_views.send_test_message, name='send_test_message'),
-        path('disconnect-page/', socialapp_views.disconnect_facebook, name='disconnect-page'),
-        path('privacy_policy/', socialapp_views.privacy_policy_view, name='privacy_policy'),
+    # --- Inbox and Conversations (Updated URLs) ---
+    path('inbox/', views.inbox_view, name='inbox'),
+    # Note the URL structure: includes page PK and sender ID
+    path('inbox/<int:connected_page_pk>/<str:sender_id>/', views.conversation_detail_view, name='conversation_detail'),
+    path('inbox/<int:connected_page_pk>/<str:sender_id>/reply/', views.send_manual_reply, name='send_manual_reply'), # POST only
+    path('inbox/<int:connected_page_pk>/<str:sender_id>/delete/', views.delete_conversation_history, name='delete_conversation'), # POST only
 
+    # --- Language ---
+    path('set-language/', views.set_language, name='set_language'), # POST only
 
-
-         path('ai/send_test/', socialapp_views.send_test_message, name='send_test_message'),
-
-    # Conversation Management (Updated URLs with platform)
-    path('inbox/', socialapp_views.inbox_view, name='inbox'),
-   path('conversation/<str:sender_id>/', socialapp_views.conversation_detail_view, name='conversation_detail'), # CORRECT PATTERN
-    path('conversation/<str:sender_id>/reply/', socialapp_views.send_manual_reply, name='send_manual_reply'), # CORRECT PATTERN
-    path('conversation/<str:sender_id>/delete/', socialapp_views.delete_conversation_history, name='delete_conversation'), # CORRECT PATTERN
-    # ... other urls ...
-
-    # Add other app URLs if needed
+    # --- Removed Old Prompt URL ---
+    # path('update-prompt/', views.update_system_prompt, name='update_system_prompt'),
 ]

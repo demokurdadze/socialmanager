@@ -1,98 +1,203 @@
-{% extends "base_generic.html" %} {% load static i18n %} {% block title %} {%trans "Test AI Conversation" %} {% endblock title %} {% block header_title %}
-    {%trans "Test AI Conversation" %} {% endblock header_title %} {% block content %}
+{% extends "base_generic.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Test AI Conversation" %}{% endblock title %}
+{% block header_title %}{% trans "Test AI Conversation" %}{% endblock header_title %}
+
+{% block content %}
 <div class="card">
-  <div class="card-header">
-    <h2 class="card-title">{% trans "Test AI Conversation" %}</h2>
-    <p class="card-description">
-      {% trans "Interact with your AI assistant below using the currently configured system prompt. This simulates how it would respond to message on your connected page." %}
-    </p>
-  </div>
-
-  <div class="card-content">
-    <div class="chat-container">
-      <div class="system-prompt-info">
-        <strong>{% trans "Using System Prompt:" %}</strong>
-        <pre>
-{{ system_prompt|default:_("Default: You are a helpful assistant.") }}</pre
-        >
-        <a href="{% url 'update_system_prompt' %}"
-          >{% trans "Change Prompt" %}</a
-        >
-      </div>
-
-      <div id="chatbox">
-        <!-- Initial AI message -->
-        <div class="message ai-message">
-          <strong>{% trans "AI" %}:</strong>
-          <span
-            >{% trans "Hello! Type a message below to start testing our conversation based on the current prompt." %}</span
-          >
-        </div>
-      </div>
-
-      <div id="error-display" style="display: none"></div>
-      {# Error messages will appear here #}
-
-      <div id="input-area">
-        <input
-          type="text"
-          id="message-input"
-          placeholder="{% trans 'Type your message here...' %}"
-          autocomplete="off"
-        />
-        {# Using the button styles from base_generic #}
-        <button
-          id="send-button"
-          class="button button-primary"
-          title="{% trans 'Send Message' %}"
-        >
-          {% trans "Send" %}
-        </button>
-      </div>
+    <div class="card-header">
+        <h2 class="card-title">{% trans "Test Your AI Assistant" %}</h2>
+        <p class="card-description">
+            {% trans "Select a connected page, interact with its configured AI, and see how it responds." %}
+        </p>
     </div>
-  </div>
-</div>
 
-{% endblock %} {% block scripts_extra %}
+    <div class="card-content">
+        {% if not connected_pages %}
+            <p class="text-center muted">{% trans "You need to connect at least one active page to test the AI." %}</p>
+            <div class="text-center mt-4">
+               <a href="{% url 'connected_pages_list' %}" class="button button-primary">{% trans "Connect or Manage Pages" %}</a>
+            </div>
+        {% else %}
+            {# Page Selection Dropdown #}
+            <div class="page-selection-area" style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+                <label for="page-select" style="margin-bottom: 0; font-weight: 500;">{% trans "Test AI for Page:" %}</label>
+                <select id="page-select" class="form-input" style="max-width: 300px;">
+                    <option value="">{% trans "--- Select a Page ---" %}</option>
+                    {% for page in connected_pages %}
+                        <option value="{{ page.pk }}" data-prompt="{{ page.system_prompt|default:""|escape }}">
+                            {{ page.page_name }} (ID: {{ page.page_id }})
+                        </option>
+                    {% endfor %}
+                </select>
+                <a href="#" id="view-prompt-link" class="button button-ghost button-sm hidden" style="text-decoration: none;">
+                    <i class="fas fa-eye" style="margin-right: 0.3em;"></i> {% trans "View Prompt" %}
+                </a>
+            </div>
+
+            {# Chat UI - Initially hidden until page selected? Or show default message #}
+            <div class="chat-container" id="chat-ui" style="/* display: none; */"> {# Control visibility via JS #}
+                <div class="system-prompt-info">
+                    <strong>{% trans "Using System Prompt For:" %} <span id="selected-page-name">{% trans "No page selected" %}</span></strong>
+                    <pre id="system-prompt-display" style="white-space: pre-wrap;">{% trans "(Select a page above to see its prompt)" %}</pre>
+                    <a href="#" id="configure-prompt-link" class="hidden" style="font-size: 0.8rem;">
+                       {% trans "Configure this prompt" %}
+                    </a>
+                </div>
+
+                <div id="chatbox" class="chatbox">
+                    <!-- Initial message -->
+                    <div class="message ai-message">
+                        <strong>{% trans "AI" %}:</strong>
+                        <span>{% trans "Please select a page above to begin testing." %}</span>
+                    </div>
+                </div>
+
+                <div id="error-display" class="error-display hidden" style="padding: 0.75rem 1rem; background-color: var(--destructive); color: var(--destructive-foreground); font-size: 0.875rem; text-align: center;"></div>
+                {# Error messages will appear here #}
+
+                <div id="input-area" class="input-area">
+                    <textarea id="message-input" class="form-input" placeholder="{% trans 'Type your message here...' %}" autocomplete="off" rows="1" style="min-height: 40px; resize: vertical;" disabled></textarea>
+                    <button id="send-button" class="button button-primary" title="{% trans 'Send Message' %}" disabled>
+                        {% trans "Send" %}
+                    </button>
+                </div>
+            </div>
+
+            {# Modal for Viewing Prompt #}
+            <div id="prompt-modal-overlay" class="prompt-modal-overlay">
+                 <div id="prompt-modal-content" class="prompt-modal-content">
+                    <div class="prompt-modal-header">
+                        <h3 id="modal-prompt-title" class="prompt-modal-title">{% trans "System Prompt" %}</h3>
+                        <button id="prompt-modal-close-btn" class="prompt-modal-close-btn" aria-label="{% trans 'Close' %}">&times;</button>
+                    </div>
+                    <div class="prompt-modal-body">
+                         <pre id="modal-prompt-text" style="white-space: pre-wrap; font-family: monospace; font-size: 0.9rem;"></pre>
+                    </div>
+                    <div class="prompt-modal-footer">
+                        <button id="prompt-modal-close-btn-footer" class="button button-secondary">{% trans "Close" %}</button>
+                         <a href="#" id="modal-configure-link" class="button button-primary hidden">{% trans "Configure Prompt" %}</a>
+                    </div>
+                </div>
+            </div>
+
+        {% endif %} {# End if connected_pages exist #}
+    </div> {# End card-content #}
+</div> {# End card #}
+{% endblock %}
+
+{% block scripts_extra %}
 <script>
-  // Javascript from the original file remains the same
-  // It should work correctly with the new HTML structure and CSS classes
-  document.addEventListener("DOMContentLoaded", function () {
-    const chatbox = document.getElementById("chatbox");
-    const messageInput = document.getElementById("message-input");
-    const sendButton = document.getElementById("send-button");
-    const errorDisplay = document.getElementById("error-display");
-    const sendUrl = "{% url 'send_test_message' %}"; // Use the named URL
+  document.addEventListener('DOMContentLoaded', function () {
+    const pageSelect = document.getElementById('page-select');
+    const chatUI = document.getElementById('chat-ui');
+    const chatbox = document.getElementById('chatbox');
+    const messageInput = document.getElementById('message-input');
+    const sendButton = document.getElementById('send-button');
+    const errorDisplay = document.getElementById('error-display');
+    const systemPromptDisplay = document.getElementById('system-prompt-display');
+    const selectedPageNameSpan = document.getElementById('selected-page-name');
+    const viewPromptLink = document.getElementById('view-prompt-link');
+    const configurePromptLink = document.getElementById('configure-prompt-link');
 
+    // Prompt Modal Elements
+    const promptModalOverlay = document.getElementById('prompt-modal-overlay');
+    const promptModalContent = document.getElementById('prompt-modal-content');
+    const promptModalTitle = document.getElementById('modal-prompt-title');
+    const promptModalText = document.getElementById('modal-prompt-text');
+    const promptModalCloseBtn = document.getElementById('prompt-modal-close-btn');
+    const promptModalCloseBtnFooter = document.getElementById('prompt-modal-close-btn-footer');
+    const modalConfigureLink = document.getElementById('modal-configure-link');
+
+    const sendUrl = "{% url 'send_test_message' %}";
+    let selectedPagePk = null;
+    let selectedPageName = '';
+    const configureUrlBase = "{% url 'configure_page' 0 %}".replace('0', ''); // Base URL for config
+
+    // --- Page Selection Logic ---
+    if (pageSelect) {
+      pageSelect.addEventListener('change', function() {
+        selectedPagePk = this.value;
+        const selectedOption = this.options[this.selectedIndex];
+
+        if (selectedPagePk) {
+          selectedPageName = selectedOption.text.split(' (ID:')[0]; // Extract name
+          const prompt = selectedOption.getAttribute('data-prompt') || '{% trans "(No prompt set - using default)" %}';
+          const configureUrl = configureUrlBase + selectedPagePk + '/';
+
+          // Update UI
+          selectedPageNameSpan.textContent = selectedPageName;
+          systemPromptDisplay.textContent = prompt;
+          chatUI.style.display = 'block'; // Show chat
+          messageInput.disabled = false;
+          sendButton.disabled = false;
+          configurePromptLink.href = configureUrl;
+          configurePromptLink.classList.remove('hidden');
+          viewPromptLink.classList.remove('hidden');
+          modalConfigureLink.href = configureUrl;
+          modalConfigureLink.classList.remove('hidden');
+
+          // Clear chatbox and add initial AI message for the selected page
+          chatbox.innerHTML = `
+            <div class="message ai-message">
+              <strong>{% trans "AI" %}:</strong>
+              <span>${ interpolate(gettext("Hello! I'm ready to test using the prompt for '%s'. Type your message below."), [selectedPageName]) }</span>
+            </div>`;
+          hideError();
+          messageInput.focus();
+        } else {
+          // No page selected
+          selectedPageNameSpan.textContent = '{% trans "No page selected" %}';
+          systemPromptDisplay.textContent = '{% trans "(Select a page above to see its prompt)" %}';
+          messageInput.disabled = true;
+          sendButton.disabled = true;
+          configurePromptLink.classList.add('hidden');
+          viewPromptLink.classList.add('hidden');
+           modalConfigureLink.classList.add('hidden');
+          chatbox.innerHTML = `
+            <div class="message ai-message">
+              <strong>{% trans "AI" %}:</strong>
+              <span>{% trans "Please select a page above to begin testing." %}</span>
+            </div>`;
+          hideError();
+        }
+      });
+    }
+
+    // --- Prompt Modal Logic ---
+    function showPromptModal() {
+        if (!selectedPagePk) return;
+        const prompt = pageSelect.options[pageSelect.selectedIndex]?.getAttribute('data-prompt') || '{% trans "(No prompt set - using default)" %}';
+        promptModalTitle.textContent = interpolate(gettext("System Prompt for %s"), [selectedPageName]);
+        promptModalText.textContent = prompt;
+        promptModalOverlay.classList.add('visible');
+    }
+
+    function closePromptModal() {
+        promptModalOverlay.classList.remove('visible');
+    }
+
+    if (viewPromptLink) viewPromptLink.addEventListener('click', (e) => { e.preventDefault(); showPromptModal(); });
+    if (promptModalOverlay) promptModalOverlay.addEventListener('click', (e) => { if (e.target === promptModalOverlay) closePromptModal(); }); // Close on overlay click
+    if (promptModalCloseBtn) promptModalCloseBtn.addEventListener('click', closePromptModal);
+    if (promptModalCloseBtnFooter) promptModalCloseBtnFooter.addEventListener('click', closePromptModal);
+
+
+    // --- Chat Message Functions ---
     function addMessage(sender, text, messageType = "ai") {
       const messageDiv = document.createElement("div");
-      messageDiv.classList.add("message");
+      messageDiv.classList.add("message", `${messageType}-message`); // Combine classes
 
-      // Apply CSS classes based on type
-      switch (messageType) {
-        case "user":
-          messageDiv.classList.add("user-message");
-          break;
-        case "system":
-          messageDiv.classList.add("system-message");
-          break;
-        case "ai":
-        default:
-          messageDiv.classList.add("ai-message");
-          break;
-      }
-
-      // Create sender element (strong tag)
       const senderStrong = document.createElement("strong");
-      senderStrong.textContent = sender + ":"; // e.g., "AI:", "You:", "System:"
+      senderStrong.textContent = sender + ":";
       messageDiv.appendChild(senderStrong);
 
-      // Create text element (span tag to handle line breaks properly)
       const textSpan = document.createElement("span");
-      text.split("\n").forEach((line, index) => {
-        if (index > 0) textSpan.appendChild(document.createElement("br"));
-        textSpan.appendChild(document.createTextNode(line || "\u00A0")); // Use non-breaking space for empty lines
-      });
+      // Basic sanitization (replace < and > to prevent HTML injection)
+      const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      // Render newlines as <br>
+      textSpan.innerHTML = safeText.split('\n').join('<br>');
       messageDiv.appendChild(textSpan);
 
       chatbox.appendChild(messageDiv);
@@ -101,37 +206,30 @@
 
     function showError(message) {
       errorDisplay.textContent = `{% trans "Error" %}: ${message}`;
-      errorDisplay.style.display = "block";
-      // Scroll chatbox to show error if needed
+      errorDisplay.classList.remove('hidden');
       chatbox.scrollTo({ top: chatbox.scrollHeight, behavior: "smooth" });
-      // Optionally hide after some time
-      // setTimeout(() => { errorDisplay.style.display = 'none'; }, 7000);
     }
 
     function hideError() {
-      errorDisplay.style.display = "none";
+      errorDisplay.classList.add('hidden');
       errorDisplay.textContent = "";
     }
 
+    // --- Send Message Logic ---
     async function sendMessage() {
       const messageText = messageInput.value.trim();
-      if (!messageText) return;
+      if (!messageText || !selectedPagePk) return;
 
-      addMessage("{% trans 'You' %}", messageText, "user"); // Use translated "You"
-      const originalInputText = messageText;
+      addMessage("{% trans 'You' %}", messageText, "user");
       messageInput.value = "";
       messageInput.disabled = true;
       sendButton.disabled = true;
-      sendButton.textContent = "{% trans 'Sending...' %}"; // Use translated text
-      hideError(); // Hide previous errors
+      sendButton.textContent = "{% trans 'Sending...' %}";
+      hideError();
 
       try {
         const csrfToken = getCookie("csrftoken");
-        if (!csrfToken) {
-          throw new Error(
-            "{% trans 'CSRF token not found. Please refresh the page.' %}"
-          );
-        }
+        if (!csrfToken) throw new Error("{% trans 'CSRF token not found. Please refresh the page.' %}");
 
         const response = await fetch(sendUrl, {
           method: "POST",
@@ -139,78 +237,99 @@
             "Content-Type": "application/json",
             "X-CSRFToken": csrfToken,
           },
-          body: JSON.stringify({ message: messageText }),
+          body: JSON.stringify({
+              message: messageText,
+              page_pk: selectedPagePk // Send selected page PK
+          }),
         });
 
+        const data = await response.json(); // Try to parse JSON regardless of status
+
         if (!response.ok) {
-          let errorMsg = `{% trans "Server Error" %}: ${response.status} ${response.statusText}`;
-          try {
-            const errorData = await response.json();
-            errorMsg = errorData.error || errorMsg;
-          } catch (e) {
-            /* Ignore if response wasn't JSON */
-          }
-          throw new Error(errorMsg);
+          throw new Error(data.error || `{% trans "Server Error" %}: ${response.status}`);
         }
 
-        const data = await response.json();
-
         if (data.response) {
-          addMessage("{% trans 'AI' %}", data.response, "ai"); // Use translated "AI"
-        } else if (data.error) {
-          showError(data.error);
-          addMessage(
-            "{% trans 'System' %}", // Use translated "System"
-            `{% trans "Error processing message" %}: ${data.error}`,
-            "system"
-          );
+          addMessage("{% trans 'AI' %}", data.response, "ai");
+        } else if (data.error) { // Should have been caught by !response.ok, but check anyway
+          throw new Error(data.error);
         } else {
-          throw new Error(
-            "{% trans 'Received an unexpected response format from the server.' %}"
-          );
+          throw new Error("{% trans 'Received an unexpected response format.' %}");
         }
       } catch (error) {
         console.error("Failed to send message:", error);
-        const displayError =
-          error.message ||
-          "{% trans 'An unknown network or server error occurred.' %}";
+        const displayError = error.message || "{% trans 'An unknown error occurred.' %}";
         showError(displayError);
-        addMessage(
-          "{% trans 'System' %}", // Use translated "System"
-          `{% trans "Failed to get response" %}: ${displayError}`,
-          "system"
-        );
-        // messageInput.value = originalInputText; // Restore input for retry? Maybe not ideal UX.
+        // Optionally add a system message in chat about the failure
+        addMessage("{% trans 'System' %}", `${ gettext("Failed to get response") }: ${displayError}`, "system");
       } finally {
         messageInput.disabled = false;
         sendButton.disabled = false;
-        sendButton.textContent = "{% trans 'Send' %}"; // Use translated text
+        sendButton.textContent = "{% trans 'Send' %}";
         messageInput.focus();
+         autoResizeTextarea(messageInput); // Resize textarea after sending
       }
     }
 
-    sendButton.addEventListener("click", sendMessage);
-    messageInput.addEventListener("keypress", function (e) {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
-      }
-    });
+    // Auto-resize Textarea
+    function autoResizeTextarea(textarea) {
+        textarea.style.height = 'auto'; // Reset
+        const maxHeight = 150; // Max height in pixels
+        const newHeight = Math.min(textarea.scrollHeight, maxHeight);
+        textarea.style.height = newHeight + 'px';
+    }
 
-    function getCookie(name) {
-      let cookieValue = null;
-      if (document.cookie && document.cookie !== "") {
-        const cookies = document.cookie.split(";");
-        for (let i = 0; i < cookies.length; i++) {
-          const cookie = cookies[i].trim();
-          if (cookie.substring(0, name.length + 1) === name + "=") {
-            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-            break;
-          }
+    if (messageInput) {
+        messageInput.addEventListener('input', () => autoResizeTextarea(messageInput));
+    }
+
+
+    // Event Listeners for sending
+    if (sendButton) sendButton.addEventListener("click", sendMessage);
+    if (messageInput) {
+      messageInput.addEventListener("keypress", function (e) {
+        if (e.key === "Enter" && !e.shiftKey) { // Send on Enter (not Shift+Enter)
+          e.preventDefault();
+          sendMessage();
         }
-      }
-      return cookieValue;
+      });
     }
-  });
+
+    // --- Utility Functions ---
+    function getCookie(name) { /* ... Standard getCookie function ... */
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+     }
+
+    // Simple string interpolation helper (replace %s)
+    function interpolate(format, args) {
+        let i = 0;
+        return format.replace(/%s/g, () => args[i++]);
+    }
+
+     // --- Initial State ---
+     // Ensure input is disabled if no page selected initially
+     if (!pageSelect || !pageSelect.value) {
+         messageInput.disabled = true;
+         sendButton.disabled = true;
+     } else {
+         // If a page IS selected on load (e.g., browser back button), trigger change
+         pageSelect.dispatchEvent(new Event('change'));
+     }
+
+     // Auto-resize textarea on load
+     if(messageInput) autoResizeTextarea(messageInput);
+
+  }); // End DOMContentLoaded
 </script>
 {% endblock %}

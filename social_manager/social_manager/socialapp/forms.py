@@ -1,55 +1,46 @@
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import CustomUser
-from django.utils.translation import gettext as _ # For translations in views
-
 from django import forms
+from django.utils.translation import gettext_lazy as _
+from .models import ConnectedPage # Import the new model
 
-
-class CustomUserCreationForm(UserCreationForm):
-    class Meta:
-        model = CustomUser
-        fields = ('username', 'password')
-
-class CustomUserChangeForm(UserChangeForm):
-    class Meta:
-        model = CustomUser
-        fields = ('username', 'meta_access_token')
-        
-
-
-class CustomUserCreationForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
-        model = CustomUser
-        fields = ('username', 'email')  # Include your custom fields
-
-class SystemPromptForm(forms.ModelForm):
-    """
-    Form for users to update their AI system prompt.
-    """
-    system_prompt = forms.CharField(
-        widget=forms.Textarea(attrs={
-            'rows': 8, # Provide more space for longer prompts
-            'placeholder': 'e.g., You are a friendly and helpful assistant for "My Flower Shop". Your goal is to answer questions about flower types, availability, and delivery options. You can also take simple orders for bouquets listed on our website [link]. Ask for the recipient\'s name, address, desired delivery date, and a card message. Be polite and professional.'
-            
-        }),
-        help_text="Define the base behavior, role, knowledge, and personality of your AI assistant. This guides all its responses. Leave blank to use the default system behavior.",
-        required=False # Allow users to clear the prompt and use the default
-    )
-
-    class Meta:
-        model = CustomUser
-        fields = ['system_prompt'] # Only include this field in the form
-
-
-
+# --- Manual Reply Form (Keep as is) ---
 class ManualReplyForm(forms.Form):
-    """ Form for sending manual replies within a conversation. """
     message = forms.CharField(
         widget=forms.Textarea(attrs={
-            'rows': 3,
-            'placeholder': _('Type your manual reply here...'),
-            'class': 'form-control' # Added class for potential styling
-            }),
-        label=_("Send Manual Reply"),
-        required=True
+            'rows': 2,
+            'placeholder': _('Type your manual reply...'),
+            'class': 'form-input manual-reply-textarea', # Add classes for styling/JS
+            'style': 'min-height: 40px; resize: vertical;', # Basic inline style
+        }),
+        label="", # Hide default label, use placeholder
     )
+
+# --- Remove SystemPromptForm for CustomUser ---
+# class SystemPromptForm(forms.ModelForm):
+#     class Meta:
+#         model = CustomUser
+#         fields = ['system_prompt']
+#         # ... widgets etc ...
+
+# --- NEW Form for ConnectedPage prompt ---
+class PageSystemPromptForm(forms.ModelForm):
+    """
+    Form for editing the system_prompt of a specific ConnectedPage.
+    """
+    class Meta:
+        model = ConnectedPage
+        fields = ['system_prompt'] # Only edit the prompt field
+        widgets = {
+            'system_prompt': forms.Textarea(attrs={
+                'rows': 15, # Make it reasonably tall
+                'placeholder': _("Enter the AI instructions, context, and personality for this specific page. This defines how the AI will respond to messages received via this page. Leave blank to use a general default behavior."),
+                'class': 'form-input font-mono text-sm', # Use consistent styling, add mono font maybe
+                'style': 'min-height: 300px; resize: vertical;', # Ensure decent height
+            }),
+        }
+        labels = {
+            # Use a more generic label as the context (page name) will be shown elsewhere
+            'system_prompt': _("Page AI System Prompt"),
+        }
+        help_texts = {
+             'system_prompt': _("This prompt guides the AI's responses ONLY when interacting via THIS specific page."),
+        }

@@ -450,47 +450,57 @@
           </div>
 
           <nav class="nav-items">
-              {# --- Dashboard Link --- #}
-              <a href="{% url 'home' %}" class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
-                  <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                  {% trans "Dashboard" %}
-              </a>
-              <a href="{% url 'inbox' %}" class="nav-item {% if request.resolver_match.url_name == 'inbox' or request.resolver_match.url_name == 'conversation_detail' %}active{% endif %}">
-                  <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                  {% trans "Inbox" %}
-              </a>
+           {# --- Dashboard Link --- #}
+           <a href="{% url 'home' %}" class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+            {# ... icon ... #} {% trans "Dashboard" %}
+        </a>
 
-              <a class='nav-item' href="{% url 'privacy_policy' %}">{% trans "Privacy Policy" %}</a>
-              {# --- AI Prompt Link --- #}
-              <a href="{% url 'update_system_prompt' %}" class="nav-item {% if request.resolver_match.url_name == 'update_system_prompt' %}active{% endif %}">
-                  <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z"></path><path d="M12 18a1.5 1.5 0 0 0 1.5-1.5v-6A1.5 1.5 0 0 0 12 9z"></path><path d="M12 6h.01"></path></svg>
-                  {% trans "AI Prompt" %}
-              </a>
+        {# --- Inbox Link --- #}
+        <a href="{% url 'inbox' %}" class="nav-item {% if request.resolver_match.url_name == 'inbox' or request.resolver_match.url_name == 'conversation_detail' %}active{% endif %}">
+            {# ... icon ... #} {% trans "Inbox" %}
+        </a>
 
-              {# --- Test AI Link --- #}
-              <a href="{% url 'test_ai_conversation' %}" class="nav-item {% if request.resolver_match.url_name == 'test_ai_conversation' or request.resolver_match.url_name == 'send_test_message' %}active{% endif %}">
-                  <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                  {% trans "Test AI" %}
-              </a>
+        {# --- Connected Pages Link --- #}
+        <a href="{% url 'connected_pages_list' %}" class="nav-item {% if request.resolver_match.url_name == 'connected_pages_list' or request.resolver_match.url_name == 'configure_page' %}active{% endif %}">
+             <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+             {% trans "Connected Pages" %}
+        </a>
 
-              {# --- Connect Page Link/Status --- #}
-              <div class="nav-item"> {# Use div as it's not just a link #}
-                  <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                  {% trans "Connect Page" %}
-                  {% if user.is_authenticated and user.page_id and user.page_access_token %}
-                      <span class="nav-status-indicator nav-status-ok" title="{% blocktrans with page_id=user.page_id %}Facebook/Instagram Page Connected (ID: {{ page_id }}){% endblocktrans %}">{% trans "Connected" %}</span>
-                  {% elif user.is_authenticated %}
-                      <a href="{% url 'meta_auth' %}" class="connect-link">{% trans "Connect" %}</a>
-                  {% else %}
-                      <span class="nav-status-indicator" title="{% trans 'Login to connect' %}">{% trans "N/A" %}</span>
-                  {% endif %}
-              </div>
+        {# --- AI Prompt Link REMOVED --- #}
+        {# <a href="{% url 'update_system_prompt' %}" ... > {% trans "AI Prompt" %} </a> #}
 
-              {# --- Settings Link --- #}
-              <a href="#" class="nav-item"> {# Add URL when available #}
-                  <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.51a2 2 0 0 1 1-1.72l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                  {% trans "Settings" %}
-              </a>
+        {# --- Test AI Link --- #}
+        <a href="{% url 'test_ai_conversation' %}" class="nav-item {% if request.resolver_match.url_name == 'test_ai_conversation' or request.resolver_match.url_name == 'send_test_message' %}active{% endif %}">
+            {# ... icon ... #} {% trans "Test AI" %}
+        </a>
+
+        {# --- Privacy Policy Link --- #}
+        <a class='nav-item {% if request.resolver_match.url_name == 'privacy_policy' %}active{% endif %}' href="{% url 'privacy_policy' %}">
+             <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+             {% trans "Privacy Policy" %}
+        </a>
+
+        {# --- Connect Page Status Area (Simplified) --- #}
+        <div class="nav-item" style="cursor: default;"> {# Not a link itself #}
+            <i class="fab fa-facebook icon" style="stroke: none; fill: currentColor;"></i> {# Use FB icon #}
+            {% trans "Page Status" %}
+            {% if user.is_authenticated %}
+                {% with connected_pages_count=user.connected_pages.count %}
+                    {% if connected_pages_count > 0 %}
+                        <span class="nav-status-indicator nav-status-ok" title="{% blocktrans count count=connected_pages_count %}{{ count }} page connected{% plural %}{{ count }} pages connected{% endblocktrans %}">
+                            {% blocktrans count count=connected_pages_count %}{{ count }} Connected{% plural %}{{ count }} Connected{% endblocktrans %}
+                        </span>
+                    {% else %}
+                         <a href="{% url 'meta_auth' %}" class="connect-link">{% trans "Connect" %}</a>
+                    {% endif %}
+                {% endwith %}
+            {% else %}
+                <span class="nav-status-indicator" title="{% trans 'Login to connect' %}">{% trans "N/A" %}</span>
+            {% endif %}
+        </div>
+
+        {# --- Settings Link (Placeholder) --- #}
+        {# <a href="#" class="nav-item"> ... {% trans "Settings" %} </a> #}
           </nav>
 
           <div class="sidebar-footer">

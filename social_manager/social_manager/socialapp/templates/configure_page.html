@@ -1,0 +1,75 @@
+{% extends 'base_generic.html' %}
+{% load static i18n %}
+
+{% block title %}
+  {% blocktrans with page_name=page.page_name %}Configure: {{ page_name }}{% endblocktrans %}
+{% endblock %}
+
+{% block header_title %}
+  {% blocktrans with page_name=page.page_name %}Configure AI for {{ page_name }}{% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+             <i class="fab fa-facebook-square" style="font-size: 2rem; color: #1877F2;" aria-hidden="true"></i>
+             <div>
+                 <h2 class="card-title" style="margin-bottom: 0;">{{ page.page_name }}</h2>
+                 <p class="card-description" style="margin-bottom: 0;">ID: {{ page.page_id }}</p>
+             </div>
+        </div>
+        <p class="card-description">
+            {% trans "Set the specific instructions and personality the AI should use when responding to messages sent to this page." %}
+        </p>
+    </div>
+
+    <div class="card-content">
+        <form method="post" action="{% url 'configure_page' page.pk %}" class="styled-form prompt-update-form" novalidate>
+            {% csrf_token %}
+
+            {# Display form errors at the top if any #}
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {# Render the system_prompt field #}
+            <div class="form-field-wrapper">
+                <label for="{{ form.system_prompt.id_for_label }}">{{ form.system_prompt.label }}</label>
+                {{ form.system_prompt }} {# Renders the textarea widget #}
+                {% if form.system_prompt.help_text %}
+                    <p class="helptext">{{ form.system_prompt.help_text }}</p>
+                {% endif %}
+                {% if form.system_prompt.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.system_prompt.errors %}<li>{{ error }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="form-actions" style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
+                <button type="submit" class="button button-primary">{% trans 'Save Prompt' %}</button>
+                <a href="{% url 'test_ai_conversation' %}" class="button button-secondary">{% trans 'Test AI' %}</a>
+                <a href="{% url 'connected_pages_list' %}" class="button button-ghost">{% trans 'Back to Pages' %}</a>
+            </div>
+        </form>
+
+        {# Optional: Display Current Prompt Separately #}
+        {#
+        <hr style="margin: 2rem 0;">
+        <h3>{% trans 'Currently Saved Prompt' %}</h3>
+        <div class="current-prompt-display">
+            {% if current_prompt %}
+                <pre style="white-space: pre-wrap; font-family: inherit; max-height: 300px; overflow-y: auto; padding: 0.5rem; background: var(--secondary); border: 1px solid var(--border); border-radius: var(--radius);">{{ current_prompt }}</pre>
+            {% else %}
+                <p style="font-style: italic; color: var(--muted-foreground)">({% trans 'No custom prompt set. Using default behavior.' %})</p>
+            {% endif %}
+        </div>
+         #}
+    </div>
+</div>
+{% endblock %}

@@ -21,12 +21,12 @@ META_APP_ID = '1152489759401130'
 META_APP_SECRET = '6637d283f19db96a3b243134fa70249c'
 #META_REDIRECT_URI = 'http://localhost:8000/auth/meta/callback/'
 
-# META_REDIRECT_URI = 'https://socialmanager.ge/auth/meta/callback/'
-# LOGIN_REDIRECT_URL = 'https://socialmanager.ge/home/'
+META_REDIRECT_URI = 'https://socialmanager.ge/auth/meta/callback/'
+LOGIN_REDIRECT_URL = 'https://socialmanager.ge/home/'
 
 
-META_REDIRECT_URI = 'http://localhost:8000/auth/meta/callback/'
-LOGIN_REDIRECT_URL = 'http://localhost:8000/home/'
+# META_REDIRECT_URI = 'http://localhost:8000/auth/meta/callback/'
+# LOGIN_REDIRECT_URL = 'http://localhost:8000/home/'
 AUTH_USER_MODEL = 'socialapp.CustomUser'
 META_VERIFY_TOKEN='demuraaa'
 # Quick-start development settings - unsuitable for production
@@ -34,7 +34,7 @@ META_VERIFY_TOKEN='demuraaa'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-(5hlz5l%(kuc!4g!)!1b5)wozz8o*2(i6tb571+%th1q^xap4o'
-
+GROK_API_KEY='xai-P2NKQUwEzPnmIg9FZCxkCHtX8rgwEmcRWAkjEcfHid64zYsmXPyFCzFoaxpNoN9fWmHo862RZZ3yBPOB'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
