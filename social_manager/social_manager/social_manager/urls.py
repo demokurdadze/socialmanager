@@ -16,8 +16,8 @@ urlpatterns = [
 
     # --- Page Management ---
     path('pages/', views.connected_pages_list, name='connected_pages_list'),
-    path('pages/<int:connected_page_pk>/configure/', views.configure_page, name='configure_page'),
-    path('pages/<int:connected_page_pk>/disconnect/', views.disconnect_page, name='disconnect_page'), # POST only
+    path('pages/configure/<int:connected_page_pk>/', views.configure_page, name='configure_page'),
+    path('pages/disconnect/<int:connected_page_pk>/', views.disconnect_page, name='disconnect_page'), # POST only
 
     # --- Webhook ---
     path('webhook/', views.messenger_webhook, name='messenger_webhook'), # Ensure this matches webhook URL in Meta App settings

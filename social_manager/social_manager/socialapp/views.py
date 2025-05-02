@@ -644,7 +644,8 @@ def configure_page(request, connected_page_pk):
         pk=connected_page_pk,
         user=request.user # Ensure ownership
     )
-
+  
+ 
     if request.method == 'POST':
         # Handle the prompt update form submission
         form = PageSystemPromptForm(request.POST, instance=page)
