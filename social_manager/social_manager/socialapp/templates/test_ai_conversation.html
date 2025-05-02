@@ -70,7 +70,7 @@
                  <div id="prompt-modal-content" class="prompt-modal-content">
                     <div class="prompt-modal-header">
                         <h3 id="modal-prompt-title" class="prompt-modal-title">{% trans "System Prompt" %}</h3>
-                        <button id="prompt-modal-close-btn" class="prompt-modal-close-btn" aria-label="{% trans 'Close' %}">&times;</button>
+                        <button id="prompt-modal-close-btn" class="prompt-modal-close-btn" aria-label="{% trans 'Close' %}">×</button>
                     </div>
                     <div class="prompt-modal-body">
                          <pre id="modal-prompt-text" style="white-space: pre-wrap; font-family: monospace; font-size: 0.9rem;"></pre>
@@ -89,247 +89,305 @@
 
 {% block scripts_extra %}
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const pageSelect = document.getElementById('page-select');
-    const chatUI = document.getElementById('chat-ui');
-    const chatbox = document.getElementById('chatbox');
-    const messageInput = document.getElementById('message-input');
-    const sendButton = document.getElementById('send-button');
-    const errorDisplay = document.getElementById('error-display');
-    const systemPromptDisplay = document.getElementById('system-prompt-display');
-    const selectedPageNameSpan = document.getElementById('selected-page-name');
-    const viewPromptLink = document.getElementById('view-prompt-link');
-    const configurePromptLink = document.getElementById('configure-prompt-link');
+  // Wrap everything in a try...catch for easier debugging if needed
+  try {
+    document.addEventListener('DOMContentLoaded', function () {
+      const pageSelect = document.getElementById('page-select');
+      const chatUI = document.getElementById('chat-ui');
+      const chatbox = document.getElementById('chatbox');
+      const messageInput = document.getElementById('message-input');
+      const sendButton = document.getElementById('send-button');
+      const errorDisplay = document.getElementById('error-display');
+      const systemPromptDisplay = document.getElementById('system-prompt-display');
+      const selectedPageNameSpan = document.getElementById('selected-page-name');
+      const viewPromptLink = document.getElementById('view-prompt-link');
+      const configurePromptLink = document.getElementById('configure-prompt-link');
 
-    // Prompt Modal Elements
-    const promptModalOverlay = document.getElementById('prompt-modal-overlay');
-    const promptModalContent = document.getElementById('prompt-modal-content');
-    const promptModalTitle = document.getElementById('modal-prompt-title');
-    const promptModalText = document.getElementById('modal-prompt-text');
-    const promptModalCloseBtn = document.getElementById('prompt-modal-close-btn');
-    const promptModalCloseBtnFooter = document.getElementById('prompt-modal-close-btn-footer');
-    const modalConfigureLink = document.getElementById('modal-configure-link');
+      // Prompt Modal Elements
+      const promptModalOverlay = document.getElementById('prompt-modal-overlay');
+      const promptModalContent = document.getElementById('prompt-modal-content'); // Ensure this ID exists
+      const promptModalTitle = document.getElementById('modal-prompt-title');
+      const promptModalText = document.getElementById('modal-prompt-text');
+      const promptModalCloseBtn = document.getElementById('prompt-modal-close-btn');
+      const promptModalCloseBtnFooter = document.getElementById('prompt-modal-close-btn-footer');
+      const modalConfigureLink = document.getElementById('modal-configure-link');
 
-    const sendUrl = "{% url 'send_test_message' %}";
-    let selectedPagePk = null;
-    let selectedPageName = '';
-    const configureUrlBase = "{% url 'configure_page' 0 %}".replace('0', ''); // Base URL for config
+      const sendUrl = "{% url 'send_test_message' %}"; // URL for sending test messages via AJAX
+      let selectedPagePk = null;
+      let selectedPageName = '';
+      // Base URL construction is now done inside the event listener
 
-    // --- Page Selection Logic ---
-    if (pageSelect) {
-      pageSelect.addEventListener('change', function() {
-        selectedPagePk = this.value;
-        const selectedOption = this.options[this.selectedIndex];
+      // --- Page Selection Logic ---
+      if (pageSelect) {
+        pageSelect.addEventListener('change', function() {
+          selectedPagePk = this.value;
+          const selectedOption = this.options[this.selectedIndex];
 
-        if (selectedPagePk) {
-          selectedPageName = selectedOption.text.split(' (ID:')[0]; // Extract name
-          const prompt = selectedOption.getAttribute('data-prompt') || '{% trans "(No prompt set - using default)" %}';
-          const configureUrl = configureUrlBase + selectedPagePk + '/';
+          if (selectedPagePk && selectedOption) { // Check if selectedOption exists
+            selectedPageName = selectedOption.text.split(' (ID:')[0]; // Extract name cleanly
+            const prompt = selectedOption.getAttribute('data-prompt') || gettext("(No prompt set - using default)");
 
-          // Update UI
-          selectedPageNameSpan.textContent = selectedPageName;
-          systemPromptDisplay.textContent = prompt;
-          chatUI.style.display = 'block'; // Show chat
+            // --- CORRECTED URL BUILDING ---
+            // Construct the URL path directly based on known structure and selected PK
+            const configureUrl = `/pages/${selectedPagePk}/configure/`;
+            // --- END CORRECTION ---
+
+            // Update UI elements
+            selectedPageNameSpan.textContent = selectedPageName;
+            systemPromptDisplay.textContent = prompt;
+            chatUI.style.display = 'block'; // Show chat area
+            messageInput.disabled = false; // Enable input
+            sendButton.disabled = false; // Enable send button
+
+            // Update link hrefs safely
+            if (configurePromptLink) {
+                configurePromptLink.href = configureUrl;
+                configurePromptLink.classList.remove('hidden');
+            }
+            if (viewPromptLink) {
+                viewPromptLink.classList.remove('hidden');
+            }
+            if (modalConfigureLink) {
+                 modalConfigureLink.href = configureUrl;
+                 modalConfigureLink.classList.remove('hidden');
+            }
+
+
+            // Clear chatbox and add initial message for the selected page
+            chatbox.innerHTML = `
+              <div class="message ai-message">
+                <strong>${ gettext("AI") }:</strong>
+                <span>${ interpolate(gettext("Hello! I'm ready to test using the prompt for '%s'. Type your message below."), [selectedPageName]) }</span>
+              </div>`;
+            hideError();
+            if(messageInput) messageInput.focus(); // Focus input field
+
+          } else {
+            // Reset UI if no page is selected (e.g., selecting "--- Select a Page ---")
+            selectedPagePk = null;
+            selectedPageName = '';
+            selectedPageNameSpan.textContent = gettext("No page selected");
+            systemPromptDisplay.textContent = gettext("(Select a page above to see its prompt)");
+            if(messageInput) messageInput.disabled = true; // Disable input
+            if(sendButton) sendButton.disabled = true; // Disable send button
+
+            // Hide related links
+            if (configurePromptLink) configurePromptLink.classList.add('hidden');
+            if (viewPromptLink) viewPromptLink.classList.add('hidden');
+            if (modalConfigureLink) modalConfigureLink.classList.add('hidden');
+
+            // Reset chatbox
+            chatbox.innerHTML = `
+              <div class="message ai-message">
+                <strong>${ gettext("AI") }:</strong>
+                <span>${ gettext("Please select a page above to begin testing.") }</span>
+              </div>`;
+            hideError();
+          }
+        });
+      } else {
+          console.warn("Page select dropdown ('page-select') not found.");
+      }
+
+      // --- Prompt Modal Logic ---
+      function showPromptModal() {
+          if (!selectedPagePk || !pageSelect) return; // Don't show if no page selected
+          const selectedOption = pageSelect.options[pageSelect.selectedIndex];
+          if (!selectedOption) return; // Safety check
+
+          const prompt = selectedOption.getAttribute('data-prompt') || gettext("(No prompt set - using default)");
+          if (promptModalTitle) promptModalTitle.textContent = interpolate(gettext("System Prompt for %s"), [selectedPageName]);
+          if (promptModalText) promptModalText.textContent = prompt; // Display raw prompt text
+          if (promptModalOverlay) promptModalOverlay.classList.add('visible'); // Show the modal
+      }
+
+      function closePromptModal() {
+          if (promptModalOverlay) promptModalOverlay.classList.remove('visible'); // Hide the modal
+      }
+
+      // Add event listeners only if elements exist
+      if (viewPromptLink) viewPromptLink.addEventListener('click', (e) => { e.preventDefault(); showPromptModal(); });
+      if (promptModalOverlay) promptModalOverlay.addEventListener('click', (e) => { if (e.target === promptModalOverlay) closePromptModal(); }); // Close on overlay click
+      if (promptModalCloseBtn) promptModalCloseBtn.addEventListener('click', closePromptModal);
+      if (promptModalCloseBtnFooter) promptModalCloseBtnFooter.addEventListener('click', closePromptModal);
+
+
+      // --- Chat Message Functions ---
+      function addMessage(sender, text, messageType = "ai") {
+        if (!chatbox) return;
+        const messageDiv = document.createElement("div");
+        messageDiv.classList.add("message", `${messageType}-message`); // Combine classes
+
+        const senderStrong = document.createElement("strong");
+        senderStrong.textContent = sender + ":";
+        messageDiv.appendChild(senderStrong);
+
+        const textSpan = document.createElement("span");
+        // Basic sanitization (replace < and > to prevent HTML injection)
+        const safeText = text.replace(/</g, "<").replace(/>/g, ">");
+        // Render newlines as <br>
+        textSpan.innerHTML = safeText.split('\n').join('<br>');
+        messageDiv.appendChild(textSpan);
+
+        chatbox.appendChild(messageDiv);
+        // Scroll to bottom smoothly
+        chatbox.scrollTo({ top: chatbox.scrollHeight, behavior: "smooth" });
+      }
+
+      function showError(message) {
+        if (!errorDisplay) return;
+        errorDisplay.textContent = `${gettext("Error")}: ${message}`;
+        errorDisplay.classList.remove('hidden');
+        if (chatbox) chatbox.scrollTo({ top: chatbox.scrollHeight, behavior: "smooth" });
+      }
+
+      function hideError() {
+        if (errorDisplay) {
+            errorDisplay.classList.add('hidden');
+            errorDisplay.textContent = "";
+        }
+      }
+
+      // --- Send Message Logic ---
+      async function sendMessage() {
+        if (!messageInput || !sendButton) return; // Check elements exist
+        const messageText = messageInput.value.trim();
+        if (!messageText || !selectedPagePk) return; // Check message and page selection
+
+        addMessage(gettext("You"), messageText, "user");
+        messageInput.value = ""; // Clear input
+        messageInput.disabled = true;
+        sendButton.disabled = true;
+        sendButton.textContent = gettext("Sending...");
+        hideError(); // Hide previous errors
+
+        try {
+          const csrfToken = getCookie("csrftoken");
+          if (!csrfToken) throw new Error(gettext("CSRF token not found. Please refresh the page."));
+
+          const response = await fetch(sendUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRFToken": csrfToken,
+            },
+            body: JSON.stringify({
+                message: messageText,
+                page_pk: selectedPagePk // Send selected page PK
+            }),
+          });
+
+          // Always try to parse JSON, but prioritize response.ok check
+          let data;
+          try {
+              data = await response.json();
+          } catch (jsonError) {
+              // Handle cases where the response is not valid JSON
+              console.error("Failed to parse server response as JSON:", jsonError);
+              throw new Error(`${gettext("Server Error")}: ${response.status} - Invalid response format.`);
+          }
+
+
+          if (!response.ok) {
+            // Use error from JSON if available, otherwise use status
+            throw new Error(data?.error || `${gettext("Server Error")}: ${response.status}`);
+          }
+
+          // Process successful response
+          if (data.response) {
+            addMessage(gettext("AI"), data.response, "ai");
+          } else if (data.error) { // Check error even on 2xx (shouldn't happen ideally)
+            throw new Error(data.error);
+          } else {
+            // Should not happen if response.ok is true and no error in JSON
+            throw new Error(gettext("Received an unexpected successful response format."));
+          }
+        } catch (error) {
+          console.error("Failed to send message:", error);
+          const displayError = error.message || gettext("An unknown error occurred.");
+          showError(displayError);
+          // Optionally add a system message in chat about the failure
+          addMessage(gettext("System"), `${ gettext("Failed to get response") }: ${displayError}`, "system");
+        } finally {
+          // Re-enable input fields
           messageInput.disabled = false;
           sendButton.disabled = false;
-          configurePromptLink.href = configureUrl;
-          configurePromptLink.classList.remove('hidden');
-          viewPromptLink.classList.remove('hidden');
-          modalConfigureLink.href = configureUrl;
-          modalConfigureLink.classList.remove('hidden');
-
-          // Clear chatbox and add initial AI message for the selected page
-          chatbox.innerHTML = `
-            <div class="message ai-message">
-              <strong>{% trans "AI" %}:</strong>
-              <span>${ interpolate(gettext("Hello! I'm ready to test using the prompt for '%s'. Type your message below."), [selectedPageName]) }</span>
-            </div>`;
-          hideError();
-          messageInput.focus();
-        } else {
-          // No page selected
-          selectedPageNameSpan.textContent = '{% trans "No page selected" %}';
-          systemPromptDisplay.textContent = '{% trans "(Select a page above to see its prompt)" %}';
-          messageInput.disabled = true;
-          sendButton.disabled = true;
-          configurePromptLink.classList.add('hidden');
-          viewPromptLink.classList.add('hidden');
-           modalConfigureLink.classList.add('hidden');
-          chatbox.innerHTML = `
-            <div class="message ai-message">
-              <strong>{% trans "AI" %}:</strong>
-              <span>{% trans "Please select a page above to begin testing." %}</span>
-            </div>`;
-          hideError();
+          sendButton.textContent = gettext("Send");
+          messageInput.focus(); // Focus back on input
+          autoResizeTextarea(messageInput); // Resize textarea after sending
         }
-      });
-    }
-
-    // --- Prompt Modal Logic ---
-    function showPromptModal() {
-        if (!selectedPagePk) return;
-        const prompt = pageSelect.options[pageSelect.selectedIndex]?.getAttribute('data-prompt') || '{% trans "(No prompt set - using default)" %}';
-        promptModalTitle.textContent = interpolate(gettext("System Prompt for %s"), [selectedPageName]);
-        promptModalText.textContent = prompt;
-        promptModalOverlay.classList.add('visible');
-    }
-
-    function closePromptModal() {
-        promptModalOverlay.classList.remove('visible');
-    }
-
-    if (viewPromptLink) viewPromptLink.addEventListener('click', (e) => { e.preventDefault(); showPromptModal(); });
-    if (promptModalOverlay) promptModalOverlay.addEventListener('click', (e) => { if (e.target === promptModalOverlay) closePromptModal(); }); // Close on overlay click
-    if (promptModalCloseBtn) promptModalCloseBtn.addEventListener('click', closePromptModal);
-    if (promptModalCloseBtnFooter) promptModalCloseBtnFooter.addEventListener('click', closePromptModal);
-
-
-    // --- Chat Message Functions ---
-    function addMessage(sender, text, messageType = "ai") {
-      const messageDiv = document.createElement("div");
-      messageDiv.classList.add("message", `${messageType}-message`); // Combine classes
-
-      const senderStrong = document.createElement("strong");
-      senderStrong.textContent = sender + ":";
-      messageDiv.appendChild(senderStrong);
-
-      const textSpan = document.createElement("span");
-      // Basic sanitization (replace < and > to prevent HTML injection)
-      const safeText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-      // Render newlines as <br>
-      textSpan.innerHTML = safeText.split('\n').join('<br>');
-      messageDiv.appendChild(textSpan);
-
-      chatbox.appendChild(messageDiv);
-      chatbox.scrollTo({ top: chatbox.scrollHeight, behavior: "smooth" });
-    }
-
-    function showError(message) {
-      errorDisplay.textContent = `{% trans "Error" %}: ${message}`;
-      errorDisplay.classList.remove('hidden');
-      chatbox.scrollTo({ top: chatbox.scrollHeight, behavior: "smooth" });
-    }
-
-    function hideError() {
-      errorDisplay.classList.add('hidden');
-      errorDisplay.textContent = "";
-    }
-
-    // --- Send Message Logic ---
-    async function sendMessage() {
-      const messageText = messageInput.value.trim();
-      if (!messageText || !selectedPagePk) return;
-
-      addMessage("{% trans 'You' %}", messageText, "user");
-      messageInput.value = "";
-      messageInput.disabled = true;
-      sendButton.disabled = true;
-      sendButton.textContent = "{% trans 'Sending...' %}";
-      hideError();
-
-      try {
-        const csrfToken = getCookie("csrftoken");
-        if (!csrfToken) throw new Error("{% trans 'CSRF token not found. Please refresh the page.' %}");
-
-        const response = await fetch(sendUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrfToken,
-          },
-          body: JSON.stringify({
-              message: messageText,
-              page_pk: selectedPagePk // Send selected page PK
-          }),
-        });
-
-        const data = await response.json(); // Try to parse JSON regardless of status
-
-        if (!response.ok) {
-          throw new Error(data.error || `{% trans "Server Error" %}: ${response.status}`);
-        }
-
-        if (data.response) {
-          addMessage("{% trans 'AI' %}", data.response, "ai");
-        } else if (data.error) { // Should have been caught by !response.ok, but check anyway
-          throw new Error(data.error);
-        } else {
-          throw new Error("{% trans 'Received an unexpected response format.' %}");
-        }
-      } catch (error) {
-        console.error("Failed to send message:", error);
-        const displayError = error.message || "{% trans 'An unknown error occurred.' %}";
-        showError(displayError);
-        // Optionally add a system message in chat about the failure
-        addMessage("{% trans 'System' %}", `${ gettext("Failed to get response") }: ${displayError}`, "system");
-      } finally {
-        messageInput.disabled = false;
-        sendButton.disabled = false;
-        sendButton.textContent = "{% trans 'Send' %}";
-        messageInput.focus();
-         autoResizeTextarea(messageInput); // Resize textarea after sending
       }
-    }
 
-    // Auto-resize Textarea
-    function autoResizeTextarea(textarea) {
-        textarea.style.height = 'auto'; // Reset
-        const maxHeight = 150; // Max height in pixels
-        const newHeight = Math.min(textarea.scrollHeight, maxHeight);
-        textarea.style.height = newHeight + 'px';
-    }
+      // Auto-resize Textarea Function
+      function autoResizeTextarea(textarea) {
+          if (!textarea) return;
+          textarea.style.height = 'auto'; // Reset height to calculate scrollHeight correctly
+          const maxHeight = 150; // Define max height in pixels
+          const newHeight = Math.min(textarea.scrollHeight, maxHeight);
+          // Apply new height, adding a small buffer might be needed depending on box-sizing
+          textarea.style.height = newHeight + 'px';
+      }
 
-    if (messageInput) {
-        messageInput.addEventListener('input', () => autoResizeTextarea(messageInput));
-    }
+      // Add input listener for auto-resize if messageInput exists
+      if (messageInput) {
+          messageInput.addEventListener('input', () => autoResizeTextarea(messageInput));
+      }
 
 
-    // Event Listeners for sending
-    if (sendButton) sendButton.addEventListener("click", sendMessage);
-    if (messageInput) {
-      messageInput.addEventListener("keypress", function (e) {
-        if (e.key === "Enter" && !e.shiftKey) { // Send on Enter (not Shift+Enter)
-          e.preventDefault();
-          sendMessage();
-        }
-      });
-    }
+      // Add Event Listeners for sending message
+      if (sendButton) sendButton.addEventListener("click", sendMessage);
+      if (messageInput) {
+        messageInput.addEventListener("keypress", function (e) {
+          if (e.key === "Enter" && !e.shiftKey) { // Send on Enter (not Shift+Enter)
+            e.preventDefault(); // Prevent default newline insertion
+            sendMessage();
+          }
+        });
+      }
 
-    // --- Utility Functions ---
-    function getCookie(name) { /* ... Standard getCookie function ... */
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-     }
+      // --- Utility Functions ---
+      function getCookie(name) {
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== '') {
+              const cookies = document.cookie.split(';');
+              for (let i = 0; i < cookies.length; i++) {
+                  const cookie = cookies[i].trim();
+                  // Does this cookie string begin with the name we want?
+                  if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                      cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                      break;
+                  }
+              }
+          }
+          return cookieValue;
+       }
 
-    // Simple string interpolation helper (replace %s)
-    function interpolate(format, args) {
-        let i = 0;
-        return format.replace(/%s/g, () => args[i++]);
-    }
+      // Simple string interpolation helper (replace %s) - Django i18n format
+      function interpolate(format, args) {
+          let i = 0;
+          // Replace %s placeholders with arguments
+          return format.replace(/%s/g, function() {
+              return args[i++];
+          });
+      }
 
-     // --- Initial State ---
-     // Ensure input is disabled if no page selected initially
-     if (!pageSelect || !pageSelect.value) {
-         messageInput.disabled = true;
-         sendButton.disabled = true;
-     } else {
-         // If a page IS selected on load (e.g., browser back button), trigger change
-         pageSelect.dispatchEvent(new Event('change'));
-     }
+       // --- Initial State Setup ---
+       // Ensure input/button are disabled if no page selected initially or if select element is missing
+       if (!pageSelect || !pageSelect.value) {
+           if (messageInput) messageInput.disabled = true;
+           if (sendButton) sendButton.disabled = true;
+       } else {
+           // If a page IS selected on load (e.g., browser back button persistence), trigger change handler
+           pageSelect.dispatchEvent(new Event('change'));
+       }
 
-     // Auto-resize textarea on load
-     if(messageInput) autoResizeTextarea(messageInput);
+       // Auto-resize textarea on initial load (if messageInput exists)
+       if(messageInput) autoResizeTextarea(messageInput);
 
-  }); // End DOMContentLoaded
+    }); // End DOMContentLoaded
+  } catch (err) {
+    console.error("Error executing JavaScript in test_ai_conversation.html:", err);
+    // Optionally display a user-friendly message on the page itself
+  }
 </script>
 {% endblock %}
