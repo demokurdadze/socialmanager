@@ -22,7 +22,7 @@ urlpatterns = [
     path('pages/<int:connected_page_pk>/disconnect/', views.disconnect_page, name='disconnect_page'), # POST only
 
     # --- Webhook ---
-    path('webhook/', views.messenger_webhook, name='messenger_webhook'), # Ensure this matches webhook URL in Meta App settings
+    path('webhook/messenger/', views.messenger_webhook, name='messenger_webhook')
 
     # --- AI Testing ---
     path('test-ai/', views.test_ai_conversation, name='test_ai_conversation'),
