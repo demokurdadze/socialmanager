@@ -11,8 +11,8 @@ urlpatterns = [
         path('accounts/', include('allauth.urls')),
 
     # --- Meta/Facebook Authentication ---
-    path('meta-auth/', views.meta_auth, name='meta_auth'),
-    path('meta-callback/', views.meta_callback, name='meta_callback'), # Ensure this matches META_REDIRECT_URI path
+ path('auth/meta/', views.meta_auth, name='meta_auth'),
+    path('auth/meta/callback/', views.meta_callback, name='meta_callback'), # Ensure this matches META_REDIRECT_URI path
 
     # --- Page Management ---
     path('pages/', views.connected_pages_list, name='connected_pages_list'),
