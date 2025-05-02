@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-17 17:19+0400\n"
+"POT-Creation-Date: 2025-05-02 18:55+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,12 +18,131 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\socialapp\forms.py:50
-msgid "Type your manual reply here..."
+#: .\socialapp\admin.py:30 .\socialapp\admin.py:34
+msgid "Other Info"
 msgstr ""
 
-#: .\socialapp\forms.py:53 .\socialapp\templates\conversation_detail.html:64
-msgid "Send Manual Reply"
+#: .\socialapp\admin.py:53 .\socialapp\templates\conversation_detail.html:48
+msgid "User"
+msgstr ""
+
+#: .\socialapp\admin.py:59
+msgid "Has Prompt?"
+msgstr ""
+
+#: .\socialapp\admin.py:63 .\socialapp\models.py:49
+msgid "Page Access Token"
+msgstr ""
+
+#: .\socialapp\admin.py:68 .\socialapp\admin.py:70
+msgid "hidden"
+msgstr ""
+
+#: .\socialapp\admin.py:70
+msgid "Token present"
+msgstr ""
+
+#: .\socialapp\admin.py:71
+msgid "Not Set"
+msgstr ""
+
+#: .\socialapp\admin.py:82 .\socialapp\models.py:71
+msgid "Connected Page"
+msgstr ""
+
+#: .\socialapp\admin.py:88
+msgid "Message Count"
+msgstr ""
+
+#: .\socialapp\admin.py:97 .\socialapp\templates\conversation_detail.html:25
+msgid "Messages"
+msgstr ""
+
+#: .\socialapp\forms.py:10
+msgid "Type your manual reply..."
+msgstr ""
+
+#: .\socialapp\forms.py:35
+msgid ""
+"Enter the AI instructions, context, and personality for this specific page. "
+"This defines how the AI will respond to messages received via this page. "
+"Leave blank to use a general default behavior."
+msgstr ""
+
+#: .\socialapp\forms.py:42
+msgid "Page AI System Prompt"
+msgstr ""
+
+#: .\socialapp\forms.py:45
+msgid ""
+"This prompt guides the AI's responses ONLY when interacting via THIS "
+"specific page."
+msgstr ""
+
+#: .\socialapp\models.py:17
+msgid "Stores the user-level Meta access token (long-lived if possible)."
+msgstr ""
+
+#: .\socialapp\models.py:36
+msgid "Page ID"
+msgstr ""
+
+#: .\socialapp\models.py:39
+msgid "The unique Facebook or Instagram Page ID."
+msgstr ""
+
+#: .\socialapp\models.py:42
+msgid "Page Name"
+msgstr ""
+
+#: .\socialapp\models.py:46
+msgid "The name of the Facebook or Instagram Page."
+msgstr ""
+
+#: .\socialapp\models.py:51
+msgid "The access token specific to this page."
+msgstr ""
+
+#: .\socialapp\models.py:55
+msgid "Page-Specific AI System Prompt"
+msgstr ""
+
+#: .\socialapp\models.py:58
+msgid ""
+"AI instructions for interacting via this page. Leave blank to use a default."
+msgstr ""
+
+#: .\socialapp\models.py:60
+msgid "Connected At"
+msgstr ""
+
+#: .\socialapp\models.py:61 .\socialapp\models.py:119
+msgid "Last Updated"
+msgstr ""
+
+#: .\socialapp\models.py:63
+msgid "Is Active"
+msgstr ""
+
+#: .\socialapp\models.py:65
+msgid "Webhook events will only be processed for active pages."
+msgstr ""
+
+#: .\socialapp\models.py:72 .\socialapp\templates\base_generic.html:467
+#: .\socialapp\templates\connected_pages_list.html:4
+msgid "Connected Pages"
+msgstr ""
+
+#: .\socialapp\models.py:113
+msgid "Sender ID (PSID)"
+msgstr ""
+
+#: .\socialapp\models.py:122
+msgid "Conversation"
+msgstr ""
+
+#: .\socialapp\models.py:123
+msgid "Conversations"
 msgstr ""
 
 #: .\socialapp\templates\account\login.html:7
@@ -32,7 +151,6 @@ msgstr ""
 #: .\socialapp\templates\account\login.html:24
 #: .\socialapp\templates\account\password_reset.html:34
 #: .\socialapp\templates\account\signup.html:28
-#: .\socialapp\templates\base_generic.html:392
 msgid "Sign In"
 msgstr ""
 
@@ -89,116 +207,200 @@ msgid "Or Sign Up With"
 msgstr ""
 
 #: .\socialapp\templates\base_generic.html:7
-#: .\socialapp\templates\base_generic.html:320
+#: .\socialapp\templates\base_generic.html:449
 msgid "Social Manager"
 msgstr ""
 
-#: .\socialapp\templates\base_generic.html:308
+#: .\socialapp\templates\base_generic.html:437
 msgid "Toggle navigation menu"
 msgstr ""
 
-#: .\socialapp\templates\base_generic.html:328
-#: .\socialapp\templates\home.html:8 .\socialapp\templates\home.html:11
+#: .\socialapp\templates\base_generic.html:456
+#: .\socialapp\templates\home.html:4 .\socialapp\templates\home.html:5
 msgid "Dashboard"
 msgstr ""
 
-#: .\socialapp\templates\base_generic.html:332
+#: .\socialapp\templates\base_generic.html:461
 #: .\socialapp\templates\inbox.html:4
 msgid "Inbox"
 msgstr ""
 
-#: .\socialapp\templates\base_generic.html:335
+#: .\socialapp\templates\base_generic.html:475
+#: .\socialapp\templates\configure_page.html:56
+#: .\socialapp\templates\home.html:68
+msgid "Test AI"
+msgstr ""
+
+#: .\socialapp\templates\base_generic.html:481
 #: .\socialapp\templates\privacy_policy.html:4
 #: .\socialapp\templates\privacy_policy.html:6
 msgid "Privacy Policy"
 msgstr ""
 
-#: .\socialapp\templates\base_generic.html:339
-msgid "AI Prompt"
+#: .\socialapp\templates\base_generic.html:487
+msgid "Page Status"
 msgstr ""
 
-#: .\socialapp\templates\base_generic.html:345
-#: .\socialapp\templates\home.html:32
-msgid "Test AI"
-msgstr ""
-
-#: .\socialapp\templates\base_generic.html:351
-#: .\socialapp\templates\home.html:70
-msgid "Connect Page"
-msgstr ""
-
-#: .\socialapp\templates\base_generic.html:353
+#: .\socialapp\templates\base_generic.html:491
 #, python-format
-msgid "Facebook/Instagram Page Connected (ID: %(page_id)s)"
-msgstr ""
+msgid "%(count)s page connected"
+msgid_plural "%(count)s pages connected"
+msgstr[0] ""
+msgstr[1] ""
 
-#: .\socialapp\templates\base_generic.html:353
-#: .\socialapp\templates\home.html:46
-msgid "Connected"
-msgstr ""
+#: .\socialapp\templates\base_generic.html:492
+#, python-format
+msgid "%(count)s Connected"
+msgid_plural "%(count)s Connected"
+msgstr[0] ""
+msgstr[1] ""
 
-#: .\socialapp\templates\base_generic.html:355
+#: .\socialapp\templates\base_generic.html:495
 msgid "Connect"
 msgstr ""
 
-#: .\socialapp\templates\base_generic.html:357
+#: .\socialapp\templates\base_generic.html:499
 msgid "Login to connect"
 msgstr ""
 
-#: .\socialapp\templates\base_generic.html:357
+#: .\socialapp\templates\base_generic.html:499
 msgid "N/A"
 msgstr ""
 
-#: .\socialapp\templates\base_generic.html:364
-msgid "Settings"
-msgstr ""
-
-#: .\socialapp\templates\base_generic.html:381
+#: .\socialapp\templates\base_generic.html:519
 msgid "Log out"
 msgstr ""
 
-#: .\socialapp\templates\base_generic.html:411
+#: .\socialapp\templates\base_generic.html:555
 msgid "Change language"
 msgstr ""
 
-#: .\socialapp\templates\base_generic.html:434
+#: .\socialapp\templates\base_generic.html:578
 msgid "Toggle theme"
 msgstr ""
 
-#: .\socialapp\templates\base_generic.html:453
+#: .\socialapp\templates\base_generic.html:597
 msgid "Welcome to the application."
 msgstr ""
 
-#: .\socialapp\templates\base_generic.html:509
+#: .\socialapp\templates\base_generic.html:606
+msgid "Privacy & Cookie Consent"
+msgstr ""
+
+#: .\socialapp\templates\base_generic.html:608
+msgid ""
+"\n"
+"              We use cookies and collect necessary data to operate this "
+"service and ensure its functionality. By continuing to use this site, you "
+"agree to our data practices described in the\n"
+"              "
+msgstr ""
+
+#: .\socialapp\templates\base_generic.html:614
+msgid "Agree and Continue"
+msgstr ""
+
+#: .\socialapp\templates\base_generic.html:673
 msgid "Switch to light mode"
 msgstr ""
 
-#: .\socialapp\templates\base_generic.html:514
+#: .\socialapp\templates\base_generic.html:678
 msgid "Switch to dark mode"
+msgstr ""
+
+#: .\socialapp\templates\configure_page.html:5
+#, python-format
+msgid "Configure: %(page_name)s"
+msgstr ""
+
+#: .\socialapp\templates\configure_page.html:9
+#, python-format
+msgid "Configure AI for %(page_name)s"
+msgstr ""
+
+#: .\socialapp\templates\configure_page.html:23
+msgid ""
+"Set the specific instructions and personality the AI should use when "
+"responding to messages sent to this page."
+msgstr ""
+
+#: .\socialapp\templates\configure_page.html:55
+#: .\socialapp\templates\update_system_prompt.html:65
+msgid "Save Prompt"
+msgstr ""
+
+#: .\socialapp\templates\configure_page.html:57
+msgid "Back to Pages"
+msgstr ""
+
+#: .\socialapp\templates\configure_page.html:64
+msgid "Currently Saved Prompt"
+msgstr ""
+
+#: .\socialapp\templates\configure_page.html:69
+msgid "No custom prompt set. Using default behavior."
+msgstr ""
+
+#: .\socialapp\templates\connected_pages_list.html:5
+msgid "Your Connected Pages"
+msgstr ""
+
+#: .\socialapp\templates\connected_pages_list.html:10
+msgid "Manage Your Pages"
+msgstr ""
+
+#: .\socialapp\templates\connected_pages_list.html:12
+msgid ""
+"Configure AI prompts and manage connections for your Facebook/Instagram "
+"pages."
+msgstr ""
+
+#: .\socialapp\templates\connected_pages_list.html:26
+msgid "Inactive"
+msgstr ""
+
+#: .\socialapp\templates\connected_pages_list.html:30
+msgid "Configure AI"
+msgstr ""
+
+#: .\socialapp\templates\connected_pages_list.html:32
+#, python-format
+msgid ""
+"Are you sure you want to disconnect the page \\'%(page.page_name)s\\'? AI "
+"interactions for this page will stop."
+msgstr ""
+
+#: .\socialapp\templates\connected_pages_list.html:35
+msgid "Disconnect"
+msgstr ""
+
+#: .\socialapp\templates\connected_pages_list.html:43
+msgid "You haven't connected any pages yet."
+msgstr ""
+
+#: .\socialapp\templates\connected_pages_list.html:48
+msgid "Connect a New Page"
 msgstr ""
 
 #: .\socialapp\templates\conversation_detail.html:5
 #, python-format
 msgid ""
 "\n"
-"    Chat: %(sender)s\n"
+"    Chat: %(sender)s on %(page_name)s\n"
 "    "
 msgstr ""
 
-#: .\socialapp\templates\conversation_detail.html:12
+#: .\socialapp\templates\conversation_detail.html:14
 #, python-format
 msgid ""
 "\n"
-"         Conversation: %(sender)s\n"
-"         "
-msgstr ""
-
-#: .\socialapp\templates\conversation_detail.html:23
-msgid "Messages"
+"            %(sender)s <span style=\"font-weight: normal; color: var(--muted-"
+"foreground); font-size: 0.9em;\">on %(page_name)s</span>\n"
+"            "
 msgstr ""
 
 #: .\socialapp\templates\conversation_detail.html:28
-#: .\socialapp\templates\inbox.html:41
+#: .\socialapp\templates\inbox.html:50
 msgid ""
 "Are you sure you want to delete this chat history from the system? This "
 "cannot be undone."
@@ -206,24 +408,52 @@ msgstr ""
 
 #: .\socialapp\templates\conversation_detail.html:30
 #: .\socialapp\templates\conversation_detail.html:31
-#: .\socialapp\templates\inbox.html:43
+#: .\socialapp\templates\inbox.html:52
 msgid "Delete History"
 msgstr ""
 
-#: .\socialapp\templates\conversation_detail.html:53
+#: .\socialapp\templates\conversation_detail.html:34
+msgid "Back to Inbox"
+msgstr ""
+
+#: .\socialapp\templates\conversation_detail.html:49
+#: .\socialapp\templates\test_ai_conversation.html:51
+msgid "AI"
+msgstr ""
+
+#: .\socialapp\templates\conversation_detail.html:50
+msgid "You (Manual)"
+msgstr ""
+
+#: .\socialapp\templates\conversation_detail.html:51
+msgid "System"
+msgstr ""
+
+#: .\socialapp\templates\conversation_detail.html:63
+msgid "Manual"
+msgstr ""
+
+#: .\socialapp\templates\conversation_detail.html:68
 msgid "No messages in this conversation yet."
 msgstr ""
 
-#: .\socialapp\templates\conversation_detail.html:66
+#: .\socialapp\templates\conversation_detail.html:79
+msgid "Send Manual Reply"
+msgstr ""
+
+#: .\socialapp\templates\conversation_detail.html:81
 msgid "Send Reply"
 msgstr ""
 
-#: .\socialapp\templates\conversation_detail.html:70
-msgid "Connect your page to send replies."
+#: .\socialapp\templates\conversation_detail.html:85
+msgid "This page connection is inactive. Activate it to send replies."
+msgstr ""
+
+#: .\socialapp\templates\conversation_detail.html:87
+msgid "Cannot send reply: Page token missing or connection issue."
 msgstr ""
 
 #: .\socialapp\templates\error.html:2
-#: .\socialapp\templates\test_ai_conversation.html:103
 msgid "Error"
 msgstr ""
 
@@ -239,105 +469,125 @@ msgstr ""
 msgid "Return to Home"
 msgstr ""
 
-#: .\socialapp\templates\home.html:15
+#: .\socialapp\templates\home.html:9
 #, python-format
-msgid " %(request.user.username)s"
+msgid "Welcome, %(user_name)s!"
 msgstr ""
 
-#: .\socialapp\templates\home.html:16
-msgid "Here's an overview of your social media activity."
+#: .\socialapp\templates\home.html:10
+msgid "Manage your connected pages and conversations."
 msgstr ""
 
-#: .\socialapp\templates\home.html:24
-msgid "AI Status"
+#: .\socialapp\templates\home.html:18
+msgid "Page Connections"
+msgstr ""
+
+#: .\socialapp\templates\home.html:19
+msgid "Status of your Facebook/Instagram pages."
 msgstr ""
 
 #: .\socialapp\templates\home.html:25
-msgid "Current AI assistant configuration."
+msgid "Connected"
 msgstr ""
 
-#: .\socialapp\templates\home.html:28
-msgid "Prompt:"
+#: .\socialapp\templates\home.html:26
+#, python-format
+msgid ""
+"\n"
+"                            You have %(count)s page connected.\n"
+"                            "
+msgid_plural ""
+"\n"
+"                            You have %(count)s pages connected.\n"
+"                            "
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\socialapp\templates\home.html:33
+msgid "You haven't connected any Facebook or Instagram pages yet."
 msgstr ""
 
-#: .\socialapp\templates\home.html:28
-msgid "Default"
-msgstr ""
-
-#: .\socialapp\templates\home.html:31
-msgid "Configure"
-msgstr ""
-
-#: .\socialapp\templates\home.html:39
-msgid "Page Connection"
-msgstr ""
-
-#: .\socialapp\templates\home.html:40
-msgid "Facebook/Instagram Page Status"
-msgstr ""
-
-#: .\socialapp\templates\home.html:47
-msgid "Page ID:"
-msgstr ""
-
-#: .\socialapp\templates\home.html:50
-msgid "Your Facebook/Instagram page is not connected."
-msgstr ""
-
-#: .\socialapp\templates\home.html:54
+#: .\socialapp\templates\home.html:36
 msgid "Login to manage page connections."
 msgstr ""
 
-#: .\socialapp\templates\home.html:64
-msgid ""
-"Are you sure you want to disconnect this page? AI responses will stop and "
-"your subscription may be cancelled."
+#: .\socialapp\templates\home.html:41
+msgid "Manage Pages"
 msgstr ""
 
-#: .\socialapp\templates\home.html:65
-msgid "Disconnect"
+#: .\socialapp\templates\home.html:43
+msgid "Connect First Page"
 msgstr ""
 
-#: .\socialapp\templates\home.html:74
+#: .\socialapp\templates\home.html:46
 msgid "Login"
 msgstr ""
 
+#: .\socialapp\templates\home.html:54
+msgid "Recent Activity"
+msgstr ""
+
+#: .\socialapp\templates\home.html:55
+msgid "Quick access to conversations."
+msgstr ""
+
+#: .\socialapp\templates\home.html:59
+msgid "Check your inbox for recent messages across your pages."
+msgstr ""
+
+#: .\socialapp\templates\home.html:61
+msgid "Connect a page to start receiving messages."
+msgstr ""
+
+#: .\socialapp\templates\home.html:66
+msgid "Go to Inbox"
+msgstr ""
+
+#: .\socialapp\templates\home.html:75
+msgid "AI Configuration"
+msgstr ""
+
+#: .\socialapp\templates\home.html:76
+msgid "Prompts are configured per page."
+msgstr ""
+
+#: .\socialapp\templates\home.html:79
+msgid ""
+"You can set unique AI instructions, personality, and context for each "
+"connected page."
+msgstr ""
+
 #: .\socialapp\templates\home.html:82
-msgid "Quick Actions"
-msgstr ""
-
-#: .\socialapp\templates\home.html:83
-msgid "Commonly used features."
-msgstr ""
-
-#: .\socialapp\templates\home.html:87
-msgid "View Recent Messages"
-msgstr ""
-
-#: .\socialapp\templates\home.html:88
-msgid "Analyze Performance"
+msgid "Configure Prompts"
 msgstr ""
 
 #: .\socialapp\templates\inbox.html:5
 msgid "Conversations Inbox"
 msgstr ""
 
-#: .\socialapp\templates\inbox.html:10
-msgid "Your Conversations"
-msgstr ""
-
 #: .\socialapp\templates\inbox.html:11
-msgid "Recent messages from your connected Facebook Page."
+msgid "No pages connected or no conversations yet."
 msgstr ""
 
-#: .\socialapp\templates\inbox.html:29
+#: .\socialapp\templates\inbox.html:12
+#: .\socialapp\templates\test_ai_conversation.html:19
+msgid "Connect or Manage Pages"
+msgstr ""
+
+#: .\socialapp\templates\inbox.html:23
+msgid "Configure AI for this page"
+msgstr ""
+
+#: .\socialapp\templates\inbox.html:24
+msgid "Configure"
+msgstr ""
+
+#: .\socialapp\templates\inbox.html:39
 msgid "(No text messages yet)"
 msgstr ""
 
-#: .\socialapp\templates\inbox.html:52
-msgid ""
-"No conversations found yet. Messages from your connected Facebook page will "
-"appear here."
+#: .\socialapp\templates\inbox.html:60
+msgid "No conversations for this page yet."
 msgstr ""
 
 #: .\socialapp\templates\privacy_policy.html:13
@@ -507,7 +757,6 @@ msgid "refers to social manager, accessible from your application's URL."
 msgstr ""
 
 #: .\socialapp\templates\privacy_policy.html:38
-#: .\socialapp\templates\test_ai_conversation.html:120
 msgid "You"
 msgstr ""
 
@@ -1140,87 +1389,81 @@ msgstr ""
 msgid "By email: kurdadzedemo@gmail.com"
 msgstr ""
 
-#: .\socialapp\templates\test_ai_conversation.html:1
-#: .\socialapp\templates\test_ai_conversation.html:2
+#: .\socialapp\templates\test_ai_conversation.html:4
 #: .\socialapp\templates\test_ai_conversation.html:5
 #: .\socialapp\templates\update_system_prompt.html:66
 msgid "Test AI Conversation"
 msgstr ""
 
-#: .\socialapp\templates\test_ai_conversation.html:7
+#: .\socialapp\templates\test_ai_conversation.html:9
+msgid "Test Your AI Assistant"
+msgstr ""
+
+#: .\socialapp\templates\test_ai_conversation.html:11
 msgid ""
-"Interact with your AI assistant below using the currently configured system "
-"prompt. This simulates how it would respond to message on your connected "
-"page."
+"Select a connected page, interact with its configured AI, and see how it "
+"responds."
 msgstr ""
 
-#: .\socialapp\templates\test_ai_conversation.html:14
-msgid "Using System Prompt:"
+#: .\socialapp\templates\test_ai_conversation.html:17 .\socialapp\views.py:689
+msgid "You need to connect at least one active page to test the AI."
 msgstr ""
 
-#: .\socialapp\templates\test_ai_conversation.html:16
-msgid "Default: You are a helpful assistant."
-msgstr ""
-
-#: .\socialapp\templates\test_ai_conversation.html:19
-msgid "Change Prompt"
+#: .\socialapp\templates\test_ai_conversation.html:24
+msgid "Test AI for Page:"
 msgstr ""
 
 #: .\socialapp\templates\test_ai_conversation.html:26
-#: .\socialapp\templates\test_ai_conversation.html:159
-msgid "AI"
+msgid "--- Select a Page ---"
 msgstr ""
 
-#: .\socialapp\templates\test_ai_conversation.html:28
-msgid ""
-"Hello! Type a message below to start testing our conversation based on the "
-"current prompt."
+#: .\socialapp\templates\test_ai_conversation.html:34
+msgid "View Prompt"
 msgstr ""
 
-#: .\socialapp\templates\test_ai_conversation.html:40
+#: .\socialapp\templates\test_ai_conversation.html:41
+msgid "Using System Prompt For:"
+msgstr ""
+
+#: .\socialapp\templates\test_ai_conversation.html:41
+msgid "No page selected"
+msgstr ""
+
+#: .\socialapp\templates\test_ai_conversation.html:42
+msgid "(Select a page above to see its prompt)"
+msgstr ""
+
+#: .\socialapp\templates\test_ai_conversation.html:44
+msgid "Configure this prompt"
+msgstr ""
+
+#: .\socialapp\templates\test_ai_conversation.html:52
+msgid "Please select a page above to begin testing."
+msgstr ""
+
+#: .\socialapp\templates\test_ai_conversation.html:60
 msgid "Type your message here..."
 msgstr ""
 
-#: .\socialapp\templates\test_ai_conversation.html:47
+#: .\socialapp\templates\test_ai_conversation.html:61
 msgid "Send Message"
 msgstr ""
 
-#: .\socialapp\templates\test_ai_conversation.html:49
-#: .\socialapp\templates\test_ai_conversation.html:187
+#: .\socialapp\templates\test_ai_conversation.html:62
 msgid "Send"
 msgstr ""
 
-#: .\socialapp\templates\test_ai_conversation.html:125
-msgid "Sending..."
+#: .\socialapp\templates\test_ai_conversation.html:71
+msgid "System Prompt"
 msgstr ""
 
-#: .\socialapp\templates\test_ai_conversation.html:132
-msgid "CSRF token not found. Please refresh the page."
+#: .\socialapp\templates\test_ai_conversation.html:72
+#: .\socialapp\templates\test_ai_conversation.html:78
+msgid "Close"
 msgstr ""
 
-#: .\socialapp\templates\test_ai_conversation.html:146
-msgid "Server Error"
-msgstr ""
-
-#: .\socialapp\templates\test_ai_conversation.html:163
-#: .\socialapp\templates\test_ai_conversation.html:179
-msgid "System"
-msgstr ""
-
-#: .\socialapp\templates\test_ai_conversation.html:164
-msgid "Error processing message"
-msgstr ""
-
-#: .\socialapp\templates\test_ai_conversation.html:169
-msgid "Received an unexpected response format from the server."
-msgstr ""
-
-#: .\socialapp\templates\test_ai_conversation.html:176
-msgid "An unknown network or server error occurred."
-msgstr ""
-
-#: .\socialapp\templates\test_ai_conversation.html:180
-msgid "Failed to get response"
+#: .\socialapp\templates\test_ai_conversation.html:79
+msgid "Configure Prompt"
 msgstr ""
 
 #: .\socialapp\templates\update_system_prompt.html:5
@@ -1254,7 +1497,7 @@ msgstr ""
 msgid "No custom prompt set. Using default:"
 msgstr ""
 
-#: .\socialapp\templates\update_system_prompt.html:36
+#: .\socialapp\templates\update_system_prompt.html:36 .\socialapp\views.py:534
 msgid "You are a helpful assistant."
 msgstr ""
 
@@ -1262,51 +1505,192 @@ msgstr ""
 msgid "Update Prompt"
 msgstr ""
 
-#: .\socialapp\templates\update_system_prompt.html:65
-msgid "Save Prompt"
+#: .\socialapp\views.py:73
+msgid "Meta application details are not configured in settings."
 msgstr ""
 
-#: .\socialapp\views.py:55
-msgid "(Default: You are a helpful assistant.)"
+#: .\socialapp\views.py:187
+msgid "Error during Meta authentication: {}"
 msgstr ""
 
-#: .\socialapp\views.py:709
-msgid "Inbox requires a business account."
+#: .\socialapp\views.py:190
+msgid "Authorization code not found in callback."
 msgstr ""
 
-#: .\socialapp\views.py:720
-msgid "conversation view requires a business account."
+#: .\socialapp\views.py:193
+msgid "Invalid user type for Meta connection."
 msgstr ""
 
-#: .\socialapp\views.py:736
-msgid "Cannot send reply: Page not connected."
+#: .\socialapp\views.py:211
+msgid "Failed to retrieve access token from Meta."
 msgstr ""
 
-#: .\socialapp\views.py:750
+#: .\socialapp\views.py:221
+msgid ""
+"Could not find any Facebook Pages you manage or permission denied. Please "
+"ensure you granted 'pages_show_list' permission."
+msgstr ""
+
+#: .\socialapp\views.py:239
+msgid "Refreshed connection for page: {}"
+msgstr ""
+
+#: .\socialapp\views.py:242
+msgid "Page '{}' (ID: {}) is already connected by another user ({})."
+msgstr ""
+
+#: .\socialapp\views.py:248
+msgid ""
+"Failed to subscribe page '{}' to webhooks. AI responses may not work. Error: "
+"{}"
+msgstr ""
+
+#: .\socialapp\views.py:248
+msgid "Unknown"
+msgstr ""
+
+#: .\socialapp\views.py:262
+msgid "Successfully connected page: {}"
+msgstr ""
+
+#: .\socialapp\views.py:267
+msgid "An error occurred while saving the page connection. Please try again."
+msgstr ""
+
+#: .\socialapp\views.py:271
+msgid "Request to Facebook timed out. Please try again."
+msgstr ""
+
+#: .\socialapp\views.py:279
+msgid "Error communicating with Facebook: {}"
+msgstr ""
+
+#: .\socialapp\views.py:282
+msgid "An unexpected error occurred during Meta connection: {}"
+msgstr ""
+
+#: .\socialapp\views.py:335
+msgid "Successfully disconnected page '{}'."
+msgstr ""
+
+#: .\socialapp\views.py:337
+msgid ""
+"Disconnected page '{}', but failed to unsubscribe from webhooks. You may "
+"need to check Meta Developer Settings."
+msgstr ""
+
+#: .\socialapp\views.py:340
+msgid "Failed to disconnect page '{}' due to a database error."
+msgstr ""
+
+#: .\socialapp\views.py:507
+msgid "Internal configuration error."
+msgstr ""
+
+#: .\socialapp\views.py:526
+msgid ""
+"Sorry, I encountered an internal error managing our conversation history."
+msgstr ""
+
+#: .\socialapp\views.py:587
+msgid "AI Service connection issue (Authentication)."
+msgstr ""
+
+#: .\socialapp\views.py:590
+msgid "The AI service is currently busy, please try again in a moment."
+msgstr ""
+
+#: .\socialapp\views.py:593
+msgid "The AI service took too long to respond, please try again."
+msgstr ""
+
+#: .\socialapp\views.py:597
+msgid "Sorry, there was an error communicating with the AI service."
+msgstr ""
+
+#: .\socialapp\views.py:600
+msgid "Sorry, an unexpected error occurred while getting the AI response."
+msgstr ""
+
+#: .\socialapp\views.py:655
+msgid "System prompt for page '{}' updated successfully!"
+msgstr ""
+
+#: .\socialapp\views.py:660
+msgid "An error occurred while saving the prompt."
+msgstr ""
+
+#: .\socialapp\views.py:662
+msgid "Please correct the errors in the form below."
+msgstr ""
+
+#: .\socialapp\views.py:682
+msgid "This feature requires a user account."
+msgstr ""
+
+#: .\socialapp\views.py:713
+msgid "Invalid JSON data in request body"
+msgstr ""
+
+#: .\socialapp\views.py:716
+msgid "Error parsing request data"
+msgstr ""
+
+#: .\socialapp\views.py:719
+msgid "Message cannot be empty"
+msgstr ""
+
+#: .\socialapp\views.py:721
+msgid "Page selection is missing"
+msgstr ""
+
+#: .\socialapp\views.py:732
+msgid "Invalid or inactive page selected"
+msgstr ""
+
+#: .\socialapp\views.py:735
+msgid "Server error fetching page details"
+msgstr ""
+
+#: .\socialapp\views.py:746
+msgid "AI service failed to generate a response."
+msgstr ""
+
+#: .\socialapp\views.py:752
+msgid "An unexpected server error occurred."
+msgstr ""
+
+#: .\socialapp\views.py:807
+msgid "Cannot send reply: Page token missing for '{}'."
+msgstr ""
+
+#: .\socialapp\views.py:833
 msgid "Manual reply sent and recorded."
 msgstr ""
 
-#: .\socialapp\views.py:753
-msgid "Reply sent, but failed to save to local history."
+#: .\socialapp\views.py:836
+msgid "Reply sent via API, but failed to save to local history."
 msgstr ""
 
-#: .\socialapp\views.py:754
-msgid "Failed to send reply via API."
+#: .\socialapp\views.py:838
+msgid "Failed to send reply via Facebook API."
 msgstr ""
 
-#: .\socialapp\views.py:755
+#: .\socialapp\views.py:841
 msgid "Invalid message content."
 msgstr ""
 
-#: .\socialapp\views.py:773
+#: .\socialapp\views.py:864
 #, python-format
-msgid "conversation history for sender %(sender_id)s has been deleted."
+msgid ""
+"Conversation history for sender %(sender_id)s on page '%(page_name)s' has "
+"been deleted."
 msgstr ""
 
-#: .\socialapp\views.py:778
-msgid "Failed to delete history."
+#: .\socialapp\views.py:869
+msgid "Failed to delete conversation history."
 msgstr ""
 
-#: .\socialapp\views.py:804
+#: .\socialapp\views.py:903
 msgid "Invalid language selected."
 msgstr ""

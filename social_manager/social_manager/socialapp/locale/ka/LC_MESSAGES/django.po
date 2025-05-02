@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SocialManager 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-17 17:19+0400\n"
-"PO-Revision-Date: 2024-04-13 12:00+0400\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2025-05-02 18:55+0400\n"
+"PO-Revision-Date: 2025-05-02 19:30+0400\n"
+"Last-Translator: AI Assistant\n"
 "Language-Team: Georgian <ka@li.org>\n"
 "Language: ka\n"
 "MIME-Version: 1.0\n"
@@ -17,13 +17,132 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: .\socialapp\forms.py:50
-msgid "Type your manual reply here..."
+#: .\socialapp\admin.py:30 .\socialapp\admin.py:34
+msgid "Other Info"
+msgstr "სხვა ინფორმაცია"
+
+#: .\socialapp\admin.py:53 .\socialapp\templates\conversation_detail.html:48
+msgid "User"
+msgstr "მომხმარებელი"
+
+#: .\socialapp\admin.py:59
+msgid "Has Prompt?"
+msgstr "აქვს მოთხოვნა?"
+
+#: .\socialapp\admin.py:63 .\socialapp\models.py:49
+msgid "Page Access Token"
+msgstr "გვერდის წვდომის ტოკენი"
+
+#: .\socialapp\admin.py:68 .\socialapp\admin.py:70
+msgid "hidden"
+msgstr "დამალული"
+
+#: .\socialapp\admin.py:70
+msgid "Token present"
+msgstr "ტოკენი არსებობს"
+
+#: .\socialapp\admin.py:71
+msgid "Not Set"
+msgstr "არ არის მითითებული"
+
+#: .\socialapp\admin.py:82 .\socialapp\models.py:71
+msgid "Connected Page"
+msgstr "დაკავშირებული გვერდი"
+
+#: .\socialapp\admin.py:88
+msgid "Message Count"
+msgstr "შეტყობინებების რაოდენობა"
+
+#: .\socialapp\admin.py:97 .\socialapp\templates\conversation_detail.html:25
+msgid "Messages"
+msgstr "შეტყობინებები"
+
+#: .\socialapp\forms.py:10
+msgid "Type your manual reply..."
 msgstr "ჩაწერეთ თქვენი ხელით პასუხი აქ..."
 
-#: .\socialapp\forms.py:53 .\socialapp\templates\conversation_detail.html:64
-msgid "Send Manual Reply"
-msgstr "ხელით პასუხის გაგზავნა"
+#: .\socialapp\forms.py:35
+msgid ""
+"Enter the AI instructions, context, and personality for this specific page. "
+"This defines how the AI will respond to messages received via this page. "
+"Leave blank to use a general default behavior."
+msgstr "შეიყვანეთ AI ინსტრუქციები, კონტექსტი და პერსონა ამ კონკრეტული გვერდისთვის. ეს განსაზღვრავს, თუ როგორ უპასუხებს AI ამ გვერდის მეშვეობით მიღებულ შეტყობინებებს. დატოვეთ ცარიელი ზოგადი ნაგულისხმევი ქცევის გამოსაყენებლად."
+
+#: .\socialapp\forms.py:42
+msgid "Page AI System Prompt"
+msgstr "გვერდის AI სისტემური მოთხოვნა"
+
+#: .\socialapp\forms.py:45
+msgid ""
+"This prompt guides the AI's responses ONLY when interacting via THIS "
+"specific page."
+msgstr "ეს მოთხოვნა წარმართავს AI-ს პასუხებს მხოლოდ ამ კონკრეტულ გვერდთან ურთიერთობისას."
+
+#: .\socialapp\models.py:17
+msgid "Stores the user-level Meta access token (long-lived if possible)."
+msgstr "ინახავს მომხმარებლის დონის Meta წვდომის ტოკენს (სასურველია ხანგრძლივი მოქმედების)."
+
+#: .\socialapp\models.py:36
+msgid "Page ID"
+msgstr "გვერდის ID"
+
+#: .\socialapp\models.py:39
+msgid "The unique Facebook or Instagram Page ID."
+msgstr "უნიკალური Facebook ან Instagram გვერდის ID."
+
+#: .\socialapp\models.py:42
+msgid "Page Name"
+msgstr "გვერდის სახელი"
+
+#: .\socialapp\models.py:46
+msgid "The name of the Facebook or Instagram Page."
+msgstr "Facebook ან Instagram გვერდის სახელი."
+
+#: .\socialapp\models.py:51
+msgid "The access token specific to this page."
+msgstr "ამ გვერდისთვის სპეციფიკური წვდომის ტოკენი."
+
+#: .\socialapp\models.py:55
+msgid "Page-Specific AI System Prompt"
+msgstr "გვერდის სპეციფიკური AI სისტემური მოთხოვნა"
+
+#: .\socialapp\models.py:58
+msgid ""
+"AI instructions for interacting via this page. Leave blank to use a default."
+msgstr "AI ინსტრუქციები ამ გვერდის მეშვეობით ურთიერთობისთვის. დატოვეთ ცარიელი ნაგულისხმევი მნიშვნელობის გამოსაყენებლად."
+
+#: .\socialapp\models.py:60
+msgid "Connected At"
+msgstr "დაკავშირების დრო"
+
+#: .\socialapp\models.py:61 .\socialapp\models.py:119
+msgid "Last Updated"
+msgstr "ბოლო განახლება"
+
+#: .\socialapp\models.py:63
+msgid "Is Active"
+msgstr "აქტიურია"
+
+#: .\socialapp\models.py:65
+msgid "Webhook events will only be processed for active pages."
+msgstr "ვებჰუკის მოვლენები დამუშავდება მხოლოდ აქტიური გვერდებისთვის."
+
+#: .\socialapp\models.py:72 .\socialapp\templates\base_generic.html:467
+#: .\socialapp\templates\connected_pages_list.html:4
+msgid "Connected Pages"
+msgstr "დაკავშირებული გვერდები"
+
+#: .\socialapp\models.py:113
+msgid "Sender ID (PSID)"
+msgstr "გამგზავნის ID (PSID)"
+
+#: .\socialapp\models.py:122
+msgid "Conversation"
+msgstr "საუბარი"
+
+#: .\socialapp\models.py:123
+msgid "Conversations"
+msgstr "საუბრები"
 
 #: .\socialapp\templates\account\login.html:7
 #: .\socialapp\templates\account\login.html:12
@@ -31,7 +150,6 @@ msgstr "ხელით პასუხის გაგზავნა"
 #: .\socialapp\templates\account\login.html:24
 #: .\socialapp\templates\account\password_reset.html:34
 #: .\socialapp\templates\account\signup.html:28
-#: .\socialapp\templates\base_generic.html:392
 msgid "Sign In"
 msgstr "შესვლა"
 
@@ -88,147 +206,265 @@ msgid "Or Sign Up With"
 msgstr "ან დარეგისტრირდით:"
 
 #: .\socialapp\templates\base_generic.html:7
-#: .\socialapp\templates\base_generic.html:320
+#: .\socialapp\templates\base_generic.html:449
 msgid "Social Manager"
 msgstr "სოციალური მენეჯერი"
 
-#: .\socialapp\templates\base_generic.html:308
+#: .\socialapp\templates\base_generic.html:437
 msgid "Toggle navigation menu"
 msgstr "ნავიგაციის მენიუს გადართვა"
 
-#: .\socialapp\templates\base_generic.html:328
-#: .\socialapp\templates\home.html:8 .\socialapp\templates\home.html:11
+#: .\socialapp\templates\base_generic.html:456
+#: .\socialapp\templates\home.html:4 .\socialapp\templates\home.html:5
 msgid "Dashboard"
 msgstr "მართვის პანელი"
 
-#: .\socialapp\templates\base_generic.html:332
+#: .\socialapp\templates\base_generic.html:461
 #: .\socialapp\templates\inbox.html:4
 msgid "Inbox"
 msgstr "შემოსულები"
 
-#: .\socialapp\templates\base_generic.html:335
+#: .\socialapp\templates\base_generic.html:475
+#: .\socialapp\templates\configure_page.html:56
+#: .\socialapp\templates\home.html:68
+msgid "Test AI"
+msgstr "AI-ს ტესტირება"
+
+#: .\socialapp\templates\base_generic.html:481
 #: .\socialapp\templates\privacy_policy.html:4
 #: .\socialapp\templates\privacy_policy.html:6
 msgid "Privacy Policy"
 msgstr "კონფიდენციალურობის პოლიტიკა"
 
-#: .\socialapp\templates\base_generic.html:339
-msgid "AI Prompt"
-msgstr "AI მოთხოვნა"
+#: .\socialapp\templates\base_generic.html:487
+msgid "Page Status"
+msgstr "გვერდის სტატუსი"
 
-#: .\socialapp\templates\base_generic.html:345
-#: .\socialapp\templates\home.html:32
-msgid "Test AI"
-msgstr "AI-ს ტესტირება"
-
-#: .\socialapp\templates\base_generic.html:351
-#: .\socialapp\templates\home.html:70
-msgid "Connect Page"
-msgstr "გვერდის დაკავშირება"
-
-#: .\socialapp\templates\base_generic.html:353
+#: .\socialapp\templates\base_generic.html:491
 #, python-format
-msgid "Facebook/Instagram Page Connected (ID: %(page_id)s)"
-msgstr "Facebook/Instagram გვერდი დაკავშირებულია (ID: %(page_id)s)"
+msgid "%(count)s page connected"
+msgid_plural "%(count)s pages connected"
+msgstr[0] "%(count)s გვერდი დაკავშირებულია"
+msgstr[1] "%(count)s გვერდი დაკავშირებულია"
 
-#: .\socialapp\templates\base_generic.html:353
-#: .\socialapp\templates\home.html:46
-msgid "Connected"
-msgstr "დაკავშირებულია"
+#: .\socialapp\templates\base_generic.html:492
+#, python-format
+msgid "%(count)s Connected"
+msgid_plural "%(count)s Connected"
+msgstr[0] "%(count)s დაკავშირებული"
+msgstr[1] "%(count)s დაკავშირებული"
 
-#: .\socialapp\templates\base_generic.html:355
+#: .\socialapp\templates\base_generic.html:495
 msgid "Connect"
 msgstr "დაკავშირება"
 
-#: .\socialapp\templates\base_generic.html:357
+#: .\socialapp\templates\base_generic.html:499
 msgid "Login to connect"
 msgstr "შედით დასაკავშირებლად"
 
-#: .\socialapp\templates\base_generic.html:357
+#: .\socialapp\templates\base_generic.html:499
 msgid "N/A"
 msgstr "მიუწვდომელია"
 
-#: .\socialapp\templates\base_generic.html:364
-msgid "Settings"
-msgstr "პარამეტრები"
-
-#: .\socialapp\templates\base_generic.html:381
+#: .\socialapp\templates\base_generic.html:519
 msgid "Log out"
 msgstr "გასვლა"
 
-#: .\socialapp\templates\base_generic.html:411
+#: .\socialapp\templates\base_generic.html:555
 msgid "Change language"
 msgstr "ენის შეცვლა"
 
-#: .\socialapp\templates\base_generic.html:434
+#: .\socialapp\templates\base_generic.html:578
 msgid "Toggle theme"
 msgstr "თემის გადართვა"
 
-#: .\socialapp\templates\base_generic.html:453
+#: .\socialapp\templates\base_generic.html:597
 msgid "Welcome to the application."
 msgstr "კეთილი იყოს თქვენი მობრძანება აპლიკაციაში."
 
-#: .\socialapp\templates\base_generic.html:509
+#: .\socialapp\templates\base_generic.html:606
+msgid "Privacy & Cookie Consent"
+msgstr "კონფიდენციალურობისა და ქუქი-ფაილების თანხმობა"
+
+#: .\socialapp\templates\base_generic.html:608
+msgid ""
+"\n"
+"              We use cookies and collect necessary data to operate this "
+"service and ensure its functionality. By continuing to use this site, you "
+"agree to our data practices described in the\n"
+"              "
+msgstr ""
+"\n"
+"              ჩვენ ვიყენებთ ქუქი-ფაილებს და ვაგროვებთ აუცილებელ მონაცემებს ამ "
+"სერვისის ფუნქციონირებისთვის. საიტის გამოყენების გაგრძელებით თქვენ ეთანხმებით "
+"მონაცემთა დამუშავების პრაქტიკას, რომელიც აღწერილია\n"
+"              "
+
+#: .\socialapp\templates\base_generic.html:614
+msgid "Agree and Continue"
+msgstr "ვეთანხმები და ვაგრძელებ"
+
+#: .\socialapp\templates\base_generic.html:673
 msgid "Switch to light mode"
 msgstr "ნათელ რეჟიმზე გადართვა"
 
-#: .\socialapp\templates\base_generic.html:514
+#: .\socialapp\templates\base_generic.html:678
 msgid "Switch to dark mode"
 msgstr "მუქ რეჟიმზე გადართვა"
+
+#: .\socialapp\templates\configure_page.html:5
+#, python-format
+msgid "Configure: %(page_name)s"
+msgstr "კონფიგურაცია: %(page_name)s"
+
+#: .\socialapp\templates\configure_page.html:9
+#, python-format
+msgid "Configure AI for %(page_name)s"
+msgstr "AI კონფიგურაცია %(page_name)s-თვის"
+
+#: .\socialapp\templates\configure_page.html:23
+msgid ""
+"Set the specific instructions and personality the AI should use when "
+"responding to messages sent to this page."
+msgstr "დააყენეთ კონკრეტული ინსტრუქციები და პერსონა, რომელიც AI-მ უნდა გამოიყენოს ამ გვერდზე გამოგზავნილ შეტყობინებებზე პასუხისას."
+
+#: .\socialapp\templates\configure_page.html:55
+#: .\socialapp\templates\update_system_prompt.html:65
+msgid "Save Prompt"
+msgstr "მოთხოვნის შენახვა"
+
+#: .\socialapp\templates\configure_page.html:57
+msgid "Back to Pages"
+msgstr "გვერდებზე დაბრუნება"
+
+#: .\socialapp\templates\configure_page.html:64
+msgid "Currently Saved Prompt"
+msgstr "ამჟამად შენახული მოთხოვნა"
+
+#: .\socialapp\templates\configure_page.html:69
+msgid "No custom prompt set. Using default behavior."
+msgstr "მორგებული მოთხოვნა არ არის. გამოიყენება ნაგულისხმევი ქცევა."
+
+#: .\socialapp\templates\connected_pages_list.html:5
+msgid "Your Connected Pages"
+msgstr "თქვენი დაკავშირებული გვერდები"
+
+#: .\socialapp\templates\connected_pages_list.html:10
+msgid "Manage Your Pages"
+msgstr "თქვენი გვერდების მართვა"
+
+#: .\socialapp\templates\connected_pages_list.html:12
+msgid ""
+"Configure AI prompts and manage connections for your Facebook/Instagram "
+"pages."
+msgstr "დააკონფიგურირეთ AI მოთხოვნები და მართეთ კავშირები თქვენი Facebook/Instagram გვერდებისთვის."
+
+#: .\socialapp\templates\connected_pages_list.html:26
+msgid "Inactive"
+msgstr "არააქტიური"
+
+#: .\socialapp\templates\connected_pages_list.html:30
+msgid "Configure AI"
+msgstr "AI კონფიგურაცია"
+
+#: .\socialapp\templates\connected_pages_list.html:32
+#, python-format
+msgid ""
+"Are you sure you want to disconnect the page \\'%(page.page_name)s\\'? AI "
+"interactions for this page will stop."
+msgstr "დარწმუნებული ხართ, რომ გსურთ '%(page.page_name)s' გვერდის გათიშვა? AI ურთიერთქმედებები ამ გვერდისთვის შეწყდება."
+
+#: .\socialapp\templates\connected_pages_list.html:35
+msgid "Disconnect"
+msgstr "გათიშვა"
+
+#: .\socialapp\templates\connected_pages_list.html:43
+msgid "You haven't connected any pages yet."
+msgstr "თქვენ ჯერ არცერთი გვერდი არ დაგიკავშირებიათ."
+
+#: .\socialapp\templates\connected_pages_list.html:48
+msgid "Connect a New Page"
+msgstr "ახალი გვერდის დაკავშირება"
 
 #: .\socialapp\templates\conversation_detail.html:5
 #, python-format
 msgid ""
 "\n"
-"    Chat: %(sender)s\n"
+"    Chat: %(sender)s on %(page_name)s\n"
 "    "
 msgstr ""
 "\n"
-"    ჩატი: %(sender)s\n"
+"    ჩატი: %(sender)s - %(page_name)s გვერდზე\n"
 "    "
 
-#: .\socialapp\templates\conversation_detail.html:12
+#: .\socialapp\templates\conversation_detail.html:14
 #, python-format
 msgid ""
 "\n"
-"         Conversation: %(sender)s\n"
-"         "
+"            %(sender)s <span style=\"font-weight: normal; color: var(--muted-"
+"foreground); font-size: 0.9em;\">on %(page_name)s</span>\n"
+"            "
 msgstr ""
 "\n"
-"         საუბარი: %(sender)s\n"
-"         "
-
-#: .\socialapp\templates\conversation_detail.html:23
-msgid "Messages"
-msgstr "შეტყობინებები"
+"            %(sender)s <span style=\"font-weight: normal; color: var(--muted-"
+"foreground); font-size: 0.9em;\">%(page_name)s გვერდზე</span>\n"
+"            "
 
 #: .\socialapp\templates\conversation_detail.html:28
-#: .\socialapp\templates\inbox.html:41
+#: .\socialapp\templates\inbox.html:50
 msgid ""
 "Are you sure you want to delete this chat history from the system? This "
 "cannot be undone."
-msgstr "დარწმუნებული ხართ, რომ გსურთ ამ ჩატის ისტორიის წაშლა სისტემიდან? ამის აღდგენა შეუძლებელი იქნება."
+msgstr "დარწმუნებული ხართ, რომ გსურთ ამ ჩატის ისტორიის წაშლა სისტემიდან? ამ მოქმედების გაუქმება შეუძლებელია."
 
 #: .\socialapp\templates\conversation_detail.html:30
 #: .\socialapp\templates\conversation_detail.html:31
-#: .\socialapp\templates\inbox.html:43
+#: .\socialapp\templates\inbox.html:52
 msgid "Delete History"
 msgstr "ისტორიის წაშლა"
 
-#: .\socialapp\templates\conversation_detail.html:53
+#: .\socialapp\templates\conversation_detail.html:34
+msgid "Back to Inbox"
+msgstr "შემოსულებში დაბრუნება"
+
+#: .\socialapp\templates\conversation_detail.html:49
+#: .\socialapp\templates\test_ai_conversation.html:51
+msgid "AI"
+msgstr "AI"
+
+#: .\socialapp\templates\conversation_detail.html:50
+msgid "You (Manual)"
+msgstr "თქვენ (ხელით)"
+
+#: .\socialapp\templates\conversation_detail.html:51
+msgid "System"
+msgstr "სისტემა"
+
+#: .\socialapp\templates\conversation_detail.html:63
+msgid "Manual"
+msgstr "ხელით"
+
+#: .\socialapp\templates\conversation_detail.html:68
 msgid "No messages in this conversation yet."
 msgstr "ამ საუბარში ჯერ შეტყობინებები არ არის."
 
-#: .\socialapp\templates\conversation_detail.html:66
+#: .\socialapp\templates\conversation_detail.html:79
+msgid "Send Manual Reply"
+msgstr "ხელით პასუხის გაგზავნა"
+
+#: .\socialapp\templates\conversation_detail.html:81
 msgid "Send Reply"
 msgstr "პასუხის გაგზავნა"
 
-#: .\socialapp\templates\conversation_detail.html:70
-msgid "Connect your page to send replies."
-msgstr "პასუხების გასაგზავნად დააკავშირეთ თქვენი გვერდი."
+#: .\socialapp\templates\conversation_detail.html:85
+msgid "This page connection is inactive. Activate it to send replies."
+msgstr "ეს გვერდის კავშირი არააქტიურია. გააქტიურეთ პასუხების გასაგზავნად."
+
+#: .\socialapp\templates\conversation_detail.html:87
+msgid "Cannot send reply: Page token missing or connection issue."
+msgstr "პასუხის გაგზავნა ვერ ხერხდება: გვერდის ტოკენი აკლია ან კავშირის პრობლემაა."
 
 #: .\socialapp\templates\error.html:2
-#: .\socialapp\templates\test_ai_conversation.html:103
 msgid "Error"
 msgstr "შეცდომა"
 
@@ -244,106 +480,123 @@ msgstr "ბოდიში, რაღაც არასწორად მო�
 msgid "Return to Home"
 msgstr "მთავარ გვერდზე დაბრუნება"
 
-#: .\socialapp\templates\home.html:15
+#: .\socialapp\templates\home.html:9
 #, python-format
-msgid " %(request.user.username)s"
-msgstr "%(request.user.username)s"
+msgid "Welcome, %(user_name)s!"
+msgstr "მოგესალმებით, %(user_name)s!"
 
-#: .\socialapp\templates\home.html:16
-msgid "Here's an overview of your social media activity."
-msgstr "აქ მოცემულია თქვენი სოციალური მედიის აქტივობის მიმოხილვა."
+#: .\socialapp\templates\home.html:10
+msgid "Manage your connected pages and conversations."
+msgstr "მართეთ თქვენი დაკავშირებული გვერდები და საუბრები."
 
-#: .\socialapp\templates\home.html:24
-msgid "AI Status"
-msgstr "AI სტატუსი"
+#: .\socialapp\templates\home.html:18
+msgid "Page Connections"
+msgstr "გვერდის კავშირები"
+
+#: .\socialapp\templates\home.html:19
+msgid "Status of your Facebook/Instagram pages."
+msgstr "თქვენი Facebook/Instagram გვერდების სტატუსი."
 
 #: .\socialapp\templates\home.html:25
-msgid "Current AI assistant configuration."
-msgstr "AI ასისტენტის მიმდინარე კონფიგურაცია."
+msgid "Connected"
+msgstr "დაკავშირებულია"
 
-#: .\socialapp\templates\home.html:28
-msgid "Prompt:"
-msgstr "მოთხოვნა:"
+#: .\socialapp\templates\home.html:26
+#, python-format
+msgid ""
+"\n"
+"                            You have %(count)s page connected.\n"
+"                            "
+msgid_plural ""
+"\n"
+"                            You have %(count)s pages connected.\n"
+"                            "
+msgstr[0] "\n                            თქვენ დაკავშირებული გაქვთ %(count)s გვერდი.\n                            "
+msgstr[1] "\n                            თქვენ დაკავშირებული გაქვთ %(count)s გვერდი.\n                            "
 
-#: .\socialapp\templates\home.html:28
-msgid "Default"
-msgstr "ნაგულისხმევი"
+#: .\socialapp\templates\home.html:33
+msgid "You haven't connected any Facebook or Instagram pages yet."
+msgstr "თქვენ ჯერ არ დაგიკავშირებიათ Facebook ან Instagram გვერდები."
 
-#: .\socialapp\templates\home.html:31
-msgid "Configure"
-msgstr "კონფიგურაცია"
-
-#: .\socialapp\templates\home.html:39
-msgid "Page Connection"
-msgstr "გვერდის კავშირი"
-
-#: .\socialapp\templates\home.html:40
-msgid "Facebook/Instagram Page Status"
-msgstr "Facebook/Instagram გვერდის სტატუსი"
-
-#: .\socialapp\templates\home.html:47
-msgid "Page ID:"
-msgstr "გვერდის ID:"
-
-#: .\socialapp\templates\home.html:50
-msgid "Your Facebook/Instagram page is not connected."
-msgstr "თქვენი Facebook/Instagram გვერდი არ არის დაკავშირებული."
-
-#: .\socialapp\templates\home.html:54
+#: .\socialapp\templates\home.html:36
 msgid "Login to manage page connections."
 msgstr "შედით გვერდის კავშირების სამართავად"
 
-#: .\socialapp\templates\home.html:64
-msgid ""
-"Are you sure you want to disconnect this page? AI responses will stop and "
-"your subscription may be cancelled."
-msgstr "დარწმუნებული ხართ, რომ გსურთ ამ გვერდის გათიშვა? AI პასუხები შეწყდება და თქვენი ხელმოწერა შეიძლება გაუქმდეს."
+#: .\socialapp\templates\home.html:41
+msgid "Manage Pages"
+msgstr "გვერდების მართვა"
 
-#: .\socialapp\templates\home.html:65
-msgid "Disconnect"
-msgstr "გათიშვა"
+#: .\socialapp\templates\home.html:43
+msgid "Connect First Page"
+msgstr "პირველი გვერდის დაკავშირება"
 
-#: .\socialapp\templates\home.html:74
+#: .\socialapp\templates\home.html:46
 msgid "Login"
 msgstr "შესვლა"
 
+#: .\socialapp\templates\home.html:54
+msgid "Recent Activity"
+msgstr "ბოლო აქტივობა"
+
+#: .\socialapp\templates\home.html:55
+msgid "Quick access to conversations."
+msgstr "სწრაფი წვდომა საუბრებზე"
+
+#: .\socialapp\templates\home.html:59
+msgid "Check your inbox for recent messages across your pages."
+msgstr "შეამოწმეთ თქვენი შემოსულები ბოლო შეტყობინებებისთვის ყველა გვერდზე."
+
+#: .\socialapp\templates\home.html:61
+msgid "Connect a page to start receiving messages."
+msgstr "დააკავშირეთ გვერდი შეტყობინებების მისაღებად."
+
+#: .\socialapp\templates\home.html:66
+msgid "Go to Inbox"
+msgstr "შემოსულებში გადასვლა"
+
+#: .\socialapp\templates\home.html:75
+msgid "AI Configuration"
+msgstr "AI კონფიგურაცია"
+
+#: .\socialapp\templates\home.html:76
+msgid "Prompts are configured per page."
+msgstr "მოთხოვნები კონფიგურირდება თითოეული გვერდისთვის."
+
+#: .\socialapp\templates\home.html:79
+msgid ""
+"You can set unique AI instructions, personality, and context for each "
+"connected page."
+msgstr "შეგიძლიათ დააყენოთ უნიკალური AI ინსტრუქციები, პერსონა და კონტექსტი თითოეული დაკავშირებული გვერდისთვის."
+
 #: .\socialapp\templates\home.html:82
-msgid "Quick Actions"
-msgstr "სწრაფი ქმედებები"
-
-#: .\socialapp\templates\home.html:83
-msgid "Commonly used features."
-msgstr "ხშირად გამოყენებული ფუნქციები."
-
-#: .\socialapp\templates\home.html:87
-msgid "View Recent Messages"
-msgstr "ბოლო შეტყობინებების ნახვა"
-
-#: .\socialapp\templates\home.html:88
-msgid "Analyze Performance"
-msgstr "შედეგების ანალიზი"
+msgid "Configure Prompts"
+msgstr "მოთხოვნების კონფიგურაცია"
 
 #: .\socialapp\templates\inbox.html:5
 msgid "Conversations Inbox"
 msgstr "საუბრების შემოსულები"
 
-#: .\socialapp\templates\inbox.html:10
-msgid "Your Conversations"
-msgstr "თქვენი საუბრები"
-
 #: .\socialapp\templates\inbox.html:11
-msgid "Recent messages from your connected Facebook Page."
-msgstr "თქვენი დაკავშირებული Facebook გვერდიდან მოსული ბოლო შეტყობინებები."
+msgid "No pages connected or no conversations yet."
+msgstr "გვერდები არ არის დაკავშირებული ან საუბრები ჯერ არ არის."
 
-#: .\socialapp\templates\inbox.html:29
+
+
+#: .\socialapp\templates\inbox.html:23
+msgid "Configure AI for this page"
+msgstr "AI კონფიგურაცია ამ გვერდისთვის"
+
+#: .\socialapp\templates\inbox.html:24
+msgid "Configure"
+msgstr "კონფიგურაცია"
+
+#: .\socialapp\templates\inbox.html:39
 msgid "(No text messages yet)"
 msgstr "(ჯერ ტექსტური შეტყობინებები არ არის)"
 
-#: .\socialapp\templates\inbox.html:52
-msgid ""
-"No conversations found yet. Messages from your connected Facebook page will "
-"appear here."
-msgstr "საუბრები ჯერ ვერ მოიძებნა. თქვენი დაკავშირებული Facebook გვერდიდან მოსული შეტყობინებები აქ გამოჩნდება."
+#: .\socialapp\templates\inbox.html:60
+msgid "No conversations for this page yet."
+msgstr "ამ გვერდისთვის საუბრები ჯერ არ არის."
 
 #: .\socialapp\templates\privacy_policy.html:13
 msgid "Last updated:"
@@ -354,14 +607,21 @@ msgid ""
 "This Privacy Policy describes Our policies and procedures on the collection, "
 "use and disclosure of Your information when You use the Service and tells "
 "You about Your privacy rights and how the law protects You."
-msgstr "ეს კონფიდენციალურობის პოლიტიკა აღწერს ჩვენს პოლიტიკასა და პროცედურებს თქვენი ინფორმაციის შეგროვების, გამოყენებისა და გამჟღავნების შესახებ, როდესაც იყენებთ სერვისს და გაცნობებთ თქვენი კონფიდენციალურობის უფლებებისა და კანონის მიერ თქვენი დაცვის შესახებ."
+msgstr ""
+"ეს კონფიდენციალურობის პოლიტიკა აღწერს ჩვენს პოლიტიკასა და პროცედურებს თქვენი "
+"ინფორმაციის შეგროვების, გამოყენებისა და გამჟღავნების შესახებ, როდესაც "
+"იყენებთ სერვისს და გაცნობებთ თქვენი კონფიდენციალურობის უფლებებისა და კანონის "
+"მიერ თქვენი დაცვის შესახებ."
 
 #: .\socialapp\templates\privacy_policy.html:17
 msgid ""
 "We use Your Personal data to provide and improve the Service. By using the "
 "Service, You agree to the collection and use of information in accordance "
 "with this Privacy Policy."
-msgstr "ჩვენ ვიყენებთ თქვენს პერსონალურ მონაცემებს სერვისის უზრუნველსაყოფად და გასაუმჯობესებლად. სერვისის გამოყენებით თქვენ ეთანხმებით ინფორმაციის შეგროვებასა და გამოყენებას ამ კონფიდენციალურობის პოლიტიკის შესაბამისად."
+msgstr ""
+"ჩვენ ვიყენებთ თქვენს პერსონალურ მონაცემებს სერვისის უზრუნველსაყოფად და "
+"გასაუმჯობესებლად. სერვისის გამოყენებით თქვენ ეთანხმებით ინფორმაციის "
+"შეგროვებასა და გამოყენებას ამ კონფიდენციალურობის პოლიტიკის შესაბამისად."
 
 #: .\socialapp\templates\privacy_policy.html:19
 msgid "Interpretation and Definitions"
@@ -376,7 +636,10 @@ msgid ""
 "The words of which the initial letter is capitalized have meanings defined "
 "under the following conditions. The following definitions shall have the "
 "same meaning regardless of whether they appear in singular or in plural."
-msgstr "სიტყვებს, რომელთა საწყისი ასო არის დიდი, აქვთ მნიშვნელობა განსაზღვრული შემდეგი პირობებით. შემდეგ განმარტებებს ექნება იგივე მნიშვნელობა, მიუხედავად იმისა, გამოჩნდება ისინი მხოლობით თუ მრავლობით რიცხვში."
+msgstr ""
+"სიტყვებს, რომელთა საწყისი ასო არის დიდი, აქვთ მნიშვნელობა განსაზღვრული "
+"შემდეგი პირობებით. შემდეგ განმარტებებს ექნება იგივე მნიშვნელობა, მიუხედავად "
+"იმისა, გამოჩნდება ისინი მხოლობით თუ მრავლობით რიცხვში."
 
 #: .\socialapp\templates\privacy_policy.html:23
 msgid "Definitions"
@@ -394,7 +657,9 @@ msgstr "ანგარიში"
 msgid ""
 "means a unique account created for You to access our Service or parts of our "
 "Service."
-msgstr "ნიშნავს უნიკალურ ანგარიშს, რომელიც შექმნილია თქვენთვის ჩვენს სერვისზე ან მის ნაწილებზე წვდომის მისაღებად."
+msgstr ""
+"ნიშნავს უნიკალურ ანგარიშს, რომელიც შექმნილია თქვენთვის ჩვენს სერვისზე ან მის "
+"ნაწილებზე წვდომის მისაღებად."
 
 #: .\socialapp\templates\privacy_policy.html:27
 msgid "Affiliate"
@@ -407,7 +672,11 @@ msgid ""
 "with a party, where \"control\" means ownership of 50%% or more of the "
 "shares, equity interest or other securities entitled to vote for election of "
 "directors or other managing authority."
-msgstr "ნიშნავს სუბიექტს, რომელიც აკონტროლებს, კონტროლდება ან იმყოფება საერთო კონტროლის ქვეშ მხარესთან, სადაც \"კონტროლი\" ნიშნავს აქციების, კაპიტალის წილის ან სხვა ფასიანი ქაღალდების 50%% ან მეტის ფლობას, რომლებიც იძლევიან ხმის უფლებას დირექტორების ან სხვა მმართველი ორგანოს არჩევნებში."
+msgstr ""
+"ნიშნავს სუბიექტს, რომელიც აკონტროლებს, კონტროლდება ან იმყოფება საერთო "
+"კონტროლის ქვეშ მხარესთან, სადაც \"კონტროლი\" ნიშნავს აქციების, კაპიტალის "
+"წილის ან სხვა ფასიანი ქაღალდების 50%% ან მეტის ფლობას, რომლებიც იძლევიან "
+"ხმის უფლებას დირექტორების ან სხვა მმართველი ორგანოს არჩევნებში."
 
 #: .\socialapp\templates\privacy_policy.html:28
 msgid "Company"
@@ -417,7 +686,9 @@ msgstr "კომპანია"
 msgid ""
 "(referred to as either \"the Company\", \"We\", \"Us\" or \"Our\" in this "
 "Agreement) refers to social manager."
-msgstr "(ამ შეთანხმებაში მოხსენიებული როგორც \"კომპანია\", \"ჩვენ\", \"ჩვენი\") ეხება social manager-ს."
+msgstr ""
+"(ამ შეთანხმებაში მოხსენიებული როგორც \"კომპანია\", \"ჩვენ\", \"ჩვენი\") "
+"ეხება social manager-ს."
 
 #: .\socialapp\templates\privacy_policy.html:29
 msgid "Cookies"
@@ -428,7 +699,11 @@ msgid ""
 "are small files that are placed on Your computer, mobile device or any other "
 "device by a website, containing the details of Your browsing history on that "
 "website among its many uses."
-msgstr "არის პატარა ფაილები, რომლებიც განთავსებულია თქვენს კომპიუტერზე, მობილურ მოწყობილობაზე ან ნებისმიერ სხვა მოწყობილობაზე ვებსაიტის მიერ, და შეიცავს თქვენი დათვალიერების ისტორიის დეტალებს ამ ვებსაიტზე მის მრავალ გამოყენებას შორის."
+msgstr ""
+"არის პატარა ფაილები, რომლებიც განთავსებულია თქვენს კომპიუტერზე, მობილურ "
+"მოწყობილობაზე ან ნებისმიერ სხვა მოწყობილობაზე ვებსაიტის მიერ, და შეიცავს "
+"თქვენი დათვალიერების ისტორიის დეტალებს ამ ვებსაიტზე მის მრავალ გამოყენებას "
+"შორის."
 
 #: .\socialapp\templates\privacy_policy.html:30
 msgid "Country"
@@ -446,7 +721,9 @@ msgstr "მოწყობილობა"
 msgid ""
 "means any device that can access the Service such as a computer, a cellphone "
 "or a digital tablet."
-msgstr "ნიშნავს ნებისმიერ მოწყობილობას, რომელსაც შეუძლია სერვისზე წვდომა, როგორიცაა კომპიუტერი, მობილური ტელეფონი ან ციფრული პლანშეტი."
+msgstr ""
+"ნიშნავს ნებისმიერ მოწყობილობას, რომელსაც შეუძლია სერვისზე წვდომა, როგორიცაა "
+"კომპიუტერი, მობილური ტელეფონი ან ციფრული პლანშეტი."
 
 #: .\socialapp\templates\privacy_policy.html:32
 #: .\socialapp\templates\privacy_policy.html:44
@@ -456,7 +733,9 @@ msgstr "პერსონალური მონაცემები"
 #: .\socialapp\templates\privacy_policy.html:32
 msgid ""
 "is any information that relates to an identified or identifiable individual."
-msgstr "არის ნებისმიერი ინფორმაცია, რომელიც ეხება იდენტიფიცირებულ ან იდენტიფიცირებად ფიზიკურ პირს."
+msgstr ""
+"არის ნებისმიერი ინფორმაცია, რომელიც ეხება იდენტიფიცირებულ ან იდენტიფიცირებად "
+"ფიზიკურ პირს."
 
 #: .\socialapp\templates\privacy_policy.html:33
 msgid "Service"
@@ -477,7 +756,13 @@ msgid ""
 "Company to facilitate the Service, to provide the Service on behalf of the "
 "Company, to perform services related to the Service or to assist the Company "
 "in analyzing how the Service is used."
-msgstr "ნიშნავს ნებისმიერ ფიზიკურ ან იურიდიულ პირს, რომელიც ამუშავებს მონაცემებს კომპანიის სახელით. ეს ეხება მესამე მხარის კომპანიებს ან ფიზიკურ პირებს, რომლებიც დაქირავებულნი არიან კომპანიის მიერ სერვისის გასაადვილებლად, სერვისის კომპანიის სახელით უზრუნველსაყოფად, სერვისთან დაკავშირებული მომსახურების შესასრულებლად ან კომპანიის დასახმარებლად იმის ანალიზში, თუ როგორ გამოიყენება სერვისი."
+msgstr ""
+"ნიშნავს ნებისმიერ ფიზიკურ ან იურიდიულ პირს, რომელიც ამუშავებს მონაცემებს "
+"კომპანიის სახელით. ეს ეხება მესამე მხარის კომპანიებს ან ფიზიკურ პირებს, "
+"რომლებიც დაქირავებულნი არიან კომპანიის მიერ სერვისის გასაადვილებლად, "
+"სერვისის კომპანიის სახელით უზრუნველსაყოფად, სერვისთან დაკავშირებული "
+"მომსახურების შესასრულებლად ან კომპანიის დასახმარებლად იმის ანალიზში, თუ "
+"როგორ გამოიყენება სერვისი."
 
 #: .\socialapp\templates\privacy_policy.html:35
 msgid "Third-party Social Media Service"
@@ -488,7 +773,10 @@ msgid ""
 "refers to any website or any social network website through which a User can "
 "log in or create an account to use the Service. (e.g., Google, Facebook, "
 "Instagram)."
-msgstr "ეხება ნებისმიერ ვებსაიტს ან სოციალური ქსელის ვებსაიტს, რომლის მეშვეობითაც მომხმარებელს შეუძლია შევიდეს სისტემაში ან შექმნას ანგარიში სერვისის გამოსაყენებლად. (მაგ., Google, Facebook, Instagram)."
+msgstr ""
+"ეხება ნებისმიერ ვებსაიტს ან სოციალური ქსელის ვებსაიტს, რომლის მეშვეობითაც "
+"მომხმარებელს შეუძლია შევიდეს სისტემაში ან შექმნას ანგარიში სერვისის "
+"გამოსაყენებლად. (მაგ., Google, Facebook, Instagram)."
 
 #: .\socialapp\templates\privacy_policy.html:36
 #: .\socialapp\templates\privacy_policy.html:49
@@ -501,7 +789,10 @@ msgid ""
 "refers to data collected automatically, either generated by the use of the "
 "Service or from the Service infrastructure itself (for example, the duration "
 "of a page visit)."
-msgstr "ეხება ავტომატურად შეგროვებულ მონაცემებს, რომლებიც გენერირდება სერვისის გამოყენებით ან თავად სერვისის ინფრასტრუქტურიდან (მაგალითად, გვერდის მონახულების ხანგრძლივობა)."
+msgstr ""
+"ეხება ავტომატურად შეგროვებულ მონაცემებს, რომლებიც გენერირდება სერვისის "
+"გამოყენებით ან თავად სერვისის ინფრასტრუქტურიდან (მაგალითად, გვერდის "
+"მონახულების ხანგრძლივობა)."
 
 #: .\socialapp\templates\privacy_policy.html:37
 msgid "Website"
@@ -512,7 +803,6 @@ msgid "refers to social manager, accessible from your application's URL."
 msgstr "ეხება social manager-ს, ხელმისაწვდომს თქვენი აპლიკაციის URL-დან."
 
 #: .\socialapp\templates\privacy_policy.html:38
-#: .\socialapp\templates\test_ai_conversation.html:120
 msgid "You"
 msgstr "თქვენ"
 
@@ -521,7 +811,10 @@ msgid ""
 "means the individual accessing or using the Service, or the company, or "
 "other legal entity on behalf of which such individual is accessing or using "
 "the Service, as applicable."
-msgstr "ნიშნავს ფიზიკურ პირს, რომელიც წვდომას იღებს ან იყენებს სერვისს, ან კომპანიას, ან სხვა იურიდიულ პირს, რომლის სახელითაც ასეთი ფიზიკური პირი წვდომას იღებს ან იყენებს სერვისს, შესაბამისად."
+msgstr ""
+"ნიშნავს ფიზიკურ პირს, რომელიც წვდომას იღებს ან იყენებს სერვისს, ან "
+"კომპანიას, ან სხვა იურიდიულ პირს, რომლის სახელითაც ასეთი ფიზიკური პირი "
+"წვდომას იღებს ან იყენებს სერვისს, შესაბამისად."
 
 #: .\socialapp\templates\privacy_policy.html:41
 msgid "Collecting and Using Your Personal Data"
@@ -536,7 +829,11 @@ msgid ""
 "While using Our Service, We may ask You to provide Us with certain "
 "personally identifiable information that can be used to contact or identify "
 "You. Personally identifiable information may include, but is not limited to:"
-msgstr "ჩვენი სერვისის გამოყენებისას, ჩვენ შეიძლება გთხოვოთ მოგვაწოდოთ გარკვეული პერსონალურად იდენტიფიცირებადი ინფორმაცია, რომელიც შეიძლება გამოყენებულ იქნას თქვენთან დასაკავშირებლად ან თქვენს იდენტიფიცირებისთვის. პერსონალურად იდენტიფიცირებადი ინფორმაცია შეიძლება შეიცავდეს, მაგრამ არ შემოიფარგლება:"
+msgstr ""
+"ჩვენი სერვისის გამოყენებისას, ჩვენ შეიძლება გთხოვოთ მოგვაწოდოთ გარკვეული "
+"პერსონალურად იდენტიფიცირებადი ინფორმაცია, რომელიც შეიძლება გამოყენებულ იქნას "
+"თქვენთან დასაკავშირებლად ან თქვენს იდენტიფიცირებისთვის. პერსონალურად "
+"იდენტიფიცირებადი ინფორმაცია შეიძლება შეიცავდეს, მაგრამ არ შემოიფარგლება:"
 
 #: .\socialapp\templates\privacy_policy.html:47
 msgid "Email address"
@@ -556,7 +853,12 @@ msgid ""
 "address (e.g. IP address), browser type, browser version, the pages of our "
 "Service that You visit, the time and date of Your visit, the time spent on "
 "those pages, unique device identifiers and other diagnostic data."
-msgstr "გამოყენების მონაცემები შეიძლება შეიცავდეს ინფორმაციას, როგორიცაა თქვენი მოწყობილობის ინტერნეტ პროტოკოლის მისამართი (მაგ. IP მისამართი), ბრაუზერის ტიპი, ბრაუზერის ვერსია, ჩვენი სერვისის გვერდები, რომლებსაც თქვენ სტუმრობთ, თქვენი ვიზიტის დრო და თარიღი, ამ გვერდებზე გატარებული დრო, უნიკალური მოწყობილობის იდენტიფიკატორები და სხვა დიაგნოსტიკური მონაცემები."
+msgstr ""
+"გამოყენების მონაცემები შეიძლება შეიცავდეს ინფორმაციას, როგორიცაა თქვენი "
+"მოწყობილობის ინტერნეტ პროტოკოლის მისამართი (მაგ. IP მისამართი), ბრაუზერის "
+"ტიპი, ბრაუზერის ვერსია, ჩვენი სერვისის გვერდები, რომლებსაც თქვენ სტუმრობთ, "
+"თქვენი ვიზიტის დრო და თარიღი, ამ გვერდებზე გატარებული დრო, უნიკალური "
+"მოწყობილობის იდენტიფიკატორები და სხვა დიაგნოსტიკური მონაცემები."
 
 #: .\socialapp\templates\privacy_policy.html:56
 msgid ""
@@ -566,13 +868,23 @@ msgid ""
 "Your mobile device, Your mobile operating system, the type of mobile "
 "Internet browser You use, unique device identifiers and other diagnostic "
 "data."
-msgstr "როდესაც თქვენ წვდომას იღებთ სერვისზე მობილური მოწყობილობით ან მისი მეშვეობით, ჩვენ შეიძლება ავტომატურად შევაგროვოთ გარკვეული ინფორმაცია, მათ შორის, მაგრამ არ შემოიფარგლება, თქვენს მიერ გამოყენებული მობილური მოწყობილობის ტიპი, თქვენი მობილური მოწყობილობის უნიკალური ID, თქვენი მობილური მოწყობილობის IP მისამართი, თქვენი მობილური ოპერაციული სისტემა, თქვენს მიერ გამოყენებული მობილური ინტერნეტ ბრაუზერის ტიპი, უნიკალური მოწყობილობის იდენტიფიკატორები და სხვა დიაგნოსტიკური მონაცემები."
+msgstr ""
+"როდესაც თქვენ წვდომას იღებთ სერვისზე მობილური მოწყობილობით ან მისი "
+"მეშვეობით, ჩვენ შეიძლება ავტომატურად შევაგროვოთ გარკვეული ინფორმაცია, მათ "
+"შორის, მაგრამ არ შემოიფარგლება, თქვენს მიერ გამოყენებული მობილური "
+"მოწყობილობის ტიპი, თქვენი მობილური მოწყობილობის უნიკალური ID, თქვენი "
+"მობილური მოწყობილობის IP მისამართი, თქვენი მობილური ოპერაციული სისტემა, "
+"თქვენს მიერ გამოყენებული მობილური ინტერნეტ ბრაუზერის ტიპი, უნიკალური "
+"მოწყობილობის იდენტიფიკატორები და სხვა დიაგნოსტიკური მონაცემები."
 
 #: .\socialapp\templates\privacy_policy.html:57
 msgid ""
 "We may also collect information that Your browser sends whenever You visit "
 "our Service or when You access the Service by or through a mobile device."
-msgstr "ჩვენ ასევე შეიძლება შევაგროვოთ ინფორმაცია, რომელსაც თქვენი ბრაუზერი აგზავნის ყოველთვის, როდესაც თქვენ სტუმრობთ ჩვენს სერვისს ან როდესაც წვდომას იღებთ სერვისზე მობილური მოწყობილობით ან მისი მეშვეობით."
+msgstr ""
+"ჩვენ ასევე შეიძლება შევაგროვოთ ინფორმაცია, რომელსაც თქვენი ბრაუზერი აგზავნის "
+"ყოველთვის, როდესაც თქვენ სტუმრობთ ჩვენს სერვისს ან როდესაც წვდომას იღებთ "
+"სერვისზე მობილური მოწყობილობით ან მისი მეშვეობით."
 
 #: .\socialapp\templates\privacy_policy.html:59
 msgid "Information from Third-Party Social Media Services"
@@ -582,19 +894,9 @@ msgstr "ინფორმაცია მესამე მხარის ს
 msgid ""
 "The Company allows You to create an account and log in to use the Service "
 "through the following Third-party Social Media Services:"
-msgstr "კომპანია გაძლევთ საშუალებას შექმნათ ანგარიში და შეხვიდეთ სერვისის გამოსაყენებლად შემდეგი მესამე მხარის სოციალური მედიის სერვისების მეშვეობით:"
-
-#: .\socialapp\templates\privacy_policy.html:62
-msgid "Google"
-msgstr "Google"
-
-#: .\socialapp\templates\privacy_policy.html:63
-msgid "Facebook"
-msgstr "Facebook"
-
-#: .\socialapp\templates\privacy_policy.html:64
-msgid "Instagram"
-msgstr "Instagram"
+msgstr ""
+"კომპანია გაძლევთ საშუალებას შექმნათ ანგარიში და შეხვიდეთ სერვისის "
+"გამოსაყენებლად შემდეგი მესამე მხარის სოციალური მედიის სერვისების მეშვეობით:"
 
 #: .\socialapp\templates\privacy_policy.html:67
 msgid ""
@@ -603,7 +905,13 @@ msgid ""
 "associated with Your Third-Party Social Media Service's account, such as "
 "Your name, Your email address, Your activities or Your contact list "
 "associated with that account."
-msgstr "თუ თქვენ გადაწყვეტთ დარეგისტრირდეთ ან სხვაგვარად მოგვცეთ წვდომა მესამე მხარის სოციალური მედიის სერვისზე, ჩვენ შეიძლება შევაგროვოთ პერსონალური მონაცემები, რომლებიც უკვე დაკავშირებულია თქვენი მესამე მხარის სოციალური მედიის სერვისის ანგარიშთან, როგორიცაა თქვენი სახელი, ელფოსტის მისამართი, თქვენი აქტივობები ან თქვენი კონტაქტების სია, რომელიც დაკავშირებულია ამ ანგარიშთან."
+msgstr ""
+"თუ თქვენ გადაწყვეტთ დარეგისტრირდეთ ან სხვაგვარად მოგვცეთ წვდომა მესამე "
+"მხარის სოციალური მედიის სერვისზე, ჩვენ შეიძლება შევაგროვოთ პერსონალური "
+"მონაცემები, რომლებიც უკვე დაკავშირებულია თქვენი მესამე მხარის სოციალური "
+"მედიის სერვისის ანგარიშთან, როგორიცაა თქვენი სახელი, ელფოსტის მისამართი, "
+"თქვენი აქტივობები ან თქვენი კონტაქტების სია, რომელიც დაკავშირებულია ამ "
+"ანგარიშთან."
 
 #: .\socialapp\templates\privacy_policy.html:68
 msgid ""
@@ -612,14 +920,24 @@ msgid ""
 "choose to provide such information and Personal Data, during registration or "
 "otherwise, You are giving the Company permission to use, share, and store it "
 "in a manner consistent with this Privacy Policy."
-msgstr "თქვენ ასევე შეიძლება გქონდეთ შესაძლებლობა გაუზიაროთ დამატებითი ინფორმაცია კომპანიას თქვენი მესამე მხარის სოციალური მედიის სერვისის ანგარიშის მეშვეობით. თუ თქვენ აირჩევთ ასეთი ინფორმაციის და პერსონალური მონაცემების მოწოდებას, რეგისტრაციის დროს ან სხვაგვარად, თქვენ აძლევთ კომპანიას ნებართვას გამოიყენოს, გააზიაროს და შეინახოს იგი ამ კონფიდენციალურობის პოლიტიკასთან შესაბამისობაში."
+msgstr ""
+"თქვენ ასევე შეიძლება გქონდეთ შესაძლებლობა გაუზიაროთ დამატებითი ინფორმაცია "
+"კომპანიას თქვენი მესამე მხარის სოციალური მედიის სერვისის ანგარიშის "
+"მეშვეობით. თუ თქვენ აირჩევთ ასეთი ინფორმაციის და პერსონალური მონაცემების "
+"მოწოდებას, რეგისტრაციის დროს ან სხვაგვარად, თქვენ აძლევთ კომპანიას ნებართვას "
+"გამოიყენოს, გააზიაროს და შეინახოს იგი ამ კონფიდენციალურობის პოლიტიკასთან "
+"შესაბამისობაში."
 
 #: .\socialapp\templates\privacy_policy.html:69
 msgid ""
 "We also collect necessary tokens (like Page Access Tokens from Facebook/"
 "Instagram) required to provide the core functionality of managing your "
 "social media pages and interactions via our Service."
-msgstr "ჩვენ ასევე ვაგროვებთ საჭირო ტოკენებს (როგორიცაა გვერდის წვდომის ტოკენები Facebook/Instagram-დან), რომლებიც აუცილებელია თქვენი სოციალური მედიის გვერდების და ურთიერთქმედებების მართვის ძირითადი ფუნქციონირების უზრუნველსაყოფად ჩვენი სერვისის საშუალებით."
+msgstr ""
+"ჩვენ ასევე ვაგროვებთ საჭირო ტოკენებს (როგორიცაა გვერდის წვდომის ტოკენები "
+"Facebook/Instagram-დან), რომლებიც აუცილებელია თქვენი სოციალური მედიის "
+"გვერდების და ურთიერთქმედებების მართვის ძირითადი ფუნქციონირების "
+"უზრუნველსაყოფად ჩვენი სერვისის საშუალებით."
 
 #: .\socialapp\templates\privacy_policy.html:71
 msgid "Tracking Technologies and Cookies"
@@ -631,7 +949,13 @@ msgid ""
 "Our Service and store certain information. Tracking technologies used are "
 "beacons, tags, and scripts to collect and track information and to improve "
 "and analyze Our Service. The technologies We use may include:"
-msgstr "ჩვენ ვიყენებთ ქუქი-ფაილებს და მსგავს თვალთვალის ტექნოლოგიებს ჩვენს სერვისზე აქტივობის თვალყურის დევნებისთვის და გარკვეული ინფორმაციის შესანახად. გამოყენებული თვალთვალის ტექნოლოგიებია შუქურები, ტეგები და სკრიპტები ინფორმაციის შეგროვებისა და თვალყურის დევნებისთვის და ჩვენი სერვისის გასაუმჯობესებლად და ანალიზისთვის. ჩვენს მიერ გამოყენებული ტექნოლოგიები შეიძლება შეიცავდეს:"
+msgstr ""
+"ჩვენ ვიყენებთ ქუქი-ფაილებს და მსგავს თვალთვალის ტექნოლოგიებს ჩვენს სერვისზე "
+"აქტივობის თვალყურის დევნებისთვის და გარკვეული ინფორმაციის შესანახად. "
+"გამოყენებული თვალთვალის ტექნოლოგიებია შუქურები, ტეგები და სკრიპტები "
+"ინფორმაციის შეგროვებისა და თვალყურის დევნებისთვის და ჩვენი სერვისის "
+"გასაუმჯობესებლად და ანალიზისთვის. ჩვენს მიერ გამოყენებული ტექნოლოგიები "
+"შეიძლება შეიცავდეს:"
 
 #: .\socialapp\templates\privacy_policy.html:74
 msgid "Cookies or Browser Cookies."
@@ -644,7 +968,13 @@ msgid ""
 "However, if You do not accept Cookies, You may not be able to use some parts "
 "of our Service. Unless you have adjusted Your browser setting so that it "
 "will refuse Cookies, our Service may use Cookies."
-msgstr "ქუქი-ფაილი არის პატარა ფაილი, რომელიც განთავსებულია თქვენს მოწყობილობაზე. შეგიძლიათ დაავალოთ თქვენს ბრაუზერს, უარი თქვას ყველა ქუქი-ფაილზე ან მიუთითოს, როდის იგზავნება ქუქი-ფაილი. თუმცა, თუ არ მიიღებთ ქუქი-ფაილებს, შეიძლება ვერ გამოიყენოთ ჩვენი სერვისის ზოგიერთი ნაწილი. თუ არ დაარეგულირეთ თქვენი ბრაუზერის პარამეტრები ისე, რომ უარი თქვას ქუქი-ფაილებზე, ჩვენმა სერვისმა შეიძლება გამოიყენოს ქუქი-ფაილები."
+msgstr ""
+"ქუქი-ფაილი არის პატარა ფაილი, რომელიც განთავსებულია თქვენს მოწყობილობაზე. "
+"შეგიძლიათ დაავალოთ თქვენს ბრაუზერს, უარი თქვას ყველა ქუქი-ფაილზე ან "
+"მიუთითოს, როდის იგზავნება ქუქი-ფაილი. თუმცა, თუ არ მიიღებთ ქუქი-ფაილებს, "
+"შეიძლება ვერ გამოიყენოთ ჩვენი სერვისის ზოგიერთი ნაწილი. თუ არ დაარეგულირეთ "
+"თქვენი ბრაუზერის პარამეტრები ისე, რომ უარი თქვას ქუქი-ფაილებზე, ჩვენმა "
+"სერვისმა შეიძლება გამოიყენოს ქუქი-ფაილები."
 
 #: .\socialapp\templates\privacy_policy.html:75
 msgid "Web Beacons."
@@ -658,15 +988,25 @@ msgid ""
 "have visited those pages or opened an email and for other related website "
 "statistics (for example, recording the popularity of a certain section and "
 "verifying system and server integrity)."
-msgstr "ჩვენი სერვისის გარკვეული სექციები და ჩვენი ელფოსტა შეიძლება შეიცავდეს მცირე ელექტრონულ ფაილებს, რომლებიც ცნობილია როგორც ვებ შუქურები (ასევე მოხსენიებული როგორც გამჭვირვალე gif-ები, პიქსელების ტეგები და ერთპიქსელიანი gif-ები), რომლებიც საშუალებას აძლევს კომპანიას, მაგალითად, დათვალოს მომხმარებლები, რომლებმაც მოინახულეს ეს გვერდები ან გახსნეს ელფოსტა და სხვა დაკავშირებული ვებსაიტების სტატისტიკისთვის (მაგალითად, გარკვეული სექციის პოპულარობის ჩაწერა და სისტემისა და სერვერის მთლიანობის შემოწმება)."
+msgstr ""
+"ჩვენი სერვისის გარკვეული სექციები და ჩვენი ელფოსტა შეიძლება შეიცავდეს მცირე "
+"ელექტრონულ ფაილებს, რომლებიც ცნობილია როგორც ვებ შუქურები (ასევე "
+"მოხსენიებული როგორც გამჭვირვალე gif-ები, პიქსელების ტეგები და ერთპიქსელიანი "
+"gif-ები), რომლებიც საშუალებას აძლევს კომპანიას, მაგალითად, დათვალოს "
+"მომხმარებლები, რომლებმაც მოინახულეს ეს გვერდები ან გახსნეს ელფოსტა და სხვა "
+"დაკავშირებული ვებსაიტების სტატისტიკისთვის (მაგალითად, გარკვეული სექციის "
+"პოპულარობის ჩაწერა და სისტემისა და სერვერის მთლიანობის შემოწმება)."
 
 #: .\socialapp\templates\privacy_policy.html:77
 msgid "Cookies can be \"Persistent\" or \"Session\" Cookies. Persistent Cookies remain on Your personal computer or mobile device when You go offline, while Session Cookies are deleted as soon as You close Your web browser."
-msgstr "ქუქი-ფაილები შეიძლება იყოს \"მუდმივი\" ან \"სესიური\" ქუქი-ფაილები. მუდმივი ქუქი-ფაილები რჩება თქვენს პერსონალურ კომპიუტერზე ან მობილურ მოწყობილობაზე, როდესაც ხაზგარეშე ხართ, ხოლო სესიური ქუქი-ფაილები იშლება როგორც კი დახურავთ თქვენს ვებ ბრაუზერს."
+msgstr "ქუქი-ფაილები შეიძლება იყოს \"მუდმივი\" ან \"სესიური\". მუდმივი ქუქი-ფაილები რჩება თქვენს პერსონალურ კომპიუტერზე ან მობილურ მოწყობილობაზე, როდესაც ხაზგარეშე ხართ, ხოლო სესიური ქუქი-ფაილები იშლება თქვენი ვებ ბრაუზერის დახურვისთანავე."
 
 #: .\socialapp\templates\privacy_policy.html:79
-msgid "We use both Session and Persistent Cookies for the purposes set out below:"
-msgstr "ჩვენ ვიყენებთ როგორც სესიურ, ისე მუდმივ ქუქი-ფაილებს ქვემოთ მითითებული მიზნებისთვის:"
+msgid ""
+"We use both Session and Persistent Cookies for the purposes set out below:"
+msgstr ""
+"ჩვენ ვიყენებთ როგორც სესიურ, ისე მუდმივ ქუქი-ფაილებს ქვემოთ მითითებული "
+"მიზნებისთვის:"
 
 #: .\socialapp\templates\privacy_policy.html:82
 msgid "Necessary / Essential Cookies"
@@ -689,7 +1029,14 @@ msgid ""
 "to authenticate users and prevent fraudulent use of user accounts. Without "
 "these Cookies, the services that You have asked for cannot be provided, and "
 "We only use these Cookies to provide You with those services."
-msgstr "მიზანი: ეს ქუქი-ფაილები აუცილებელია თქვენთვის ვებსაიტის საშუალებით ხელმისაწვდომი სერვისების უზრუნველსაყოფად და მისი ზოგიერთი ფუნქციის გამოყენების შესაძლებლობისთვის. ისინი ეხმარებიან მომხმარებლების ავთენტიფიკაციას და მომხმარებლის ანგარიშების თაღლითური გამოყენების პრევენციას. ამ ქუქი-ფაილების გარეშე, თქვენს მიერ მოთხოვნილი სერვისები ვერ იქნება უზრუნველყოფილი და ჩვენ ვიყენებთ ამ ქუქი-ფაილებს მხოლოდ ამ სერვისების თქვენთვის მოსაწოდებლად."
+msgstr ""
+"მიზანი: ეს ქუქი-ფაილები აუცილებელია თქვენთვის ვებსაიტის საშუალებით "
+"ხელმისაწვდომი სერვისების უზრუნველსაყოფად და მისი ზოგიერთი ფუნქციის "
+"გამოყენების შესაძლებლობისთვის. ისინი ეხმარებიან მომხმარებლების "
+"ავთენტიფიკაციას და მომხმარებლის ანგარიშების თაღლითური გამოყენების "
+"პრევენციას. ამ ქუქი-ფაილების გარეშე, თქვენს მიერ მოთხოვნილი სერვისები ვერ "
+"იქნება უზრუნველყოფილი და ჩვენ ვიყენებთ ამ ქუქი-ფაილებს მხოლოდ ამ სერვისების "
+"თქვენთვის მოსაწოდებლად."
 
 #: .\socialapp\templates\privacy_policy.html:88
 msgid "Cookies Policy / Notice Acceptance Cookies"
@@ -704,7 +1051,9 @@ msgstr "ტიპი: მუდმივი ქუქი-ფაილები"
 msgid ""
 "Purpose: These Cookies identify if users have accepted the use of cookies on "
 "the Website."
-msgstr "მიზანი: ეს ქუქი-ფაილები განსაზღვრავენ, დაეთანხმნენ თუ არა მომხმარებლები ვებსაიტზე ქუქი-ფაილების გამოყენებას."
+msgstr ""
+"მიზანი: ეს ქუქი-ფაილები განსაზღვრავენ, დაეთანხმნენ თუ არა მომხმარებლები "
+"ვებსაიტზე ქუქი-ფაილების გამოყენებას."
 
 #: .\socialapp\templates\privacy_policy.html:94
 msgid "Functionality Cookies"
@@ -717,13 +1066,21 @@ msgid ""
 "(like Dark Mode). The purpose of these Cookies is to provide You with a more "
 "personal experience and to avoid You having to re-enter your preferences "
 "every time You use the Website."
-msgstr "მიზანი: ეს ქუქი-ფაილები საშუალებას გვაძლევს დავიმახსოვროთ თქვენს მიერ გაკეთებული არჩევანი ვებსაიტის გამოყენებისას, როგორიცაა თქვენი შესვლის დეტალების ან ენის პრეფერენციის დამახსოვრება (როგორიცაა მუქი რეჟიმი). ამ ქუქი-ფაილების მიზანია მოგაწოდოთ უფრო პერსონალური გამოცდილება და თავიდან აიცილოთ თქვენი პრეფერენციების ხელახლა შეყვანა ვებსაიტის ყოველი გამოყენებისას."
+msgstr ""
+"მიზანი: ეს ქუქი-ფაილები საშუალებას გვაძლევს დავიმახსოვროთ თქვენს მიერ "
+"გაკეთებული არჩევანი ვებსაიტის გამოყენებისას, როგორიცაა თქვენი შესვლის "
+"დეტალების ან ენის პრეფერენციის დამახსოვრება (როგორიცაა მუქი რეჟიმი). ამ ქუქი-"
+"ფაილების მიზანია მოგაწოდოთ უფრო პერსონალური გამოცდილება და თავიდან აიცილოთ "
+"თქვენი პრეფერენციების ხელახლა შეყვანა ვებსაიტის ყოველი გამოყენებისას."
 
 #: .\socialapp\templates\privacy_policy.html:100
 msgid ""
 "For more information about the cookies we use and your choices regarding "
 "cookies, please review this section."
-msgstr "დამატებითი ინფორმაციისთვის ჩვენს მიერ გამოყენებული ქუქი-ფაილების და ქუქი-ფაილებთან დაკავშირებით თქვენი არჩევანის შესახებ, გთხოვთ, გადახედოთ ამ სექციას."
+msgstr ""
+"დამატებითი ინფორმაციისთვის ჩვენს მიერ გამოყენებული ქუქი-ფაილების და ქუქი-"
+"ფაილებთან დაკავშირებით თქვენი არჩევანის შესახებ, გთხოვთ, გადახედოთ ამ "
+"სექციას."
 
 #: .\socialapp\templates\privacy_policy.html:102
 msgid "Use of Your Personal Data"
@@ -731,7 +1088,8 @@ msgstr "თქვენი პერსონალური მონაცე�
 
 #: .\socialapp\templates\privacy_policy.html:103
 msgid "The Company may use Personal Data for the following purposes:"
-msgstr "კომპანიამ შეიძლება გამოიყენოს პერსონალური მონაცემები შემდეგი მიზნებისთვის:"
+msgstr ""
+"კომპანიამ შეიძლება გამოიყენოს პერსონალური მონაცემები შემდეგი მიზნებისთვის:"
 
 #: .\socialapp\templates\privacy_policy.html:105
 msgid "To provide and maintain our Service,"
@@ -750,7 +1108,11 @@ msgid ""
 "to manage Your registration as a user of the Service. The Personal Data You "
 "provide can give You access to different functionalities of the Service that "
 "are available to You as a registered user."
-msgstr "თქვენი, როგორც სერვისის მომხმარებლის რეგისტრაციის სამართავად. თქვენს მიერ მოწოდებულ პერსონალურ მონაცემებს შეუძლია მოგცეთ წვდომა სერვისის სხვადასხვა ფუნქციონალზე, რომელიც ხელმისაწვდომია თქვენთვის, როგორც რეგისტრირებული მომხმარებლისთვის."
+msgstr ""
+"თქვენი, როგორც სერვისის მომხმარებლის რეგისტრაციის სამართავად. თქვენს მიერ "
+"მოწოდებულ პერსონალურ მონაცემებს შეუძლია მოგცეთ წვდომა სერვისის სხვადასხვა "
+"ფუნქციონალზე, რომელიც ხელმისაწვდომია თქვენთვის, როგორც რეგისტრირებული "
+"მომხმარებლისთვის."
 
 #: .\socialapp\templates\privacy_policy.html:107
 msgid "For the performance of a contract:"
@@ -761,7 +1123,10 @@ msgid ""
 "the development, compliance and undertaking of the purchase contract for the "
 "products, items or services You have purchased or of any other contract with "
 "Us through the Service."
-msgstr "თქვენს მიერ შეძენილი პროდუქტების, ნივთების ან სერვისების შესყიდვის ხელშეკრულების ან ჩვენთან სერვისის მეშვეობით დადებული ნებისმიერი სხვა ხელშეკრულების შემუშავება, შესაბამისობა და შესრულება."
+msgstr ""
+"თქვენს მიერ შეძენილი პროდუქტების, ნივთების ან სერვისების შესყიდვის "
+"ხელშეკრულების ან ჩვენთან სერვისის მეშვეობით დადებული ნებისმიერი სხვა "
+"ხელშეკრულების შემუშავება, შესაბამისობა და შესრულება."
 
 #: .\socialapp\templates\privacy_policy.html:108
 msgid "To contact You:"
@@ -774,7 +1139,13 @@ msgid ""
 "regarding updates or informative communications related to the "
 "functionalities, products or contracted services, including the security "
 "updates, when necessary or reasonable for their implementation."
-msgstr "თქვენთან დასაკავშირებლად ელფოსტით, სატელეფონო ზარებით, SMS-ით ან ელექტრონული კომუნიკაციის სხვა ექვივალენტური ფორმებით, როგორიცაა მობილური აპლიკაციის პუშ-შეტყობინებები ფუნქციონალებთან, პროდუქტებთან ან დადებულ სერვისებთან დაკავშირებული განახლებების ან ინფორმაციული კომუნიკაციების შესახებ, მათ შორის უსაფრთხოების განახლებების შესახებ, როდესაც ეს აუცილებელი ან გონივრულია მათი განხორციელებისთვის."
+msgstr ""
+"თქვენთან დასაკავშირებლად ელფოსტით, სატელეფონო ზარებით, SMS-ით ან ელექტრონული "
+"კომუნიკაციის სხვა ექვივალენტური ფორმებით, როგორიცაა მობილური აპლიკაციის პუშ-"
+"შეტყობინებები ფუნქციონალებთან, პროდუქტებთან ან დადებულ სერვისებთან "
+"დაკავშირებული განახლებების ან ინფორმაციული კომუნიკაციების შესახებ, მათ შორის "
+"უსაფრთხოების განახლებების შესახებ, როდესაც ეს აუცილებელი ან გონივრულია მათი "
+"განხორციელებისთვის."
 
 #: .\socialapp\templates\privacy_policy.html:109
 msgid "To provide You"
@@ -786,7 +1157,11 @@ msgid ""
 "services and events which we offer that are similar to those that you have "
 "already purchased or enquired about unless You have opted not to receive "
 "such information."
-msgstr "ახალი ამბების, სპეციალური შეთავაზებების და ზოგადი ინფორმაციის შესახებ სხვა საქონლის, სერვისებისა და ღონისძიებების შესახებ, რომლებსაც ჩვენ ვთავაზობთ და რომლებიც მსგავსია იმისა, რაც თქვენ უკვე შეიძინეთ ან დაინტერესდით, თუ თქვენ არ აირჩიეთ ასეთი ინფორმაციის არმიღება."
+msgstr ""
+"ახალი ამბების, სპეციალური შეთავაზებების და ზოგადი ინფორმაციის შესახებ სხვა "
+"საქონლის, სერვისებისა და ღონისძიებების შესახებ, რომლებსაც ჩვენ ვთავაზობთ და "
+"რომლებიც მსგავსია იმისა, რაც თქვენ უკვე შეიძინეთ ან დაინტერესდით, თუ თქვენ "
+"არ აირჩიეთ ასეთი ინფორმაციის არმიღება."
 
 #: .\socialapp\templates\privacy_policy.html:110
 msgid "To manage Your requests:"
@@ -808,7 +1183,13 @@ msgid ""
 "some or all of Our assets, whether as a going concern or as part of "
 "bankruptcy, liquidation, or similar proceeding, in which Personal Data held "
 "by Us about our Service users is among the assets transferred."
-msgstr "ჩვენ შეიძლება გამოვიყენოთ თქვენი ინფორმაცია შერწყმის, გასხვისების, რესტრუქტურიზაციის, რეორგანიზაციის, დაშლის ან ჩვენი აქტივების ნაწილის ან მთლიანად სხვაგვარად გაყიდვის ან გადაცემის შესაფასებლად ან განსახორციელებლად, იქნება ეს როგორც მოქმედი საწარმო თუ გაკოტრების, ლიკვიდაციის ან მსგავსი პროცედურის ნაწილი, რომელშიც ჩვენს მიერ შენახული პერსონალური მონაცემები ჩვენი სერვისის მომხმარებლების შესახებ გადაცემულ აქტივებს შორისაა."
+msgstr ""
+"ჩვენ შეიძლება გამოვიყენოთ თქვენი ინფორმაცია შერწყმის, გასხვისების, "
+"რესტრუქტურიზაციის, რეორგანიზაციის, დაშლის ან ჩვენი აქტივების ნაწილის ან "
+"მთლიანად სხვაგვარად გაყიდვის ან გადაცემის შესაფასებლად ან განსახორციელებლად, "
+"იქნება ეს როგორც მოქმედი საწარმო თუ გაკოტრების, ლიკვიდაციის ან მსგავსი "
+"პროცედურის ნაწილი, რომელშიც ჩვენს მიერ შენახული პერსონალური მონაცემები ჩვენი "
+"სერვისის მომხმარებლების შესახებ გადაცემულ აქტივებს შორისაა."
 
 #: .\socialapp\templates\privacy_policy.html:112
 msgid "For other purposes:"
@@ -820,7 +1201,11 @@ msgid ""
 "identifying usage trends, determining the effectiveness of our promotional "
 "campaigns and to evaluate and improve our Service, products, services, "
 "marketing and your experience."
-msgstr "ჩვენ შეიძლება გამოვიყენოთ თქვენი ინფორმაცია სხვა მიზნებისთვის, როგორიცაა მონაცემთა ანალიზი, გამოყენების ტენდენციების იდენტიფიცირება, ჩვენი სარეკლამო კამპანიების ეფექტურობის განსაზღვრა და ჩვენი სერვისის, პროდუქტების, მომსახურების, მარკეტინგისა და თქვენი გამოცდილების შეფასება და გაუმჯობესება."
+msgstr ""
+"ჩვენ შეიძლება გამოვიყენოთ თქვენი ინფორმაცია სხვა მიზნებისთვის, როგორიცაა "
+"მონაცემთა ანალიზი, გამოყენების ტენდენციების იდენტიფიცირება, ჩვენი სარეკლამო "
+"კამპანიების ეფექტურობის განსაზღვრა და ჩვენი სერვისის, პროდუქტების, "
+"მომსახურების, მარკეტინგისა და თქვენი გამოცდილების შეფასება და გაუმჯობესება."
 
 #: .\socialapp\templates\privacy_policy.html:113
 msgid "To facilitate social media interactions:"
@@ -833,11 +1218,18 @@ msgid ""
 "manually triggered by You) via the relevant social media platforms "
 "(Facebook, Instagram), and manage related social media activities as "
 "directed by the Service's features."
-msgstr "შენახული რწმუნებათა სიგელების (როგორიცაა გვერდის წვდომის ტოკენები) გამოსაყენებლად თქვენს სახელზე შეტყობინებების მისაღებად, შეტყობინებების გასაგზავნად (როგორც ავტომატიზებული AI-ის საშუალებით თქვენი მოთხოვნების საფუძველზე, ასევე თქვენს მიერ ხელით ინიცირებული) შესაბამისი სოციალური მედიის პლატფორმების (Facebook, Instagram) მეშვეობით და დაკავშირებული სოციალური მედიის აქტივობების სამართავად სერვისის ფუნქციების შესაბამისად."
+msgstr ""
+"შენახული რწმუნებათა სიგელების (როგორიცაა გვერდის წვდომის ტოკენები) "
+"გამოსაყენებლად თქვენს სახელზე შეტყობინებების მისაღებად, შეტყობინებების "
+"გასაგზავნად (როგორც ავტომატიზებული AI-ის საშუალებით თქვენი მოთხოვნების "
+"საფუძველზე, ასევე თქვენს მიერ ხელით ინიცირებული) შესაბამისი სოციალური მედიის "
+"პლატფორმების (Facebook, Instagram) მეშვეობით და დაკავშირებული სოციალური "
+"მედიის აქტივობების სამართავად სერვისის ფუნქციების შესაბამისად."
 
 #: .\socialapp\templates\privacy_policy.html:116
 msgid "We may share Your personal information in the following situations:"
-msgstr "ჩვენ შეიძლება გავაზიაროთ თქვენი პერსონალური ინფორმაცია შემდეგ სიტუაციებში:"
+msgstr ""
+"ჩვენ შეიძლება გავაზიაროთ თქვენი პერსონალური ინფორმაცია შემდეგ სიტუაციებში:"
 
 #: .\socialapp\templates\privacy_policy.html:118
 msgid "With Service Providers:"
@@ -849,14 +1241,23 @@ msgid ""
 "X.ai for AI processing, hosting providers) to monitor and analyze the use of "
 "our Service, process data (like AI prompts and conversation history), and to "
 "contact You."
-msgstr "ჩვენ შეიძლება გავაზიაროთ თქვენი პერსონალური ინფორმაცია სერვისის პროვაიდერებთან (როგორიცაა OpenAI/X.ai AI დამუშავებისთვის, ჰოსტინგის პროვაიდერები) ჩვენი სერვისის გამოყენების მონიტორინგისა და ანალიზისთვის, მონაცემების დასამუშავებლად (როგორიცაა AI მოთხოვნები და საუბრის ისტორია) და თქვენთან დასაკავშირებლად."
+msgstr ""
+"ჩვენ შეიძლება გავაზიაროთ თქვენი პერსონალური ინფორმაცია სერვისის "
+"პროვაიდერებთან (როგორიცაა OpenAI/X.ai AI დამუშავებისთვის, ჰოსტინგის "
+"პროვაიდერები) ჩვენი სერვისის გამოყენების მონიტორინგისა და ანალიზისთვის, "
+"მონაცემების დასამუშავებლად (როგორიცაა AI მოთხოვნები და საუბრის ისტორია) და "
+"თქვენთან დასაკავშირებლად."
 
 #: .\socialapp\templates\privacy_policy.html:119
 msgid ""
 "We may share or transfer Your personal information in connection with, or "
 "during negotiations of, any merger, sale of Company assets, financing, or "
 "acquisition of all or a portion of Our business to another company."
-msgstr "ჩვენ შეიძლება გავაზიაროთ ან გადავცეთ თქვენი პერსონალური ინფორმაცია ნებისმიერ შერწყმასთან, კომპანიის აქტივების გაყიდვასთან, დაფინანსებასთან ან ჩვენი ბიზნესის მთლიანად ან ნაწილობრივ სხვა კომპანიის მიერ შეძენასთან დაკავშირებით ან მოლაპარაკებების დროს."
+msgstr ""
+"ჩვენ შეიძლება გავაზიაროთ ან გადავცეთ თქვენი პერსონალური ინფორმაცია ნებისმიერ "
+"შერწყმასთან, კომპანიის აქტივების გაყიდვასთან, დაფინანსებასთან ან ჩვენი "
+"ბიზნესის მთლიანად ან ნაწილობრივ სხვა კომპანიის მიერ შეძენასთან დაკავშირებით "
+"ან მოლაპარაკებების დროს."
 
 #: .\socialapp\templates\privacy_policy.html:120
 msgid "With Affiliates:"
@@ -868,7 +1269,13 @@ msgid ""
 "require those affiliates to honor this Privacy Policy. Affiliates include "
 "Our parent company and any other subsidiaries, joint venture partners or "
 "other companies that We control or that are under common control with Us."
-msgstr "ჩვენ შეიძლება გავაზიაროთ თქვენი ინფორმაცია ჩვენს აფილირებულ პირებთან, ამ შემთხვევაში ჩვენ მოვითხოვთ ამ აფილირებული პირებისგან დაიცვან ეს კონფიდენციალურობის პოლიტიკა. აფილირებული პირები მოიცავს ჩვენს მშობელ კომპანიას და ნებისმიერ სხვა შვილობილ კომპანიას, ერთობლივი საწარმოს პარტნიორებს ან სხვა კომპანიებს, რომლებსაც ჩვენ ვაკონტროლებთ ან რომლებიც ჩვენთან საერთო კონტროლის ქვეშ არიან."
+msgstr ""
+"ჩვენ შეიძლება გავაზიაროთ თქვენი ინფორმაცია ჩვენს აფილირებულ პირებთან, ამ "
+"შემთხვევაში ჩვენ მოვითხოვთ ამ აფილირებული პირებისგან დაიცვან ეს "
+"კონფიდენციალურობის პოლიტიკა. აფილირებული პირები მოიცავს ჩვენს მშობელ "
+"კომპანიას და ნებისმიერ სხვა შვილობილ კომპანიას, ერთობლივი საწარმოს "
+"პარტნიორებს ან სხვა კომპანიებს, რომლებსაც ჩვენ ვაკონტროლებთ ან რომლებიც "
+"ჩვენთან საერთო კონტროლის ქვეშ არიან."
 
 #: .\socialapp\templates\privacy_policy.html:121
 msgid "With business partners:"
@@ -878,7 +1285,9 @@ msgstr "ბიზნეს პარტნიორებთან:"
 msgid ""
 "We may share Your information with Our business partners to offer You "
 "certain products, services or promotions."
-msgstr "ჩვენ შეიძლება გავაზიაროთ თქვენი ინფორმაცია ჩვენს ბიზნეს პარტნიორებთან, რათა შემოგთავაზოთ გარკვეული პროდუქტები, სერვისები ან აქციები."
+msgstr ""
+"ჩვენ შეიძლება გავაზიაროთ თქვენი ინფორმაცია ჩვენს ბიზნეს პარტნიორებთან, რათა "
+"შემოგთავაზოთ გარკვეული პროდუქტები, სერვისები ან აქციები."
 
 #: .\socialapp\templates\privacy_policy.html:122
 msgid "With other users:"
@@ -893,7 +1302,15 @@ msgid ""
 "Third-Party Social Media Service may see Your name, profile, pictures and "
 "description of Your activity. Similarly, other users will be able to view "
 "descriptions of Your activity, communicate with You and view Your profile."
-msgstr "როდესაც თქვენ აზიარებთ პერსონალურ ინფორმაციას ან სხვაგვარად ურთიერთობთ საჯარო სივრცეებში სხვა მომხმარებლებთან, ასეთი ინფორმაცია შეიძლება ნახოს ყველა მომხმარებელმა და შეიძლება საჯაროდ გავრცელდეს გარეთ. თუ თქვენ ურთიერთობთ სხვა მომხმარებლებთან ან დარეგისტრირდებით მესამე მხარის სოციალური მედიის სერვისის მეშვეობით, თქვენი კონტაქტები მესამე მხარის სოციალური მედიის სერვისზე შეიძლება ნახონ თქვენი სახელი, პროფილი, სურათები და თქვენი აქტივობის აღწერა. ანალოგიურად, სხვა მომხმარებლებს შეეძლებათ ნახონ თქვენი აქტივობის აღწერილობები, დაგიკავშირდნენ და ნახონ თქვენი პროფილი."
+msgstr ""
+"როდესაც თქვენ აზიარებთ პერსონალურ ინფორმაციას ან სხვაგვარად ურთიერთობთ "
+"საჯარო სივრცეებში სხვა მომხმარებლებთან, ასეთი ინფორმაცია შეიძლება ნახოს "
+"ყველა მომხმარებელმა და შეიძლება საჯაროდ გავრცელდეს გარეთ. თუ თქვენ "
+"ურთიერთობთ სხვა მომხმარებლებთან ან დარეგისტრირდებით მესამე მხარის სოციალური "
+"მედიის სერვისის მეშვეობით, თქვენი კონტაქტები მესამე მხარის სოციალური მედიის "
+"სერვისზე შეიძლება ნახონ თქვენი სახელი, პროფილი, სურათები და თქვენი აქტივობის "
+"აღწერა. ანალოგიურად, სხვა მომხმარებლებს შეეძლებათ ნახონ თქვენი აქტივობის "
+"აღწერილობები, დაგიკავშირდნენ და ნახონ თქვენი პროფილი."
 
 #: .\socialapp\templates\privacy_policy.html:123
 msgid "With Your consent:"
@@ -903,7 +1320,9 @@ msgstr "თქვენი თანხმობით:"
 msgid ""
 "We may disclose Your personal information for any other purpose with Your "
 "consent."
-msgstr "ჩვენ შეიძლება გავამჟღავნოთ თქვენი პერსონალური ინფორმაცია ნებისმიერი სხვა მიზნით თქვენი თანხმობით."
+msgstr ""
+"ჩვენ შეიძლება გავამჟღავნოთ თქვენი პერსონალური ინფორმაცია ნებისმიერი სხვა "
+"მიზნით თქვენი თანხმობით."
 
 #: .\socialapp\templates\privacy_policy.html:126
 msgid "Retention of Your Personal Data"
@@ -917,7 +1336,14 @@ msgid ""
 "(for example, if we are required to retain your data to comply with "
 "applicable laws), resolve disputes, and enforce our legal agreements and "
 "policies."
-msgstr "კომპანია შეინახავს თქვენს პერსონალურ მონაცემებს მხოლოდ იმდენ ხანს, რამდენიც საჭიროა ამ კონფიდენციალურობის პოლიტიკაში მითითებული მიზნებისთვის. ჩვენ შევინახავთ და გამოვიყენებთ თქვენს პერსონალურ მონაცემებს იმდენად, რამდენადაც საჭიროა ჩვენი სამართლებრივი ვალდებულებების შესასრულებლად (მაგალითად, თუ მოგვეთხოვება თქვენი მონაცემების შენახვა მოქმედი კანონმდებლობის შესასრულებლად), დავების გადასაჭრელად და ჩვენი სამართლებრივი შეთანხმებებისა და პოლიტიკის აღსასრულებლად."
+msgstr ""
+"კომპანია შეინახავს თქვენს პერსონალურ მონაცემებს მხოლოდ იმდენ ხანს, რამდენიც "
+"საჭიროა ამ კონფიდენციალურობის პოლიტიკაში მითითებული მიზნებისთვის. ჩვენ "
+"შევინახავთ და გამოვიყენებთ თქვენს პერსონალურ მონაცემებს იმდენად, რამდენადაც "
+"საჭიროა ჩვენი სამართლებრივი ვალდებულებების შესასრულებლად (მაგალითად, თუ "
+"მოგვეთხოვება თქვენი მონაცემების შენახვა მოქმედი კანონმდებლობის "
+"შესასრულებლად), დავების გადასაჭრელად და ჩვენი სამართლებრივი შეთანხმებებისა "
+"და პოლიტიკის აღსასრულებლად."
 
 #: .\socialapp\templates\privacy_policy.html:128
 msgid ""
@@ -926,7 +1352,13 @@ msgid ""
 "will be retained while Your account is active or as needed to provide the "
 "Service. You have the ability to delete specific conversation histories via "
 "the Service interface."
-msgstr "კონკრეტულად, საუბრის ისტორია (თქვენს გვერდს/პროფილსა და საბოლოო მომხმარებლებს შორის გაცვლილი შეტყობინებები დაკავშირებული პლატფორმების მეშვეობით), რომელიც ინახება ჩვენს სერვისში, შენარჩუნდება სანამ თქვენი ანგარიში აქტიურია ან რამდენადაც საჭიროა სერვისის უზრუნველსაყოფად. თქვენ გაქვთ შესაძლებლობა წაშალოთ კონკრეტული საუბრის ისტორიები სერვისის ინტერფეისის საშუალებით."
+msgstr ""
+"კონკრეტულად, საუბრის ისტორია (თქვენს გვერდს/პროფილსა და საბოლოო "
+"მომხმარებლებს შორის გაცვლილი შეტყობინებები დაკავშირებული პლატფორმების "
+"მეშვეობით), რომელიც ინახება ჩვენს სერვისში, შენარჩუნდება სანამ თქვენი "
+"ანგარიში აქტიურია ან რამდენადაც საჭიროა სერვისის უზრუნველსაყოფად. თქვენ "
+"გაქვთ შესაძლებლობა წაშალოთ კონკრეტული საუბრის ისტორიები სერვისის ინტერფეისის "
+"საშუალებით."
 
 #: .\socialapp\templates\privacy_policy.html:129
 msgid ""
@@ -935,7 +1367,13 @@ msgid ""
 "this data is used to strengthen the security or to improve the functionality "
 "of Our Service, or We are legally obligated to retain this data for longer "
 "time periods."
-msgstr "კომპანია ასევე შეინახავს გამოყენების მონაცემებს შიდა ანალიზის მიზნებისთვის. გამოყენების მონაცემები ზოგადად ინახება უფრო მოკლე პერიოდის განმავლობაში, გარდა იმ შემთხვევისა, როდესაც ეს მონაცემები გამოიყენება უსაფრთხოების გასაძლიერებლად ან ჩვენი სერვისის ფუნქციონირების გასაუმჯობესებლად, ან ჩვენ კანონით ვალდებულნი ვართ შევინახოთ ეს მონაცემები უფრო ხანგრძლივი პერიოდის განმავლობაში."
+msgstr ""
+"კომპანია ასევე შეინახავს გამოყენების მონაცემებს შიდა ანალიზის მიზნებისთვის. "
+"გამოყენების მონაცემები ზოგადად ინახება უფრო მოკლე პერიოდის განმავლობაში, "
+"გარდა იმ შემთხვევისა, როდესაც ეს მონაცემები გამოიყენება უსაფრთხოების "
+"გასაძლიერებლად ან ჩვენი სერვისის ფუნქციონირების გასაუმჯობესებლად, ან ჩვენ "
+"კანონით ვალდებულნი ვართ შევინახოთ ეს მონაცემები უფრო ხანგრძლივი პერიოდის "
+"განმავლობაში."
 
 #: .\socialapp\templates\privacy_policy.html:131
 msgid "Transfer of Your Personal Data"
@@ -950,13 +1388,22 @@ msgid ""
 "maintained on — computers located outside of Your state, province, country "
 "or other governmental jurisdiction where the data protection laws may differ "
 "than those from Your jurisdiction."
-msgstr "თქვენი ინფორმაცია, პერსონალური მონაცემების ჩათვლით, მუშავდება კომპანიის საოპერაციო ოფისებში და ნებისმიერ სხვა ადგილას, სადაც დამუშავებაში ჩართული მხარეები იმყოფებიან (როგორიცაა ჩვენი სერვისის პროვაიდერები, მაგ., ჰოსტინგის, AI API პროვაიდერები). ეს ნიშნავს, რომ ეს ინფორმაცია შეიძლება გადაეცეს — და შენარჩუნდეს — კომპიუტერებზე, რომლებიც მდებარეობს თქვენი შტატის, პროვინციის, ქვეყნის ან სხვა სამთავრობო იურისდიქციის გარეთ, სადაც მონაცემთა დაცვის კანონები შეიძლება განსხვავდებოდეს თქვენი იურისდიქციის კანონებისგან."
+msgstr ""
+"თქვენი ინფორმაცია, პერსონალური მონაცემების ჩათვლით, მუშავდება კომპანიის "
+"საოპერაციო ოფისებში და ნებისმიერ სხვა ადგილას, სადაც დამუშავებაში ჩართული "
+"მხარეები იმყოფებიან (როგორიცაა ჩვენი სერვისის პროვაიდერები, მაგ., ჰოსტინგის, "
+"AI API პროვაიდერები). ეს ნიშნავს, რომ ეს ინფორმაცია შეიძლება გადაეცეს — და "
+"შენარჩუნდეს — კომპიუტერებზე, რომლებიც მდებარეობს თქვენი შტატის, პროვინციის, "
+"ქვეყნის ან სხვა სამთავრობო იურისდიქციის გარეთ, სადაც მონაცემთა დაცვის "
+"კანონები შეიძლება განსხვავდებოდეს თქვენი იურისდიქციის კანონებისგან."
 
 #: .\socialapp\templates\privacy_policy.html:133
 msgid ""
 "Your consent to this Privacy Policy followed by Your submission of such "
 "information represents Your agreement to that transfer."
-msgstr "თქვენი თანხმობა ამ კონფიდენციალურობის პოლიტიკაზე, რასაც მოჰყვება თქვენს მიერ ასეთი ინფორმაციის წარდგენა, წარმოადგენს თქვენს შეთანხმებას ამ გადაცემაზე."
+msgstr ""
+"თქვენი თანხმობა ამ კონფიდენციალურობის პოლიტიკაზე, რასაც მოჰყვება თქვენს მიერ "
+"ასეთი ინფორმაციის წარდგენა, წარმოადგენს თქვენს შეთანხმებას ამ გადაცემაზე."
 
 #: .\socialapp\templates\privacy_policy.html:134
 msgid ""
@@ -965,7 +1412,12 @@ msgid ""
 "transfer of Your Personal Data will take place to an organization or a "
 "country unless there are adequate controls in place including the security "
 "of Your data and other personal information."
-msgstr "კომპანია მიიღებს ყველა გონივრულად აუცილებელ ზომას იმის უზრუნველსაყოფად, რომ თქვენი მონაცემები დამუშავდეს უსაფრთხოდ და ამ კონფიდენციალურობის პოლიტიკის შესაბამისად და თქვენი პერსონალური მონაცემების გადაცემა არ მოხდება ორგანიზაციაში ან ქვეყანაში, თუ არ არის ადეკვატური კონტროლი, მათ შორის თქვენი მონაცემების და სხვა პერსონალური ინფორმაციის უსაფრთხოება."
+msgstr ""
+"კომპანია მიიღებს ყველა გონივრულად აუცილებელ ზომას იმის უზრუნველსაყოფად, რომ "
+"თქვენი მონაცემები დამუშავდეს უსაფრთხოდ და ამ კონფიდენციალურობის პოლიტიკის "
+"შესაბამისად და თქვენი პერსონალური მონაცემების გადაცემა არ მოხდება "
+"ორგანიზაციაში ან ქვეყანაში, თუ არ არის ადეკვატური კონტროლი, მათ შორის თქვენი "
+"მონაცემების და სხვა პერსონალური ინფორმაციის უსაფრთხოება."
 
 #: .\socialapp\templates\privacy_policy.html:136
 msgid "Delete Your Personal Data"
@@ -975,14 +1427,19 @@ msgstr "თქვენი პერსონალური მონაცე�
 msgid ""
 "You have the right to delete or request that We assist in deleting the "
 "Personal Data that We have collected about You."
-msgstr "თქვენ გაქვთ უფლება წაშალოთ ან მოითხოვოთ, რომ დაგეხმაროთ იმ პერსონალური მონაცემების წაშლაში, რომლებიც ჩვენ შევაგროვეთ თქვენს შესახებ."
+msgstr ""
+"თქვენ გაქვთ უფლება წაშალოთ ან მოითხოვოთ, რომ დაგეხმაროთ იმ პერსონალური "
+"მონაცემების წაშლაში, რომლებიც ჩვენ შევაგროვეთ თქვენს შესახებ."
 
 #: .\socialapp\templates\privacy_policy.html:138
 msgid ""
 "Our Service gives You the ability to delete certain information about You "
 "from within the Service, such as individual conversation histories "
 "associated with your connected social media pages."
-msgstr "ჩვენი სერვისი გაძლევთ შესაძლებლობას წაშალოთ გარკვეული ინფორმაცია თქვენს შესახებ სერვისის შიგნიდან, როგორიცაა თქვენს დაკავშირებულ სოციალურ მედია გვერდებთან დაკავშირებული ინდივიდუალური საუბრის ისტორიები."
+msgstr ""
+"ჩვენი სერვისი გაძლევთ შესაძლებლობას წაშალოთ გარკვეული ინფორმაცია თქვენს "
+"შესახებ სერვისის შიგნიდან, როგორიცაა თქვენს დაკავშირებულ სოციალურ მედია "
+"გვერდებთან დაკავშირებული ინდივიდუალური საუბრის ისტორიები."
 
 #: .\socialapp\templates\privacy_policy.html:139
 msgid ""
@@ -991,7 +1448,13 @@ msgid ""
 "settings section that allows you to manage Your personal information. You "
 "may also contact Us to request access to, correct, or delete any personal "
 "information that You have provided to Us."
-msgstr "თქვენ შეგიძლიათ განაახლოთ, შეცვალოთ ან წაშალოთ თქვენი ანგარიშის ინფორმაცია ნებისმიერ დროს თქვენს ანგარიშში შესვლით, თუ გაქვთ ასეთი, და ანგარიშის პარამეტრების სექციის მონახულებით, რომელიც საშუალებას გაძლევთ მართოთ თქვენი პერსონალური ინფორმაცია. თქვენ ასევე შეგიძლიათ დაგვიკავშირდეთ, რათა მოითხოვოთ წვდომა, შესწორება ან წაშლა ნებისმიერი პერსონალური ინფორმაციისა, რომელიც თქვენ მოგვაწოდეთ."
+msgstr ""
+"თქვენ შეგიძლიათ განაახლოთ, შეცვალოთ ან წაშალოთ თქვენი ანგარიშის ინფორმაცია "
+"ნებისმიერ დროს თქვენს ანგარიშში შესვლით, თუ გაქვთ ასეთი, და ანგარიშის "
+"პარამეტრების სექციის მონახულებით, რომელიც საშუალებას გაძლევთ მართოთ თქვენი "
+"პერსონალური ინფორმაცია. თქვენ ასევე შეგიძლიათ დაგვიკავშირდეთ, რათა მოითხოვოთ "
+"წვდომა, შესწორება ან წაშლა ნებისმიერი პერსონალური ინფორმაციისა, რომელიც "
+"თქვენ მოგვაწოდეთ."
 
 #: .\socialapp\templates\privacy_policy.html:140
 msgid ""
@@ -999,14 +1462,22 @@ msgid ""
 "credentials like Page Access Tokens from our active databases. Deleting "
 "individual conversation histories removes those specific message logs from "
 "our database."
-msgstr "თქვენი ანგარიშის წაშლა ამოიღებს თქვენი პროფილის ინფორმაციას და დაკავშირებულ რწმუნებათა სიგელებს, როგორიცაა გვერდის წვდომის ტოკენები, ჩვენი აქტიური მონაცემთა ბაზებიდან. ინდივიდუალური საუბრის ისტორიების წაშლა შლის ამ კონკრეტულ შეტყობინებების ჟურნალებს ჩვენი მონაცემთა ბაზიდან."
+msgstr ""
+"თქვენი ანგარიშის წაშლა ამოიღებს თქვენი პროფილის ინფორმაციას და დაკავშირებულ "
+"რწმუნებათა სიგელებს, როგორიცაა გვერდის წვდომის ტოკენები, ჩვენი აქტიური "
+"მონაცემთა ბაზებიდან. ინდივიდუალური საუბრის ისტორიების წაშლა შლის ამ "
+"კონკრეტულ შეტყობინებების ჟურნალებს ჩვენი მონაცემთა ბაზიდან."
 
 #: .\socialapp\templates\privacy_policy.html:141
 msgid ""
 "Please note, however, that We may need to retain certain information when we "
 "have a legal obligation or lawful basis to do so (e.g., transaction records, "
 "legal compliance data)."
-msgstr "გთხოვთ, გაითვალისწინოთ, რომ ჩვენ შეიძლება დაგვჭირდეს გარკვეული ინფორმაციის შენახვა, როდესაც გვაქვს სამართლებრივი ვალდებულება ან კანონიერი საფუძველი ამისათვის (მაგ., ტრანზაქციის ჩანაწერები, სამართლებრივი შესაბამისობის მონაცემები)."
+msgstr ""
+"გთხოვთ, გაითვალისწინოთ, რომ ჩვენ შეიძლება დაგვჭირდეს გარკვეული ინფორმაციის "
+"შენახვა, როდესაც გვაქვს სამართლებრივი ვალდებულება ან კანონიერი საფუძველი "
+"ამისათვის (მაგ., ტრანზაქციის ჩანაწერები, სამართლებრივი შესაბამისობის "
+"მონაცემები)."
 
 #: .\socialapp\templates\privacy_policy.html:143
 msgid "Disclosure of Your Personal Data"
@@ -1022,7 +1493,11 @@ msgid ""
 "Personal Data may be transferred. We will provide notice before Your "
 "Personal Data is transferred and becomes subject to a different Privacy "
 "Policy."
-msgstr "თუ კომპანია ჩართულია შერწყმაში, შეძენაში ან აქტივების გაყიდვაში, თქვენი პერსონალური მონაცემები შეიძლება გადაეცეს. ჩვენ შეგატყობინებთ, სანამ თქვენი პერსონალური მონაცემები გადაეცემა და დაექვემდებარება სხვა კონფიდენციალურობის პოლიტიკას."
+msgstr ""
+"თუ კომპანია ჩართულია შერწყმაში, შეძენაში ან აქტივების გაყიდვაში, თქვენი "
+"პერსონალური მონაცემები შეიძლება გადაეცეს. ჩვენ შეგატყობინებთ, სანამ თქვენი "
+"პერსონალური მონაცემები გადაეცემა და დაექვემდებარება სხვა კონფიდენციალურობის "
+"პოლიტიკას."
 
 #: .\socialapp\templates\privacy_policy.html:146
 msgid "Law enforcement"
@@ -1033,7 +1508,10 @@ msgid ""
 "Under certain circumstances, the Company may be required to disclose Your "
 "Personal Data if required to do so by law or in response to valid requests "
 "by public authorities (e.g. a court or a government agency)."
-msgstr "გარკვეულ გარემოებებში, კომპანიას შეიძლება მოეთხოვოს თქვენი პერსონალური მონაცემების გამჟღავნება, თუ ეს მოთხოვნილია კანონით ან საჯარო ხელისუფლების (მაგ., სასამართლოს ან სამთავრობო უწყების) მოქმედი მოთხოვნების საპასუხოდ."
+msgstr ""
+"გარკვეულ გარემოებებში, კომპანიას შეიძლება მოეთხოვოს თქვენი პერსონალური "
+"მონაცემების გამჟღავნება, თუ ეს მოთხოვნილია კანონით ან საჯარო ხელისუფლების "
+"(მაგ., სასამართლოს ან სამთავრობო უწყების) მოქმედი მოთხოვნების საპასუხოდ."
 
 #: .\socialapp\templates\privacy_policy.html:148
 msgid "Other legal requirements"
@@ -1043,7 +1521,9 @@ msgstr "სხვა სამართლებრივი მოთხოვ�
 msgid ""
 "The Company may disclose Your Personal Data in the good faith belief that "
 "such action is necessary to:"
-msgstr "კომპანიამ შეიძლება გაამჟღავნოს თქვენი პერსონალური მონაცემები კეთილსინდისიერი რწმენით, რომ ასეთი ქმედება აუცილებელია:"
+msgstr ""
+"კომპანიამ შეიძლება გაამჟღავნოს თქვენი პერსონალური მონაცემები კეთილსინდისიერი "
+"რწმენით, რომ ასეთი ქმედება აუცილებელია:"
 
 #: .\socialapp\templates\privacy_policy.html:151
 msgid "Comply with a legal obligation"
@@ -1078,7 +1558,14 @@ msgid ""
 "100%% secure. While We strive to use commercially acceptable means (such as "
 "encryption where appropriate, secure coding practices, access controls) to "
 "protect Your Personal Data, We cannot guarantee its absolute security."
-msgstr "თქვენი პერსონალური მონაცემების უსაფრთხოება მნიშვნელოვანია ჩვენთვის, მაგრამ გახსოვდეთ, რომ ინტერნეტით გადაცემის ან ელექტრონული შენახვის არცერთი მეთოდი არ არის 100%% უსაფრთხო. მიუხედავად იმისა, რომ ჩვენ ვცდილობთ გამოვიყენოთ კომერციულად მისაღები საშუალებები (როგორიცაა დაშიფვრა საჭიროების შემთხვევაში, უსაფრთხო კოდირების პრაქტიკა, წვდომის კონტროლი) თქვენი პერსონალური მონაცემების დასაცავად, ჩვენ არ შეგვიძლია მისი აბსოლუტური უსაფრთხოების გარანტია."
+msgstr ""
+"თქვენი პერსონალური მონაცემების უსაფრთხოება მნიშვნელოვანია ჩვენთვის, მაგრამ "
+"გახსოვდეთ, რომ ინტერნეტით გადაცემის ან ელექტრონული შენახვის არცერთი მეთოდი "
+"არ არის 100%% უსაფრთხო. მიუხედავად იმისა, რომ ჩვენ ვცდილობთ გამოვიყენოთ "
+"კომერციულად მისაღები საშუალებები (როგორიცაა დაშიფვრა საჭიროების შემთხვევაში, "
+"უსაფრთხო კოდირების პრაქტიკა, წვდომის კონტროლი) თქვენი პერსონალური "
+"მონაცემების დასაცავად, ჩვენ არ შეგვიძლია მისი აბსოლუტური უსაფრთხოების "
+"გარანტია."
 
 #: .\socialapp\templates\privacy_policy.html:161
 msgid "Children's Privacy"
@@ -1093,14 +1580,25 @@ msgid ""
 "We have collected Personal Data from anyone under the age of 13 without "
 "verification of parental consent, We take steps to remove that information "
 "from Our servers."
-msgstr "ჩვენი სერვისი არ არის განკუთვნილი 13 წლამდე ასაკის პირებისთვის. ჩვენ შეგნებულად არ ვაგროვებთ პერსონალურად იდენტიფიცირებად ინფორმაციას 13 წლამდე ასაკის პირებისგან. თუ თქვენ ხართ მშობელი ან მეურვე და იცით, რომ თქვენმა შვილმა მოგვაწოდა პერსონალური მონაცემები, გთხოვთ დაგვიკავშირდეთ. თუ ჩვენთვის ცნობილი გახდება, რომ შევაგროვეთ პერსონალური მონაცემები 13 წლამდე ასაკის პირისგან მშობლის თანხმობის დადასტურების გარეშე, ჩვენ ვიღებთ ზომებს ამ ინფორმაციის ჩვენი სერვერებიდან წასაშლელად."
+msgstr ""
+"ჩვენი სერვისი არ არის განკუთვნილი 13 წლამდე ასაკის პირებისთვის. ჩვენ "
+"შეგნებულად არ ვაგროვებთ პერსონალურად იდენტიფიცირებად ინფორმაციას 13 წლამდე "
+"ასაკის პირებისგან. თუ თქვენ ხართ მშობელი ან მეურვე და იცით, რომ თქვენმა "
+"შვილმა მოგვაწოდა პერსონალური მონაცემები, გთხოვთ დაგვიკავშირდეთ. თუ ჩვენთვის "
+"ცნობილი გახდება, რომ შევაგროვეთ პერსონალური მონაცემები 13 წლამდე ასაკის "
+"პირისგან მშობლის თანხმობის დადასტურების გარეშე, ჩვენ ვიღებთ ზომებს ამ "
+"ინფორმაციის ჩვენი სერვერებიდან წასაშლელად."
 
 #: .\socialapp\templates\privacy_policy.html:163
 msgid ""
 "If We need to rely on consent as a legal basis for processing Your "
 "information and Your country requires consent from a parent, We may require "
 "Your parent's consent before We collect and use that information."
-msgstr "თუ ჩვენ გვჭირდება თანხმობაზე დაყრდნობა, როგორც თქვენი ინფორმაციის დამუშავების სამართლებრივ საფუძველზე და თქვენი ქვეყანა მოითხოვს მშობლის თანხმობას, ჩვენ შეიძლება მოვითხოვოთ თქვენი მშობლის თანხმობა, სანამ შევაგროვებთ და გამოვიყენებთ ამ ინფორმაციას."
+msgstr ""
+"თუ ჩვენ გვჭირდება თანხმობაზე დაყრდნობა, როგორც თქვენი ინფორმაციის "
+"დამუშავების სამართლებრივ საფუძველზე და თქვენი ქვეყანა მოითხოვს მშობლის "
+"თანხმობას, ჩვენ შეიძლება მოვითხოვოთ თქვენი მშობლის თანხმობა, სანამ "
+"შევაგროვებთ და გამოვიყენებთ ამ ინფორმაციას."
 
 #: .\socialapp\templates\privacy_policy.html:165
 msgid "Links to Other Websites"
@@ -1112,13 +1610,21 @@ msgid ""
 "(e.g., links to Facebook, Instagram, or other resources). If You click on a "
 "third party link, You will be directed to that third party's site. We "
 "strongly advise You to review the Privacy Policy of every site You visit."
-msgstr "ჩვენი სერვისი შეიძლება შეიცავდეს ბმულებს სხვა ვებსაიტებზე, რომლებიც არ იმართება ჩვენს მიერ (მაგ., ბმულები Facebook-ზე, Instagram-ზე ან სხვა რესურსებზე). თუ დააწკაპუნებთ მესამე მხარის ბმულზე, თქვენ გადამისამართდებით ამ მესამე მხარის საიტზე. ჩვენ მკაცრად გირჩევთ, გადახედოთ ყველა საიტის კონფიდენციალურობის პოლიტიკას, რომელსაც სტუმრობთ."
+msgstr ""
+"ჩვენი სერვისი შეიძლება შეიცავდეს ბმულებს სხვა ვებსაიტებზე, რომლებიც არ "
+"იმართება ჩვენს მიერ (მაგ., ბმულები Facebook-ზე, Instagram-ზე ან სხვა "
+"რესურსებზე). თუ დააწკაპუნებთ მესამე მხარის ბმულზე, თქვენ გადამისამართდებით "
+"ამ მესამე მხარის საიტზე. ჩვენ მკაცრად გირჩევთ, გადახედოთ ყველა საიტის "
+"კონფიდენციალურობის პოლიტიკას, რომელსაც სტუმრობთ."
 
 #: .\socialapp\templates\privacy_policy.html:167
 msgid ""
 "We have no control over and assume no responsibility for the content, "
 "privacy policies or practices of any third party sites or services."
-msgstr "ჩვენ არ გვაქვს კონტროლი და არ ვიღებთ პასუხისმგებლობას ნებისმიერი მესამე მხარის საიტების ან სერვისების შინაარსზე, კონფიდენციალურობის პოლიტიკაზე ან პრაქტიკაზე."
+msgstr ""
+"ჩვენ არ გვაქვს კონტროლი და არ ვიღებთ პასუხისმგებლობას ნებისმიერი მესამე "
+"მხარის საიტების ან სერვისების შინაარსზე, კონფიდენციალურობის პოლიტიკაზე ან "
+"პრაქტიკაზე."
 
 #: .\socialapp\templates\privacy_policy.html:169
 msgid "Changes to this Privacy Policy"
@@ -1128,10 +1634,13 @@ msgstr "ცვლილებები ამ კონფიდენცია�
 msgid ""
 "We may update Our Privacy Policy from time to time. We will notify You of "
 "any changes by posting the new Privacy Policy on this page."
-msgstr "ჩვენ შეიძლება დროდადრო განვაახლოთ ჩვენი კონფიდენციალურობის პოლიტიკა. ჩვენ შეგატყობინებთ ნებისმიერი ცვლილების შესახებ ამ გვერდზე ახალი კონფიდენციალურობის პოლიტიკის გამოქვეყნებით."
+msgstr ""
+"ჩვენ შეიძლება დროდადრო განვაახლოთ ჩვენი კონფიდენციალურობის პოლიტიკა. ჩვენ "
+"შეგატყობინებთ ნებისმიერი ცვლილების შესახებ ამ გვერდზე ახალი "
+"კონფიდენციალურობის პოლიტიკის გამოქვეყნებით."
 
 #: .\socialapp\templates\privacy_policy.html:171
-msgid "We will let You know via email and/or a prominent notice on Our Service, prior to the change becoming effective and update the \"last updated\" date at the top of this Privacy Policy."
+msgid "We will let You know via email and/or a prominent notice on Our Service, prior to the change becoming effective and update the \"Last updated\" date at the top of this Privacy Policy."
 msgstr "ჩვენ შეგატყობინებთ ელფოსტით და/ან ჩვენს სერვისზე თვალსაჩინო შეტყობინებით, ცვლილების ძალაში შესვლამდე და განვაახლებთ \"ბოლოს განახლდა\" თარიღს ამ კონფიდენციალურობის პოლიტიკის ზედა ნაწილში."
 
 #: .\socialapp\templates\privacy_policy.html:172
@@ -1139,7 +1648,10 @@ msgid ""
 "You are advised to review this Privacy Policy periodically for any changes. "
 "Changes to this Privacy Policy are effective when they are posted on this "
 "page."
-msgstr "გირჩევთ პერიოდულად გადახედოთ ამ კონფიდენციალურობის პოლიტიკას ნებისმიერი ცვლილებისთვის. ამ კონფიდენციალურობის პოლიტიკის ცვლილებები ძალაში შედის ამ გვერდზე გამოქვეყნებისთანავე."
+msgstr ""
+"გირჩევთ პერიოდულად გადახედოთ ამ კონფიდენციალურობის პოლიტიკას ნებისმიერი "
+"ცვლილებისთვის. ამ კონფიდენციალურობის პოლიტიკის ცვლილებები ძალაში შედის ამ "
+"გვერდზე გამოქვეყნებისთანავე."
 
 #: .\socialapp\templates\privacy_policy.html:174
 msgid "Contact Us"
@@ -1148,94 +1660,94 @@ msgstr "დაგვიკავშირდით"
 #: .\socialapp\templates\privacy_policy.html:175
 msgid ""
 "If you have any questions about this Privacy Policy, You can contact us:"
-msgstr "თუ თქვენ გაქვთ რაიმე შეკითხვა ამ კონფიდენციალურობის პოლიტიკის შესახებ, შეგიძლიათ დაგვიკავშირდეთ:"
+msgstr ""
+"თუ თქვენ გაქვთ რაიმე შეკითხვა ამ კონფიდენციალურობის პოლიტიკის შესახებ, "
+"შეგიძლიათ დაგვიკავშირდეთ:"
 
 #: .\socialapp\templates\privacy_policy.html:177
 msgid "By email: kurdadzedemo@gmail.com"
 msgstr "ელფოსტით: kurdadzedemo@gmail.com"
 
-#: .\socialapp\templates\test_ai_conversation.html:1
-#: .\socialapp\templates\test_ai_conversation.html:2
+#: .\socialapp\templates\test_ai_conversation.html:4
 #: .\socialapp\templates\test_ai_conversation.html:5
 #: .\socialapp\templates\update_system_prompt.html:66
 msgid "Test AI Conversation"
 msgstr "AI საუბრის ტესტირება"
 
-#: .\socialapp\templates\test_ai_conversation.html:7
+#: .\socialapp\templates\test_ai_conversation.html:9
+msgid "Test Your AI Assistant"
+msgstr "გამოცადეთ თქვენი AI ასისტენტი"
+
+#: .\socialapp\templates\test_ai_conversation.html:11
 msgid ""
-"Interact with your AI assistant below using the currently configured system "
-"prompt. This simulates how it would respond to message on your connected "
-"page."
-msgstr "ქვემოთ დაუკავშირდით თქვენს AI ასისტენტს მიმდინარე სისტემური მოთხოვნის გამოყენებით. ეს ახდენს სიმულაციას, თუ როგორ უპასუხებდა იგი თქვენს დაკავშირებულ გვერდზე მოსულ შეტყობინებას."
+"Select a connected page, interact with its configured AI, and see how it "
+"responds."
+msgstr "აირჩიეთ დაკავშირებული გვერდი, დაუკავშირდით მის კონფიგურირებულ AI-ს და ნახეთ როგორ პასუხობს."
 
-#: .\socialapp\templates\test_ai_conversation.html:14
-msgid "Using System Prompt:"
-msgstr "გამოყენებული სისტემური მოთხოვნა:"
-
-#: .\socialapp\templates\test_ai_conversation.html:16
-msgid "Default: You are a helpful assistant."
-msgstr "ნაგულისხმევი: თქვენ ხართ დამხმარე ასისტენტი."
+#: .\socialapp\templates\test_ai_conversation.html:17 .\socialapp\views.py:689
+msgid "You need to connect at least one active page to test the AI."
+msgstr "AI-ს შესამოწმებლად საჭიროა მინიმუმ ერთი აქტიური გვერდის დაკავშირება."
 
 #: .\socialapp\templates\test_ai_conversation.html:19
-msgid "Change Prompt"
-msgstr "მოთხოვნის შეცვლა"
+msgid "Connect or Manage Pages"
+msgstr "გვერდების დაკავშირება ან მართვა"
+
+#: .\socialapp\templates\test_ai_conversation.html:24
+msgid "Test AI for Page:"
+msgstr "AI ტესტირება გვერდისთვის:"
 
 #: .\socialapp\templates\test_ai_conversation.html:26
-#: .\socialapp\templates\test_ai_conversation.html:159
-msgid "AI"
-msgstr "AI"
+msgid "--- Select a Page ---"
+msgstr "--- აირჩიეთ გვერდი ---"
 
-#: .\socialapp\templates\test_ai_conversation.html:28
-msgid ""
-"Hello! Type a message below to start testing our conversation based on the "
-"current prompt."
-msgstr "გამარჯობა! ჩაწერეთ შეტყობინება ქვემოთ, რათა დავიწყოთ ჩვენი საუბრის ტესტირება მიმდინარე მოთხოვნის საფუძველზე."
+#: .\socialapp\templates\test_ai_conversation.html:34
+msgid "View Prompt"
+msgstr "მოთხოვნის ნახვა"
 
-#: .\socialapp\templates\test_ai_conversation.html:40
+#: .\socialapp\templates\test_ai_conversation.html:41
+msgid "Using System Prompt For:"
+msgstr "გამოიყენება სისტემური მოთხოვნა გვერდისთვის:"
+
+#: .\socialapp\templates\test_ai_conversation.html:41
+msgid "No page selected"
+msgstr "გვერდი არ არის არჩეული"
+
+#: .\socialapp\templates\test_ai_conversation.html:42
+msgid "(Select a page above to see its prompt)"
+msgstr "(აირჩიეთ გვერდი ზემოთ მისი მოთხოვნის სანახავად)"
+
+#: .\socialapp\templates\test_ai_conversation.html:44
+msgid "Configure this prompt"
+msgstr "ამ მოთხოვნის კონფიგურაცია"
+
+#: .\socialapp\templates\test_ai_conversation.html:52
+msgid "Please select a page above to begin testing."
+msgstr "გთხოვთ, აირჩიოთ გვერდი ზემოთ ტესტირების დასაწყებად."
+
+#: .\socialapp\templates\test_ai_conversation.html:60
 msgid "Type your message here..."
 msgstr "ჩაწერეთ თქვენი შეტყობინება აქ..."
 
-#: .\socialapp\templates\test_ai_conversation.html:47
+#: .\socialapp\templates\test_ai_conversation.html:61
 msgid "Send Message"
 msgstr "შეტყობინების გაგზავნა"
 
-#: .\socialapp\templates\test_ai_conversation.html:49
-#: .\socialapp\templates\test_ai_conversation.html:187
+#: .\socialapp\templates\test_ai_conversation.html:62
 msgid "Send"
 msgstr "გაგზავნა"
 
-#: .\socialapp\templates\test_ai_conversation.html:125
-msgid "Sending..."
-msgstr "იგზავნება..."
+#: .\socialapp\templates\test_ai_conversation.html:71
+msgid "System Prompt"
+msgstr "სისტემური მოთხოვნა"
 
-#: .\socialapp\templates\test_ai_conversation.html:132
-msgid "CSRF token not found. Please refresh the page."
-msgstr "CSRF ნიშანი ვერ მოიძებნა. გთხოვთ, განაახლოთ გვერდი."
+#: .\socialapp\templates\test_ai_conversation.html:72
+#: .\socialapp\templates\test_ai_conversation.html:78
+msgid "Close"
+msgstr "დახურვა"
 
-#: .\socialapp\templates\test_ai_conversation.html:146
-msgid "Server Error"
-msgstr "სერვერის შეცდომა"
-
-#: .\socialapp\templates\test_ai_conversation.html:163
-#: .\socialapp\templates\test_ai_conversation.html:179
-msgid "System"
-msgstr "სისტემა"
-
-#: .\socialapp\templates\test_ai_conversation.html:164
-msgid "Error processing message"
-msgstr "შეტყობინების დამუშავების შეცდომა"
-
-#: .\socialapp\templates\test_ai_conversation.html:169
-msgid "Received an unexpected response format from the server."
-msgstr "სერვერისგან მიღებულია მოულოდნელი ფორმატის პასუხი."
-
-#: .\socialapp\templates\test_ai_conversation.html:176
-msgid "An unknown network or server error occurred."
-msgstr "მოხდა უცნობი ქსელური ან სერვერული შეცდომა."
-
-#: .\socialapp\templates\test_ai_conversation.html:180
-msgid "Failed to get response"
-msgstr "პასუხის მიღება ვერ მოხერხდა"
+#: .\socialapp\templates\test_ai_conversation.html:79
+msgid "Configure Prompt"
+msgstr "მოთხოვნის კონფიგურაცია"
 
 #: .\socialapp\templates\update_system_prompt.html:5
 msgid "Update AI System Prompt"
@@ -1253,7 +1765,10 @@ msgstr "განსაზღვრეთ თქვენი AI ასისტ�
 msgid ""
 "The System Prompt provides instructions, context, and personality to the AI. "
 "It guides how the AI responds to user messages on your connected page."
-msgstr "სისტემური მოთხოვნა აწვდის ინსტრუქციებს, კონტექსტს და პიროვნულ თვისებებს AI-ს. ის განსაზღვრავს, თუ როგორ პასუხობს AI მომხმარებლის შეტყობინებებს თქვენს დაკავშირებულ გვერდზე."
+msgstr ""
+"სისტემური მოთხოვნა აწვდის ინსტრუქციებს, კონტექსტს და პიროვნულ თვისებებს AI-"
+"ს. ის განსაზღვრავს, თუ როგორ პასუხობს AI მომხმარებლის შეტყობინებებს თქვენს "
+"დაკავშირებულ გვერდზე."
 
 #: .\socialapp\templates\update_system_prompt.html:27
 msgid "Current System Prompt"
@@ -1268,7 +1783,7 @@ msgstr "აქტიური მოთხოვნა:"
 msgid "No custom prompt set. Using default:"
 msgstr "მორგებული მოთხოვნა არ არის დაყენებული. გამოიყენება ნაგულისხმევი:"
 
-#: .\socialapp\templates\update_system_prompt.html:36
+#: .\socialapp\templates\update_system_prompt.html:36 .\socialapp\views.py:534
 msgid "You are a helpful assistant."
 msgstr "თქვენ ხართ დამხმარე ასისტენტი."
 
@@ -1276,51 +1791,192 @@ msgstr "თქვენ ხართ დამხმარე ასისტე
 msgid "Update Prompt"
 msgstr "მოთხოვნის განახლება"
 
-#: .\socialapp\templates\update_system_prompt.html:65
-msgid "Save Prompt"
-msgstr "მოთხოვნის შენახვა"
+#: .\socialapp\views.py:73
+msgid "Meta application details are not configured in settings."
+msgstr "Meta აპლიკაციის დეტალები არ არის კონფიგურირებული პარამეტრებში."
 
-#: .\socialapp\views.py:55
-msgid "(Default: You are a helpful assistant.)"
-msgstr "(ნაგულისხმევი: თქვენ ხართ დამხმარე ასისტენტი.)"
+#: .\socialapp\views.py:187
+msgid "Error during Meta authentication: {}"
+msgstr "შეცდომა Meta ავთენტიფიკაციისას: {}"
 
-#: .\socialapp\views.py:709
-msgid "Inbox requires a business account."
-msgstr "შემოსულებისთვის საჭიროა ბიზნეს ანგარიში."
+#: .\socialapp\views.py:190
+msgid "Authorization code not found in callback."
+msgstr "ავტორიზაციის კოდი ვერ მოიძებნა უკუგამოძახებაში."
 
-#: .\socialapp\views.py:720
-msgid "conversation view requires a business account."
-msgstr "საუბრის სანახავად საჭიროა ბიზნეს ანგარიში."
+#: .\socialapp\views.py:193
+msgid "Invalid user type for Meta connection."
+msgstr "არასწორი მომხმარებლის ტიპი Meta კავშირისთვის."
 
-#: .\socialapp\views.py:736
-msgid "Cannot send reply: Page not connected."
-msgstr "პასუხის გაგზავნა შეუძლებელია: გვერდი არ არის დაკავშირებული."
+#: .\socialapp\views.py:211
+msgid "Failed to retrieve access token from Meta."
+msgstr "Meta-დან წვდომის ტოკენის მიღება ვერ მოხერხდა."
 
-#: .\socialapp\views.py:750
+#: .\socialapp\views.py:221
+msgid ""
+"Could not find any Facebook Pages you manage or permission denied. Please "
+"ensure you granted 'pages_show_list' permission."
+msgstr "ვერ მოიძებნა Facebook გვერდები, რომლებსაც მართავთ ან არასაკმარისი უფლებები. დარწმუნდით, რომ მინიჭებული გაქვთ 'pages_show_list' უფლება."
+
+#: .\socialapp\views.py:239
+msgid "Refreshed connection for page: {}"
+msgstr "განახლდა კავშირი გვერდისთვის: {}"
+
+#: .\socialapp\views.py:242
+msgid "Page '{}' (ID: {}) is already connected by another user ({})."
+msgstr "გვერდი '{}' (ID: {}) უკვე დაკავშირებულია სხვა მომხმარებლის ({}) მიერ."
+
+#: .\socialapp\views.py:248
+msgid ""
+"Failed to subscribe page '{}' to webhooks. AI responses may not work. Error: "
+"{}"
+msgstr "გვერდის '{}' ვებჰუკებზე გამოწერა ვერ მოხერხდა. AI პასუხები შეიძლება არ იმუშაოს. შეცდომა: {}"
+
+#: .\socialapp\views.py:248
+msgid "Unknown"
+msgstr "უცნობი"
+
+#: .\socialapp\views.py:262
+msgid "Successfully connected page: {}"
+msgstr "წარმატებით დაუკავშირდა გვერდი: {}"
+
+#: .\socialapp\views.py:267
+msgid "An error occurred while saving the page connection. Please try again."
+msgstr "შეცდომა მოხდა გვერდის კავშირის შენახვისას. გთხოვთ სცადოთ ხელახლა."
+
+#: .\socialapp\views.py:271
+msgid "Request to Facebook timed out. Please try again."
+msgstr "Facebook-თან მოთხოვნის დრო ამოიწურა. გთხოვთ სცადოთ ხელახლა."
+
+#: .\socialapp\views.py:279
+msgid "Error communicating with Facebook: {}"
+msgstr "შეცდომა Facebook-თან კომუნიკაციისას: {}"
+
+#: .\socialapp\views.py:282
+msgid "An unexpected error occurred during Meta connection: {}"
+msgstr "მოულოდნელი შეცდომა მოხდა Meta კავშირის დროს: {}"
+
+#: .\socialapp\views.py:335
+msgid "Successfully disconnected page '{}'."
+msgstr "წარმატებით გაითიშა გვერდი '{}'."
+
+#: .\socialapp\views.py:337
+msgid ""
+"Disconnected page '{}', but failed to unsubscribe from webhooks. You may "
+"need to check Meta Developer Settings."
+msgstr "გვერდი '{}' გაითიშა, მაგრამ ვებჰუკებიდან გამოწერა ვერ მოხერხდა. შეიძლება დაგჭირდეთ Meta Developer Settings-ის შემოწმება."
+
+#: .\socialapp\views.py:340
+msgid "Failed to disconnect page '{}' due to a database error."
+msgstr "გვერდის '{}' გათიშვა მონაცემთა ბაზის შეცდომის გამო ვერ მოხერხდა."
+
+#: .\socialapp\views.py:507
+msgid "Internal configuration error."
+msgstr "შიდა კონფიგურაციის შეცდომა."
+
+#: .\socialapp\views.py:526
+msgid ""
+"Sorry, I encountered an internal error managing our conversation history."
+msgstr "უკაცრავად, საუბრის ისტორიის მართვისას შიდა შეცდომა მოხდა."
+
+#: .\socialapp\views.py:587
+msgid "AI Service connection issue (Authentication)."
+msgstr "AI სერვისთან კავშირის პრობლემა (ავთენტიფიკაცია)."
+
+#: .\socialapp\views.py:590
+msgid "The AI service is currently busy, please try again in a moment."
+msgstr "AI სერვისი ამჟამად დაკავებულია, გთხოვთ ცადოთ მოგვიანებით."
+
+#: .\socialapp\views.py:593
+msgid "The AI service took too long to respond, please try again."
+msgstr "AI სერვისს პასუხისთვის დიდი დრო დასჭირდა, გთხოვთ ცადოთ ხელახლა."
+
+#: .\socialapp\views.py:597
+msgid "Sorry, there was an error communicating with the AI service."
+msgstr "უკაცრავად, AI სერვისთან კომუნიკაციისას შეცდომა მოხდა."
+
+#: .\socialapp\views.py:600
+msgid "Sorry, an unexpected error occurred while getting the AI response."
+msgstr "უკაცრავად, მოულოდნელი შეცდომა მოხდა AI პასუხის მიღებისას."
+
+#: .\socialapp\views.py:655
+msgid "System prompt for page '{}' updated successfully!"
+msgstr "სისტემური მოთხოვნა გვერდისთვის '{}' წარმატებით განახლდა!"
+
+#: .\socialapp\views.py:660
+msgid "An error occurred while saving the prompt."
+msgstr "მოთხოვნის შენახვისას მოხდა შეცდომა."
+
+#: .\socialapp\views.py:662
+msgid "Please correct the errors in the form below."
+msgstr "გთხოვთ, შეასწოროთ შეცდომები ქვემოთ მოცემულ ფორმაში."
+
+#: .\socialapp\views.py:682
+msgid "This feature requires a user account."
+msgstr "ამ ფუნქციისთვის საჭიროა მომხმარებლის ანგარიში."
+
+#: .\socialapp\views.py:713
+msgid "Invalid JSON data in request body"
+msgstr "არასწორი JSON მონაცემები მოთხოვნის ტანში."
+
+#: .\socialapp\views.py:716
+msgid "Error parsing request data"
+msgstr "მოთხოვნის მონაცემების დამუშავების შეცდომა."
+
+#: .\socialapp\views.py:719
+msgid "Message cannot be empty"
+msgstr "შეტყობინება არ შეიძლება იყოს ცარიელი."
+
+#: .\socialapp\views.py:721
+msgid "Page selection is missing"
+msgstr "გვერდის არჩევა აუცილებელია."
+
+#: .\socialapp\views.py:732
+msgid "Invalid or inactive page selected"
+msgstr "არასწორი ან არააქტიური გვერდია არჩეული."
+
+#: .\socialapp\views.py:735
+msgid "Server error fetching page details"
+msgstr "სერვერის შეცდომა გვერდის დეტალების მოძიებისას."
+
+#: .\socialapp\views.py:746
+msgid "AI service failed to generate a response."
+msgstr "AI სერვისმა პასუხი ვერ დააგენერირა."
+
+#: .\socialapp\views.py:752
+msgid "An unexpected server error occurred."
+msgstr "მოულოდნელი სერვერული შეცდომა მოხდა."
+
+#: .\socialapp\views.py:807
+msgid "Cannot send reply: Page token missing for '{}'."
+msgstr "პასუხის გაგზავნა ვერ ხერხდება: გვერდის ტოკენი აკლია '{}'-სთვის."
+
+#: .\socialapp\views.py:833
 msgid "Manual reply sent and recorded."
 msgstr "ხელით პასუხი გაგზავნილია და ჩაწერილია."
 
-#: .\socialapp\views.py:753
-msgid "Reply sent, but failed to save to local history."
-msgstr "პასუხი გაიგზავნა, მაგრამ ლოკალურ ისტორიაში შენახვა ვერ მოხერხდა."
+#: .\socialapp\views.py:836
+msgid "Reply sent via API, but failed to save to local history."
+msgstr "პასუხი გაიგზავნა API-თ, მაგრამ ლოკალურ ისტორიაში შენახვა ვერ მოხერხდა."
 
-#: .\socialapp\views.py:754
-msgid "Failed to send reply via API."
-msgstr "API-ის საშუალებით პასუხის გაგზავნა ვერ მოხერხდა."
+#: .\socialapp\views.py:838
+msgid "Failed to send reply via Facebook API."
+msgstr "Facebook API-თ პასუხის გაგზავნა ვერ მოხერხდა."
 
-#: .\socialapp\views.py:755
+#: .\socialapp\views.py:841
 msgid "Invalid message content."
 msgstr "შეტყობინების შინაარსი არასწორია."
 
-#: .\socialapp\views.py:773
+#: .\socialapp\views.py:864
 #, python-format
-msgid "conversation history for sender %(sender_id)s has been deleted."
-msgstr "გამგზავნის %(sender_id)s საუბრის ისტორია წაშლილია."
+msgid ""
+"Conversation history for sender %(sender_id)s on page '%(page_name)s' has "
+"been deleted."
+msgstr "საუბრის ისტორია გამგზავნისთვის %(sender_id)s გვერდზე '%(page_name)s' წაიშალა."
 
-#: .\socialapp\views.py:778
-msgid "Failed to delete history."
-msgstr "ისტორიის წაშლა ვერ მოხერხდა."
+#: .\socialapp\views.py:869
+msgid "Failed to delete conversation history."
+msgstr "საუბრის ისტორიის წაშლა ვერ მოხერხდა."
 
-#: .\socialapp\views.py:804
+#: .\socialapp\views.py:903
 msgid "Invalid language selected."
 msgstr "არჩეულია არასწორი ენა."

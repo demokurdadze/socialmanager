@@ -1,4 +1,4 @@
-from gettext import translation
+from django.utils import translation 
 import urllib.parse
 import requests
 import json
