@@ -349,8 +349,8 @@ def messenger_webhook(request):
 
     # Verification Request (GET)
     if request.method == 'GET':
-        # verify_token = settings.META_VERIFY_TOKEN # Use setting
-        verify_token = 'demuraaa' # Or hardcoded for testing ONLY
+        verify_token = settings.META_VERIFY_TOKEN # Use setting
+        # verify_token = 'demuraaa' # Or hardcoded for testing ONLY
         hub_mode = request.GET.get('hub.mode')
         hub_verify_token = request.GET.get('hub.verify_token')
         hub_challenge = request.GET.get('hub.challenge')
@@ -512,7 +512,7 @@ def send_message_to_AI(connected_page, sender_id, message):
     try:
         # Find or create the conversation record linked to the ConnectedPage
         conversation_obj, created = conversation.objects.get_or_create(
-            user=custom_user,
+            connected_page=connected_page,
             sender_id=sender_id,
             defaults={'messages': []} # Initialize messages
         )

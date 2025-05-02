@@ -3,12 +3,14 @@
 from django.contrib import admin
 from django.urls import path, include
 from socialapp import views
+from django.views.i18n import JavaScriptCatalog
 
 urlpatterns = [
     path('', views.root_redirect, name='root_redirect'),
     path('home/', views.home, name='home'),
     path('privacy-policy/', views.privacy_policy_view, name='privacy_policy'),
         path('accounts/', include('allauth.urls')),
+    path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
 
     # --- Meta/Facebook Authentication ---
  path('auth/meta/', views.meta_auth, name='meta_auth'),

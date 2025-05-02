@@ -421,9 +421,10 @@
        margin-top: 1.5rem;
     }
     /* --- END: Privacy Consent Modal --- */
-
+    
     {% block extra_css %}{% endblock %}
-  </style>
+</style>
+<script src="{% url 'javascript-catalog' %}"></script> 
 </head>
 {# ADD has-sidebar class if user is authenticated #}
 <body class="{% if request.COOKIES.darkMode == 'true' %}dark{% endif %} {% if user.is_authenticated %}has-sidebar{% endif %}">
