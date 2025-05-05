@@ -33,7 +33,7 @@ jobs:
         
     - name: Run tests
       run: |
-        # Find manage.py (either in root or in a project subdirectory)
+     
         if [ -f manage.py ]; then
           MANAGE_PATH="./manage.py"
         else
