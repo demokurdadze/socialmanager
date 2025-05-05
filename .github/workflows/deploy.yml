@@ -1,62 +1,59 @@
 name: Deploy Django App to cPanel
 
-# Run this workflow every time a push happens to the 'main' branch
 on:
   push:
     branches:
-      - main  # IMPORTANT: Change this if your deployment branch is called 'master' or something else
+      - main  # Change this if your deployment branch is different
 
 jobs:
   deploy:
     name: Deploy to cPanel Server
-    runs-on: ubuntu-latest # Use a standard Linux virtual environment from GitHub
+    runs-on: ubuntu-latest
 
     steps:
-    # 1. Checkout Code: Downloads your repository code into the runner environment
-    - name: Checkout code
-      uses: actions/checkout@v3
+      # 1. Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    # 2. Setup SSH: Configures SSH access using the private key you stored in secrets
-    - name: Setup SSH Agent
-      uses: webfactory/ssh-agent@v0.7.0
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }} # Uses the secret you created
+      # 2. Setup SSH agent with your private key
+      - name: Setup SSH Agent
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    # 3. Add Server to Known Hosts: Prevents SSH asking "Are you sure you want to continue connecting?"
-    - name: Add SSH Host Key to known_hosts
-      run: ssh-keyscan -H socialmanager.ge >> ~/.ssh/known_hosts
+      # 3. Add SSH host key to known_hosts (prevent interactive trust prompt)
+      - name: Add SSH Host Key to known_hosts
+        run: ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
 
-    # 4. Deploy to Server: Connects via SSH and runs commands on your cPanel server
-    - name: Deploy application
-      run: |
-        ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
-          # Change to the correct directory on the server (uses the DEPLOY_PATH secret)
-          cd ${{ secrets.DEPLOY_PATH }}
-          echo "Successfully connected to server and changed to deployment directory."
+      # 4. Deploy via SSH
+      - name: Deploy application
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            set -e  # Exit if any command fails
 
-          # Pull the latest changes from the 'main' branch of your GitHub repo
-          echo "Pulling latest code from origin main..."
-          git pull origin main # IMPORTANT: Match this branch name to the one in the 'on:' section above
+            cd ${{ secrets.DEPLOY_PATH }}
+            echo "✅ Connected to server and changed to deployment directory"
 
-          # --- Django Specific Commands ---
-          echo "Running Django deployment steps..."
+            echo "📥 Pulling latest code..."
+            git pull origin main
 
-         
+            echo "⚙️ Running Django deployment steps..."
 
+            echo "📦 Installing dependencies..."
+            source venv/bin/activate  # Adjust if your virtualenv is elsewhere
+            pip install -r requirements.txt
 
-          # Apply database migrations
-          echo "Running database migrations..."
-          python manage.py migrate --noinput
+            echo "🗃️ Applying database migrations..."
+            python manage.py migrate --noinput
 
-          # Collect static files
-          echo "Collecting static files..."
-          python manage.py collectstatic --noinput
+            echo "🧹 Collecting static files..."
+            python manage.py collectstatic --noinput
 
-          # Restart the Django application (using Phusion Passenger standard method)
-          echo "Restarting application..."
-          mkdir -p tmp # Ensure the tmp directory exists
-          touch tmp/restart.txt
+            echo "🔄 Restarting application..."
+            mkdir -p tmp
+            touch tmp/restart.txt
 
-          echo "Deployment finished successfully!"
-        EOF
-      # Note: The 'EOF' marker at the end must be at the very beginning of its line with no spaces before it.
+            echo "✅ Deployment finished successfully!"
+          EOF
