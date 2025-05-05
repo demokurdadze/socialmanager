@@ -1,59 +1,43 @@
-name: Deploy Django App to cPanel
+name: Deploy Django Application
 
 on:
   push:
-    branches:
-      - main  # Change this if your deployment branch is different
+    branches: [ main ]
+  workflow_dispatch:  # Allows manual triggering
 
 jobs:
   deploy:
-    name: Deploy to cPanel Server
     runs-on: ubuntu-latest
-
+    
     steps:
-      # 1. Checkout code
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # 2. Setup SSH agent with your private key
-      - name: Setup SSH Agent
-        uses: webfactory/ssh-agent@v0.7.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      # 3. Add SSH host key to known_hosts (prevent interactive trust prompt)
-      - name: Add SSH Host Key to known_hosts
-        run: ssh-keyscan -H "$SSH_HOST" >> ~/.ssh/known_hosts
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-
-      # 4. Deploy via SSH
-      - name: Deploy application
-        run: |
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            set -e  # Exit if any command fails
-
-            cd ${{ secrets.DEPLOY_PATH }}
-            echo "✅ Connected to server and changed to deployment directory"
-
-            echo "📥 Pulling latest code..."
-            git pull origin main
-
-            echo "⚙️ Running Django deployment steps..."
-
-            echo "📦 Installing dependencies..."
-            source venv/bin/activate  # Adjust if your virtualenv is elsewhere
-            pip install -r requirements.txt
-
-            echo "🗃️ Applying database migrations..."
-            python manage.py migrate --noinput
-
-            echo "🧹 Collecting static files..."
-            python manage.py collectstatic --noinput
-
-            echo "🔄 Restarting application..."
-            mkdir -p tmp
-            touch tmp/restart.txt
-
-            echo "✅ Deployment finished successfully!"
-          EOF
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Run tests
+      run: |
+        python manage.py test
+        
+    - name: Deploy to server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /home/socialma/repositories/social_manager
+          git pull
+          source venv/bin/activate
+          pip install -r requirements.txt
+          python manage.py migrate
+          python manage.py collectstatic --noinput
+         
