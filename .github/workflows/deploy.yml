@@ -1,106 +1,43 @@
-name: Deploy Django Application
-
+name: Deploy Django to cPanel
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:  # Allows manual triggering
+    branches:
+      - main  # Change this to your main branch name if needed
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-        
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then
-          pip install -r requirements.txt
-        elif [ -f project/requirements.txt ]; then
-          pip install -r project/requirements.txt
-        else
-          echo "Creating basic requirements file"
-          pip install django gunicorn
-          pip freeze > requirements.txt
-        fi
-        
-    - name: Run tests
-      run: |
-     
-        if [ -f manage.py ]; then
-          MANAGE_PATH="./manage.py"
-        else
-          MANAGE_PATH=$(find . -name "manage.py" -type f | head -n 1)
-        fi
-        
-        if [ -z "$MANAGE_PATH" ]; then
-          echo "Warning: Could not find manage.py file"
-          exit 1
-        else
-          echo "Found Django project at: $MANAGE_PATH"
-          python $MANAGE_PATH test --noinput || echo "Tests failed but continuing deployment"
-        fi
-        
-    - name: Deploy to server
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          cd ${{ secrets.PROJECT_PATH || '/home/socialma/repositories/social_manager' }}
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup SSH
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SECRET_SSH_KEY }}
+          known_hosts: 'just-a-placeholder'
           
-          # Pull latest changes
-          git pull origin main
+      - name: Add host to known_hosts
+        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
           
-          # Activate virtual environment (supports various env locations)
-          if [ -d "venv" ]; then
-            source venv/bin/activate
-          elif [ -d "env" ]; then
-            source env/bin/activate
-          elif [ -d ".venv" ]; then
-            source .venv/bin/activate
-          else
-            echo "Creating new virtual environment"
-            python3 -m venv venv
-            source venv/bin/activate
-          fi
+      - name: Deploy Django to cPanel
+        run: |
+          # Sync code to server
+          rsync -avz --delete \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            --exclude 'venv/' \
+            --exclude '__pycache__/' \
+            --exclude '*.pyc' \
+            --exclude 'local_settings.py' \
+            ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/
           
-          # Install dependencies
-          pip install --upgrade pip
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          elif [ -f project/requirements.txt ]; then
-            pip install -r project/requirements.txt
-          fi
-          
-          # Find manage.py and run migrations/static collection
-          if [ -f manage.py ]; then
-            MANAGE_PATH="./manage.py"
-          else
-            MANAGE_PATH=$(find . -name "manage.py" -type f | head -n 1)
-          fi
-          
-          python $MANAGE_PATH migrate --noinput
-          python $MANAGE_PATH collectstatic --noinput
-          
-          # Restart services (using systemctl if available)
-          if command -v systemctl &> /dev/null; then
-            sudo systemctl restart gunicorn || echo "No gunicorn service found"
-            sudo systemctl restart nginx || echo "No nginx service found"
-          else
-            # Alternative restart methods
-            if [ -f /etc/init.d/gunicorn ]; then
-              sudo /etc/init.d/gunicorn restart
-            fi
-            if [ -f /etc/init.d/nginx ]; then
-              sudo /etc/init.d/nginx restart
-            fi
-          fi
+          # Execute post-deployment commands
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.DEPLOY_PATH }} && \
+            source ~/virtualenv/$(basename ${{ secrets.DEPLOY_PATH }})/bin/activate && \
+            pip install -r requirements.txt && \
+            python manage.py migrate && \
+            python manage.py collectstatic --no-input && \
+            touch tmp/restart.txt"
