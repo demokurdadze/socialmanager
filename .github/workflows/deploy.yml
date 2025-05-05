@@ -24,7 +24,7 @@ jobs:
 
     # 3. Add Server to Known Hosts: Prevents SSH asking "Are you sure you want to continue connecting?"
     - name: Add SSH Host Key to known_hosts
-      run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts # Uses the SSH_HOST secret
+      run: ssh-keyscan -H socialmanager.ge >> ~/.ssh/known_hosts
 
     # 4. Deploy to Server: Connects via SSH and runs commands on your cPanel server
     - name: Deploy application
