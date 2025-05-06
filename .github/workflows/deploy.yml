@@ -23,17 +23,38 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      # Path problem fix: Make sure we're in the correct directory
-      - name: Navigate to project directory
+      # Debug directory structure
+      - name: Debug directory structure
         run: |
           pwd
           ls -la
-          # This will help debug the directory structure in the workflow
+          echo "Repository structure:"
+          find . -type f -name "manage.py" | sort
 
+      # Path problem fix: Explicitly find and use manage.py
       - name: Collect static files
         run: |
-          # If your settings are not in the default project.settings, uncomment and set this:
+          # Find the manage.py file
+          MANAGE_PY_PATH=$(find . -type f -name "manage.py" | head -n 1)
+          if [ -z "$MANAGE_PY_PATH" ]; then
+            echo "ERROR: manage.py not found in repository"
+            exit 1
+          fi
+          
+          echo "Found manage.py at: $MANAGE_PY_PATH"
+          DJANGO_DIR=$(dirname "$MANAGE_PY_PATH")
+          echo "Django directory is: $DJANGO_DIR"
+          
+          # Save the Django directory for later steps
+          echo "DJANGO_DIR=$DJANGO_DIR" >> $GITHUB_ENV
+          
+          # Change to the directory containing manage.py
+          cd "$DJANGO_DIR"
+          
+          # Set Django settings module
           export DJANGO_SETTINGS_MODULE=social_manager.settings
+          
+          # Run collectstatic
           python manage.py collectstatic --noinput --clear
         # Add env vars if needed
         # env:
@@ -48,7 +69,8 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: 21
           protocol: ftp
-          local-dir: ./
+          # This will use the appropriate directory where manage.py is found
+          local-dir: ${{ env.DJANGO_DIR || './' }}
           # Adjust the remote directory path to match your server structure
           remote-dir: /home/socialma/repositories/social_manager/
           exclude: |
