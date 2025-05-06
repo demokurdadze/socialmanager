@@ -8,7 +8,7 @@ from django.views.i18n import JavaScriptCatalog
 urlpatterns = [
     path('', views.root_redirect, name='root_redirect'),
     path('home/', views.home, name='home'),
-    path('privacy-policy/', views.privacy_policy_view, name='privacy_policy'),
+    path('privacy_policy/', views.privacy_policy_view, name='privacy_policy'),
         path('accounts/', include('allauth.urls')),
     path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
 
