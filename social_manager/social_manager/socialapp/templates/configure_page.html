@@ -28,7 +28,7 @@
         <form method="post" action="{% url 'configure_page' page.pk %}" class="styled-form prompt-update-form" novalidate>
             {% csrf_token %}
 
-            {# Display form errors at the top if any #}
+         
             {% if form.non_field_errors %}
                 <div class="alert alert-danger">
                     {% for error in form.non_field_errors %}
@@ -37,10 +37,10 @@
                 </div>
             {% endif %}
 
-            {# Render the system_prompt field #}
+          
             <div class="form-field-wrapper">
                 <label for="{{ form.system_prompt.id_for_label }}">{{ form.system_prompt.label }}</label>
-                {{ form.system_prompt }} {# Renders the textarea widget #}
+                {{ form.system_prompt }} 
                 {% if form.system_prompt.help_text %}
                     <p class="helptext">{{ form.system_prompt.help_text }}</p>
                 {% endif %}
@@ -58,8 +58,7 @@
             </div>
         </form>
 
-        {# Optional: Display Current Prompt Separately #}
-        {#
+       
         <hr style="margin: 2rem 0;">
         <h3>{% trans 'Currently Saved Prompt' %}</h3>
         <div class="current-prompt-display">
@@ -69,7 +68,7 @@
                 <p style="font-style: italic; color: var(--muted-foreground)">({% trans 'No custom prompt set. Using default behavior.' %})</p>
             {% endif %}
         </div>
-         #}
+       
     </div>
 </div>
 {% endblock %}
