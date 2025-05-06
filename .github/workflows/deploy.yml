@@ -69,28 +69,39 @@ jobs:
           # Change to the directory containing manage.py
           cd "$DJANGO_DIR"
           
-          # Get the directory name (this should be 'social_manager')
-          DIR_NAME=$(basename "$(pwd)")
+          # Configure Django to collect static files to a writable location
+          mkdir -p ./staticfiles
           
-          # Look for settings.py in current dir and parent dirs
-          if [ -f "settings.py" ]; then
-            # settings.py is in the current directory
-            export DJANGO_SETTINGS_MODULE=settings
-          elif [ -f "$DIR_NAME/settings.py" ]; then
-            # settings.py is in a subdirectory with the same name
-            export DJANGO_SETTINGS_MODULE=$DIR_NAME.settings
-          elif [ -d "$DIR_NAME" ]; then
-            # Try to find settings.py in subdirectories
-            export PYTHONPATH=$PYTHONPATH:$(pwd)
-            export DJANGO_SETTINGS_MODULE=$DIR_NAME.settings
-          else
-            # Fall back to most common Django pattern
-            export PYTHONPATH=$PYTHONPATH:$(pwd)/..
-            export DJANGO_SETTINGS_MODULE=$DIR_NAME.settings
-          fi
+          # Temporarily override settings for collectstatic only
+          cat > ./temp_settings.py << EOF
+import os
+import sys
+
+# Add the parent directory to sys.path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+# Try to import the project settings
+try:
+    from social_manager.settings import *
+except ImportError:
+    try:
+        from settings import *
+    except ImportError:
+        print("Could not import settings module. Using minimal settings.")
+        SECRET_KEY = 'temp-key-for-collectstatic'
+        DEBUG = False
+
+# Override static files settings
+STATIC_ROOT = os.path.abspath('./staticfiles')
+STATIC_URL = '/static/'
+
+# Print settings for debugging
+print(f"Using STATIC_ROOT: {STATIC_ROOT}")
+EOF
+
+          export DJANGO_SETTINGS_MODULE=temp_settings
           
-          echo "Using settings module: $DJANGO_SETTINGS_MODULE"
-          echo "Python path: $PYTHONPATH"
+          echo "Using temporary settings module with STATIC_ROOT: ./staticfiles"
           
           # Run collectstatic
           python manage.py collectstatic --noinput --clear
@@ -98,6 +109,27 @@ jobs:
         # env:
         #   DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
         #   DEBUG: "False"
+
+      # Create a deployment package
+      - name: Create deployment package
+        run: |
+          # Create a directory for deployment
+          mkdir -p ./deployment
+          
+          # Copy the Django project files (excluding unnecessary files)
+          cp -r ./social_manager ./deployment/
+          
+          # Copy the collected static files to the deployment package
+          if [ -d "./social_manager/social_manager/staticfiles" ]; then
+            echo "Copying staticfiles from ./social_manager/social_manager/staticfiles"
+            cp -r ./social_manager/social_manager/staticfiles ./deployment/static
+          else
+            echo "No staticfiles directory found in expected location"
+          fi
+          
+          # List contents of deployment directory
+          echo "Deployment package contents:"
+          find ./deployment -type f | sort
 
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
@@ -107,8 +139,8 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: 21
           protocol: ftp
-          # This will use the appropriate directory where manage.py is found
-          local-dir: ${{ env.DJANGO_DIR || './' }}
+          # Use our deployment directory
+          local-dir: ./deployment/
           # Adjust the remote directory path to match your server structure
           remote-dir: /home/socialma/repositories/social_manager/
           exclude: |
