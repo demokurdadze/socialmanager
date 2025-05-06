@@ -1,88 +1,90 @@
-# File path: .github/workflows/deploy.yml
-
-name: Deploy Social Manager (FTP)
+name: Django FTP Deploy to socialmanager.ge
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main # Or 'master', or your specific production branch
 
 jobs:
   deploy:
+    name: Deploy Django App to FTP Server
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0 # Good practice, though less critical for basic FTP uploads
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.13' # Ensure your server environment supports this
-    
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then
-          pip install -r requirements.txt
-        else
-          # This is a fallback, usually you'd have a requirements.txt for a Django project
-          pip install Django python-dotenv
-        fi
-    
-    - name: Create hosting files
-      run: |
-        # Create .htaccess for Apache/Phusion Passenger
-        echo '<IfModule mod_rewrite.c>
-        RewriteEngine On
-        RewriteCond %{REQUEST_FILENAME} !-f
-        RewriteRule ^(.*)$ /passenger_wsgi.py/$1 [QSA,L]
-        </IfModule>' > .htaccess
-        
-        # Create passenger_wsgi.py if it doesn't exist
-        # This assumes your Django project's settings are in 'social_manager.settings'
-        # and that the 'social_manager' app directory is at the root of your deployment
-        # or correctly on the Python path.
-        if [ ! -f passenger_wsgi.py ]; then
-          echo 'import os
-          import sys
-          
-          # Add the project root to sys.path
-          # This assumes passenger_wsgi.py is at the root of your Django project structure
-          # (i.e., same level as manage.py or the directory containing your Django app)
-          path = os.path.dirname(os.path.abspath(__file__))
-          if path not in sys.path:
-              sys.path.insert(0, path)
-          
-          # If your Django app (the one with settings.py) is in a subdirectory named 'social_manager',
-          # and passenger_wsgi.py is outside it but in the project root,
-          # you might need to point to that subdirectory:
-          # project_app_dir = os.path.join(path, "social_manager")
-          # if project_app_dir not in sys.path:
-          #    sys.path.insert(0, project_app_dir)
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-          os.environ.setdefault("DJANGO_SETTINGS_MODULE", "social_manager.settings")
-          
-          from django.core.wsgi import get_wsgi_application
-          application = get_wsgi_application()' > passenger_wsgi.py
-        fi
-    
-    - name: Deploy with FTP
-      uses: milanmk/actions-file-deployer@v1.2.0 # Using a specific version tag
-      with:
-        remote-protocol: ftp # Explicitly set to FTP
-        remote-host: ${{ secrets.FTP_SERVER }}
-        remote-user: ${{ secrets.FTP_USERNAME }}
-        remote-password: ${{ secrets.FTP_PASSWORD }}
-        remote-path: /home/socialma/repositories/social_manager/social_manager/social_manager/ # Your specified path
-        # remote-port: 21 # Standard FTP port, usually not needed unless non-standard
-        
-        # Optional: if you want to upload all files from the current directory in the runner
-        # local-path: ./ # This is often the default
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13' # CHANGE THIS to your project's Python version
 
-        # Optional: To clean files on the server that are not in the source. USE WITH CAUTION.
-        # args: --delete
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-        # Optional: For more detailed logs from the deployment action
-        # debug: true 
+      # OPTIONAL: Create .env file for collectstatic if your settings.py needs it
+      # This is a simplified example. Manage .env files carefully in production.
+      # It's better if your collectstatic can run without a .env or if settings are environment-driven.
+      # - name: Create .env file for collectstatic
+      #   run: |
+      #     echo "DEBUG=False" > .env
+      #     echo "SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY_FOR_COLLECTSTATIC }}" >> .env
+      #     # Add other environment variables required by your settings.py for collectstatic to run
+      #     # For example: echo "DATABASE_URL=${{ secrets.DATABASE_URL_FOR_COLLECTSTATIC }}" >> .env
+      #   env:
+      #     DJANGO_SECRET_KEY_FOR_COLLECTSTATIC: ${{ secrets.DJANGO_SECRET_KEY }} # Store this in GitHub Secrets
+
+      - name: Collect static files
+        run: |
+          # If your settings are not in the default project.settings, uncomment and set this:
+          # export DJANGO_SETTINGS_MODULE=yourproject.settings.production
+          python manage.py collectstatic --noinput --clear
+        # Add env vars here if collectstatic needs them and you didn't create a .env file
+        # env:
+        #   DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+        #   DEBUG: "False"
+        #   # Add other production settings if needed for collectstatic
+
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          # Server credentials and details (BEST to store all as GitHub Secrets)
+          server: ${{ secrets.FTP_SERVER }}            # Expected value: socialmanager.ge
+          username: ${{ secrets.FTP_USERNAME }}        # Expected value: deploy
+          password: ${{ secrets.FTP_PASSWORD }}        # Your FTP password for the 'deploy' user
+
+          # Optional: Port and Protocol
+          port: 21                                    # Default is 21, change if your FTP server uses a different port
+          protocol: ftp                               # Can be ftp, ftps, or ftps-legacy. 'ftps' is more secure if supported.
+
+          # Directories
+          local-dir: ./                               # Upload the entire content of the current directory (after collectstatic)
+                                                      # This includes your Django code, and the 'staticfiles' (or STATIC_ROOT) directory
+          remote-dir: /home/socialma/    # IMPORTANT: Set this to the correct path on your server.
+                                                      # Example: /home/socialma/my_django_project/
+                                                      # Or: /home/socialma/public_html/ (if that's your web root)
+
+          # Options
+          # timeout: 30000                            # Optional: Timeout in milliseconds (default 30000)
+          # clean-up-remote: true                     # Optional: Deletes files on the remote that aren't in the local-dir. Use with caution.
+          # dangerous-clean-slate: false              # Optional: Deletes EVERYTHING in remote-dir before uploading. EXTREME CAUTION.
+
+          # Exclude files and directories from upload (crucial!)
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            .github/**
+            README.md
+            .gitignore
+            requirements.txt # Usually installed on server, not FTP'd unless it's part of a build artifact
+            venv/
+            .venv/
+            env/
+            *.pyc
+            __pycache__/
+            *.sqlite3 # If you use SQLite for dev, don't upload it for prod
+            .env      # .env files should generally be managed on the server, not uploaded via FTP
+            local_settings.py # Or any other local configuration files
+            # Add any other files or folders specific to your project that shouldn't be deployed
