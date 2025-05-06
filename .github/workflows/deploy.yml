@@ -1,60 +1,48 @@
-name: Deploy Django to cPanel
+# File location: .github/workflows/deploy.yml
+
+name: Deploy Django App
 
 on:
   push:
-    branches:
-      - main  # Change this if your default 
+    branches: [ main ]  # Change to your main branch name (e.g., main, master)
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup SSH
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          known_hosts: ${{ secrets.SSH_HOST }} 
-
     
-
-      - name: Deploy Django to cPanel
-        run: |
-          set -euo pipefail
-
-          error_handler() {
-            echo "❌ Deployment failed at line $1"
-            exit 1
-          }
-
-          trap 'error_handler $LINENO' ERR
-
-          echo "🔄 Syncing code to the server..."
-          rsync -avz --delete \
-            --exclude '.git/' \
-            --exclude '.github/' \
-            --exclude 'venv/' \
-            --exclude '__pycache__/' \
-            --exclude '*.pyc' \
-            --exclude 'local_settings.py' \
-            ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/
-
-          echo "🚀 Running post-deployment commands..."
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            set -e
-            cd ${{ secrets.DEPLOY_PATH }}
-            echo "📦 Activating virtual environment..."
-            source ~/virtualenv/$(basename ${{ secrets.DEPLOY_PATH }})/bin/activate
-            echo "📥 Installing dependencies..."
-            pip install -r requirements.txt
-            echo "🗃️ Running migrations..."
-            python manage.py migrate
-            echo "🧹 Collecting static files..."
-            python manage.py collectstatic --no-input
-            echo "🔁 Restarting application..."
-            touch tmp/restart.txt
-          EOF
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'  # Adjust to match your Python version
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Run tests
+      run: |
+        python manage.py test
+        
+    - name: Collect static files
+      run: |
+        python manage.py collectstatic --noinput
+        
+    - name: Deploy to FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        server-dir: ./  # Change this to your hosting directory path if needed
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/venv/**
+          **/__pycache__/**
+          node_modules/**
+          .github/**
