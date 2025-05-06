@@ -21,7 +21,20 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          # Install Django explicitly
+          pip install django
+          # Install from requirements.txt if it exists
+          if [ -f requirements.txt ]; then 
+            pip install -r requirements.txt
+          # If requirements.txt is in the Django directory
+          elif [ -f social_manager/social_manager/requirements.txt ]; then
+            pip install -r social_manager/social_manager/requirements.txt
+          # Fallback - just install Django
+          else
+            echo "No requirements.txt found, installing Django only"
+          fi
+          # Verify Django installation
+          python -c "import django; print(f'Django version: {django.__version__}')"
 
       # Debug directory structure
       - name: Debug directory structure
@@ -51,8 +64,11 @@ jobs:
           # Change to the directory containing manage.py
           cd "$DJANGO_DIR"
           
-          # Set Django settings module
-          export DJANGO_SETTINGS_MODULE=social_manager.settings
+          # Set Django settings module - adjust as needed based on your project structure
+          # For a structure like social_manager/social_manager/settings.py
+          export DJANGO_SETTINGS_MODULE=settings
+          # Alternative if you have a different structure
+          # export DJANGO_SETTINGS_MODULE=social_manager.settings
           
           # Run collectstatic
           python manage.py collectstatic --noinput --clear
