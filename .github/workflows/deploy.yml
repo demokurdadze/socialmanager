@@ -43,6 +43,11 @@ jobs:
           ls -la
           echo "Repository structure:"
           find . -type f -name "manage.py" | sort
+          
+          # Debug settings location
+          echo "Looking for settings files:"
+          find . -name "settings.py" | sort
+          find . -name "settings" -type d | sort
 
       # Path problem fix: Explicitly find and use manage.py
       - name: Collect static files
@@ -64,11 +69,28 @@ jobs:
           # Change to the directory containing manage.py
           cd "$DJANGO_DIR"
           
-          # Set Django settings module - adjust as needed based on your project structure
-          # For a structure like social_manager/social_manager/settings.py
-          export DJANGO_SETTINGS_MODULE=settings
-          # Alternative if you have a different structure
-          # export DJANGO_SETTINGS_MODULE=social_manager.settings
+          # Get the directory name (this should be 'social_manager')
+          DIR_NAME=$(basename "$(pwd)")
+          
+          # Look for settings.py in current dir and parent dirs
+          if [ -f "settings.py" ]; then
+            # settings.py is in the current directory
+            export DJANGO_SETTINGS_MODULE=settings
+          elif [ -f "$DIR_NAME/settings.py" ]; then
+            # settings.py is in a subdirectory with the same name
+            export DJANGO_SETTINGS_MODULE=$DIR_NAME.settings
+          elif [ -d "$DIR_NAME" ]; then
+            # Try to find settings.py in subdirectories
+            export PYTHONPATH=$PYTHONPATH:$(pwd)
+            export DJANGO_SETTINGS_MODULE=$DIR_NAME.settings
+          else
+            # Fall back to most common Django pattern
+            export PYTHONPATH=$PYTHONPATH:$(pwd)/..
+            export DJANGO_SETTINGS_MODULE=$DIR_NAME.settings
+          fi
+          
+          echo "Using settings module: $DJANGO_SETTINGS_MODULE"
+          echo "Python path: $PYTHONPATH"
           
           # Run collectstatic
           python manage.py collectstatic --noinput --clear
