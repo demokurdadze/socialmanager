@@ -16,61 +16,41 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.13' # CHANGE THIS to your project's Python version
+          python-version: '3.13' # Your project's Python version
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      # OPTIONAL: Create .env file for collectstatic if your settings.py needs it
-      # This is a simplified example. Manage .env files carefully in production.
-      # It's better if your collectstatic can run without a .env or if settings are environment-driven.
-      # - name: Create .env file for collectstatic
-      #   run: |
-      #     echo "DEBUG=False" > .env
-      #     echo "SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY_FOR_COLLECTSTATIC }}" >> .env
-      #     # Add other environment variables required by your settings.py for collectstatic to run
-      #     # For example: echo "DATABASE_URL=${{ secrets.DATABASE_URL_FOR_COLLECTSTATIC }}" >> .env
-      #   env:
-      #     DJANGO_SECRET_KEY_FOR_COLLECTSTATIC: ${{ secrets.DJANGO_SECRET_KEY }} # Store this in GitHub Secrets
+      # Path problem fix: Make sure we're in the correct directory
+      - name: Navigate to project directory
+        run: |
+          pwd
+          ls -la
+          # This will help debug the directory structure in the workflow
 
       - name: Collect static files
         run: |
           # If your settings are not in the default project.settings, uncomment and set this:
-          # export DJANGO_SETTINGS_MODULE=yourproject.settings.production
+          export DJANGO_SETTINGS_MODULE=social_manager.settings
           python manage.py collectstatic --noinput --clear
-        # Add env vars here if collectstatic needs them and you didn't create a .env file
+        # Add env vars if needed
         # env:
         #   DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
         #   DEBUG: "False"
-        #   # Add other production settings if needed for collectstatic
 
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          # Server credentials and details (BEST to store all as GitHub Secrets)
-          server: ${{ secrets.FTP_SERVER }}            # Expected value: socialmanager.ge
-          username: ${{ secrets.FTP_USERNAME }}        # Expected value: deploy
-          password: ${{ secrets.FTP_PASSWORD }}        # Your FTP password for the 'deploy' user
-
-          # Optional: Port and Protocol
-          port: 21                                    # Default is 21, change if your FTP server uses a different port
-          protocol: ftp                               # Can be ftp, ftps, or ftps-legacy. 'ftps' is more secure if supported.
-
-          # Directories
-          local-dir: ./                               # Upload the entire content of the current directory (after collectstatic)
-                                                      # This includes your Django code, and the 'staticfiles' (or STATIC_ROOT) directory
-          remote-dir: /home/socialma/repositories/social_manager/social_manager/social_manager/    # IMPORTANT: Set this to the correct path on your server.
-                                                      # Example: /home/socialma/my_django_project/
-                                                      # Or: /home/socialma/public_html/ (if that's your web root)
-
-          # Options
-          # timeout: 30000                            # Optional: Timeout in milliseconds (default 30000)
-          # clean-up-remote: true                     # Optional: Deletes files on the remote that aren't in the local-dir. Use with caution.
-          # dangerous-clean-slate: false              # Optional: Deletes EVERYTHING in remote-dir before uploading. EXTREME CAUTION.
-
-          # Exclude files and directories from upload (crucial!)
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 21
+          protocol: ftp
+          local-dir: ./
+          # Adjust the remote directory path to match your server structure
+          remote-dir: /home/socialma/repositories/social_manager/
           exclude: |
             **/.git*
             **/.git*/**
@@ -78,13 +58,11 @@ jobs:
             .github/**
             README.md
             .gitignore
-            requirements.txt # Usually installed on server, not FTP'd unless it's part of a build artifact
             venv/
             .venv/
             env/
             *.pyc
             __pycache__/
-            *.sqlite3 # If you use SQLite for dev, don't upload it for prod
-            .env      # .env files should generally be managed on the server, not uploaded via FTP
-            local_settings.py # Or any other local configuration files
-            # Add any other files or folders specific to your project that shouldn't be deployed
+            *.sqlite3
+            .env
+            local_settings.py
