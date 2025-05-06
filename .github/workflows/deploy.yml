@@ -2,10 +2,9 @@ name: Django FTP Deploy to socialmanager.ge
 
 on:
   push:
-    branches: 
-      - main     # This will run on push to main branch
-      - master   # This will also run on push to master branch (if that's your primary branch)
-  workflow_dispatch:  # This allows manual triggering from GitHub UI
+    branches:
+      - main  # Or master, or whatever your default branch is
+  workflow_dispatch:  # Allows manual triggering
 
 jobs:
   deploy:
@@ -18,43 +17,24 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.13' # Your project's Python version
+          python-version: '3.13'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          # Install Django explicitly
-          pip install django
-          # Install from requirements.txt if it exists
-          if [ -f requirements.txt ]; then 
-            pip install -r requirements.txt
-          # If requirements.txt is in the Django directory
-          elif [ -f social_manager/social_manager/requirements.txt ]; then
-            pip install -r social_manager/social_manager/requirements.txt
-          # Fallback - just install Django
-          else
-            echo "No requirements.txt found, installing Django only"
-          fi
-          # Verify Django installation
-          python -c "import django; print(f'Django version: {django.__version__}')"
+          pip install django  # Ensure Django is installed
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      # Debug directory structure
       - name: Debug directory structure
         run: |
           pwd
           ls -la
           echo "Repository structure:"
           find . -type f -name "manage.py" | sort
-          
-          # Debug settings location
-          echo "Looking for settings files:"
-          find . -name "settings.py" | sort
-          find . -name "settings" -type d | sort
 
-      # Path problem fix: Explicitly find and use manage.py
       - name: Collect static files
         run: |
-          # Find the manage.py file
+          # Find manage.py
           MANAGE_PY_PATH=$(find . -type f -name "manage.py" | head -n 1)
           if [ -z "$MANAGE_PY_PATH" ]; then
             echo "ERROR: manage.py not found in repository"
@@ -65,73 +45,29 @@ jobs:
           DJANGO_DIR=$(dirname "$MANAGE_PY_PATH")
           echo "Django directory is: $DJANGO_DIR"
           
-          # Save the Django directory for later steps
-          echo "DJANGO_DIR=$DJANGO_DIR" >> $GITHUB_ENV
-          
-          # Change to the directory containing manage.py
+          # Create a temporary directory for static files
+          mkdir -p ./staticfiles
           cd "$DJANGO_DIR"
           
-          # Configure Django to collect static files to a writable location
-          mkdir -p ./staticfiles
-          
-          # Temporarily override settings for collectstatic only
-          cat > ./temp_settings.py << EOF
-import os
-import sys
-
-# Add the parent directory to sys.path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-# Try to import the project settings
+          # Create a temporary settings file
+          cat > temp_settings.py << EOF
+import os, sys
 try:
     from social_manager.settings import *
 except ImportError:
     try:
         from settings import *
     except ImportError:
-        print("Could not import settings module. Using minimal settings.")
         SECRET_KEY = 'temp-key-for-collectstatic'
         DEBUG = False
 
-# Override static files settings
-STATIC_ROOT = os.path.abspath('./staticfiles')
+STATIC_ROOT = os.path.abspath('../staticfiles')
 STATIC_URL = '/static/'
-
-# Print settings for debugging
-print(f"Using STATIC_ROOT: {STATIC_ROOT}")
 EOF
-
+          
+          # Run collectstatic with our temporary settings
           export DJANGO_SETTINGS_MODULE=temp_settings
-          
-          echo "Using temporary settings module with STATIC_ROOT: ./staticfiles"
-          
-          # Run collectstatic
           python manage.py collectstatic --noinput --clear
-        # Add env vars if needed
-        # env:
-        #   DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-        #   DEBUG: "False"
-
-      # Create a deployment package
-      - name: Create deployment package
-        run: |
-          # Create a directory for deployment
-          mkdir -p ./deployment
-          
-          # Copy the Django project files (excluding unnecessary files)
-          cp -r ./social_manager ./deployment/
-          
-          # Copy the collected static files to the deployment package
-          if [ -d "./social_manager/social_manager/staticfiles" ]; then
-            echo "Copying staticfiles from ./social_manager/social_manager/staticfiles"
-            cp -r ./social_manager/social_manager/staticfiles ./deployment/static
-          else
-            echo "No staticfiles directory found in expected location"
-          fi
-          
-          # List contents of deployment directory
-          echo "Deployment package contents:"
-          find ./deployment -type f | sort
 
       - name: FTP Deploy
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
@@ -141,9 +77,7 @@ EOF
           password: ${{ secrets.FTP_PASSWORD }}
           port: 21
           protocol: ftp
-          # Use our deployment directory
-          local-dir: ./deployment/
-          # Adjust the remote directory path to match your server structure
+          local-dir: ./
           remote-dir: /home/socialma/repositories/social_manager/
           exclude: |
             **/.git*
