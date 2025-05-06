@@ -3,7 +3,7 @@ name: Deploy Django to cPanel
 on:
   push:
     branches:
-      - main  # Change this if your default branc
+      - main  # Change this if your default 
 
 jobs:
   deploy:
