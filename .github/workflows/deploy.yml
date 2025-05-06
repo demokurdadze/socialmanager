@@ -1,8 +1,9 @@
 name: Deploy Django to cPanel
+
 on:
   push:
     branches:
-      - main  # Change this to your main branch name if needed
+      - main  # Change this if your default branch is different
 
 jobs:
   deploy:
@@ -17,14 +18,22 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-       
-          
+
       - name: Add host to known_hosts
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
-          
+
       - name: Deploy Django to cPanel
         run: |
-          # Sync code to server
+          set -euo pipefail
+
+          error_handler() {
+            echo "❌ Deployment failed at line $1"
+            exit 1
+          }
+
+          trap 'error_handler $LINENO' ERR
+
+          echo "🔄 Syncing code to the server..."
           rsync -avz --delete \
             --exclude '.git/' \
             --exclude '.github/' \
@@ -33,11 +42,19 @@ jobs:
             --exclude '*.pyc' \
             --exclude 'local_settings.py' \
             ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/
-          
-          # Execute post-deployment commands
-          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.DEPLOY_PATH }} && \
-            source ~/virtualenv/$(basename ${{ secrets.DEPLOY_PATH }})/bin/activate && \
-            pip install -r requirements.txt && \
-            python manage.py migrate && \
-            python manage.py collectstatic --no-input && \
-            touch tmp/restart.txt"
+
+          echo "🚀 Running post-deployment commands..."
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            set -e
+            cd ${{ secrets.DEPLOY_PATH }}
+            echo "📦 Activating virtual environment..."
+            source ~/virtualenv/$(basename ${{ secrets.DEPLOY_PATH }})/bin/activate
+            echo "📥 Installing dependencies..."
+            pip install -r requirements.txt
+            echo "🗃️ Running migrations..."
+            python manage.py migrate
+            echo "🧹 Collecting static files..."
+            python manage.py collectstatic --no-input
+            echo "🔁 Restarting application..."
+            touch tmp/restart.txt
+          EOF
