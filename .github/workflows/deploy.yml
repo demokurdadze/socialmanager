@@ -61,7 +61,7 @@ jobs:
           # Directories
           local-dir: ./                               # Upload the entire content of the current directory (after collectstatic)
                                                       # This includes your Django code, and the 'staticfiles' (or STATIC_ROOT) directory
-          remote-dir: /home/socialma/    # IMPORTANT: Set this to the correct path on your server.
+          remote-dir: /home/socialma/repositories/social_manager/social_manager/social_manager/    # IMPORTANT: Set this to the correct path on your server.
                                                       # Example: /home/socialma/my_django_project/
                                                       # Or: /home/socialma/public_html/ (if that's your web root)
 
