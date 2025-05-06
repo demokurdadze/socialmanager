@@ -1,10 +1,10 @@
-# File location: .github/workflows/deploy.yml
+# File path: .github/workflows/deploy.yml
 
-name: Deploy Django App
+name: Deploy Social Manager
 
 on:
   push:
-    branches: [ main ]  # Change to your main branch name if 
+    branches: [ main ]
 
 jobs:
   deploy:
@@ -17,27 +17,47 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.13'  # Adjust to match your Python version
-        
-    - name: Install Django and essential dependencies
+        python-version: '3.13'
+    
+    - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        # Install Django and other essential packages directly
-        pip install Django python-dotenv
-        # Add any other critical packages your app needs
-        # pip install djangorestframework Pillow mysqlclient etc.
+        if [ -f requirements.txt ]; then
+          pip install -r requirements.txt
+        else
+          pip install Django python-dotenv
+        fi
+    
+    - name: Create hosting files
+      run: |
+        # Create necessary files
+        echo '<IfModule mod_rewrite.c>
+        RewriteEngine On
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteRule ^(.*)$ /passenger_wsgi.py/$1 [QSA,L]
+        </IfModule>' > .htaccess
         
-    - name: Deploy to FTP
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        # Create passenger_wsgi.py if it doesn't exist
+        if [ ! -f passenger_wsgi.py ]; then
+          echo 'import os
+          import sys
+          
+          path = os.path.dirname(os.path.abspath(__file__))
+          if path not in sys.path:
+              sys.path.append(path)
+          
+          os.environ.setdefault("DJANGO_SETTINGS_MODULE", "social_manager.settings")
+          
+          from django.core.wsgi import get_wsgi_application
+          application = get_wsgi_application()' > passenger_wsgi.py
+        fi
+    
+    # Using a different FTP deployment action
+    - name: Deploy with FTPS
+      uses: milanmk/actions-file-deployer@master
       with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: ./  # Change this to your hosting directory path if needed
-        exclude: |
-          **/.git*
-          **/.git*/**
-          **/venv/**
-          **/__pycache__/**
-          node_modules/**
-          .github/**
+        remote-protocol: ftps
+        remote-host: ${{ secrets.FTP_SERVER }}
+        remote-user: ${{ secrets.FTP_USERNAME }}
+        remote-password: ${{ secrets.FTP_PASSWORD }}
+        remote-path: /
