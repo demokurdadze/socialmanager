@@ -2,8 +2,10 @@ name: Django FTP Deploy to socialmanager.ge
 
 on:
   push:
-    branches:
-      - main # Or 'master', or your specific production branch
+    branches: 
+      - main     # This will run on push to main branch
+      - master   # This will also run on push to master branch (if that's your primary branch)
+  workflow_dispatch:  # This allows manual triggering from GitHub UI
 
 jobs:
   deploy:
