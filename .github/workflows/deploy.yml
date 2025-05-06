@@ -1,4 +1,6 @@
-name: Deploy Social Manager
+# File path: .github/workflows/deploy.yml
+
+name: Deploy Social Manager (FTP)
 
 on:
   push:
@@ -7,54 +9,80 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
-        fetch-depth: 0
-
+        fetch-depth: 0 # Good practice, though less critical for basic FTP uploads
+    
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.13'
-
+        python-version: '3.13' # Ensure your server environment supports this
+    
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then
           pip install -r requirements.txt
         else
+          # This is a fallback, usually you'd have a requirements.txt for a Django project
           pip install Django python-dotenv
         fi
-
+    
     - name: Create hosting files
       run: |
+        # Create .htaccess for Apache/Phusion Passenger
         echo '<IfModule mod_rewrite.c>
         RewriteEngine On
         RewriteCond %{REQUEST_FILENAME} !-f
         RewriteRule ^(.*)$ /passenger_wsgi.py/$1 [QSA,L]
         </IfModule>' > .htaccess
-
+        
+        # Create passenger_wsgi.py if it doesn't exist
+        # This assumes your Django project's settings are in 'social_manager.settings'
+        # and that the 'social_manager' app directory is at the root of your deployment
+        # or correctly on the Python path.
         if [ ! -f passenger_wsgi.py ]; then
           echo 'import os
-import sys
+          import sys
+          
+          # Add the project root to sys.path
+          # This assumes passenger_wsgi.py is at the root of your Django project structure
+          # (i.e., same level as manage.py or the directory containing your Django app)
+          path = os.path.dirname(os.path.abspath(__file__))
+          if path not in sys.path:
+              sys.path.insert(0, path)
+          
+          # If your Django app (the one with settings.py) is in a subdirectory named 'social_manager',
+          # and passenger_wsgi.py is outside it but in the project root,
+          # you might need to point to that subdirectory:
+          # project_app_dir = os.path.join(path, "social_manager")
+          # if project_app_dir not in sys.path:
+          #    sys.path.insert(0, project_app_dir)
 
-path = os.path.dirname(os.path.abspath(__file__))
-if path not in sys.path:
-    sys.path.append(path)
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "social_manager.settings")
-
-from django.core.wsgi import get_wsgi_application
-application = get_wsgi_application()' > passenger_wsgi.py
+          os.environ.setdefault("DJANGO_SETTINGS_MODULE", "social_manager.settings")
+          
+          from django.core.wsgi import get_wsgi_application
+          application = get_wsgi_application()' > passenger_wsgi.py
         fi
-
-    - name: Deploy to FTP server
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+    
+    - name: Deploy with FTP
+      uses: milanmk/actions-file-deployer@v1.2.0 # Using a specific version tag
       with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        protocol: ftps
-        local-dir: ./
+        remote-protocol: ftp # Explicitly set to FTP
+        remote-host: ${{ secrets.FTP_SERVER }}
+        remote-user: ${{ secrets.FTP_USERNAME }}
+        remote-password: ${{ secrets.FTP_PASSWORD }}
+        remote-path: /home/socialma/repositories/social_manager/social_manager/social_manager/ # Your specified path
+        # remote-port: 21 # Standard FTP port, usually not needed unless non-standard
+        
+        # Optional: if you want to upload all files from the current directory in the runner
+        # local-path: ./ # This is often the default
+
+        # Optional: To clean files on the server that are not in the source. USE WITH CAUTION.
+        # args: --delete
+
+        # Optional: For more detailed logs from the deployment action
+        # debug: true 
